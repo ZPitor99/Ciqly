@@ -58,7 +58,7 @@ $(alim\_moy\_code, alim\_contrib\_code) \rightarrow pourcentage$
 
 ### Graphe des dépendances fonctionnelles natives
 
-![Schema DF excalidraw](C:\Users\gabri\Documents\production_data\prod_ciqual\2025\Schema_DF_DI_Ciqual_Aliments_moyens.png "Tux")
+![Schema DF excalidraw](Schema_DF_DI_Ciqual_Aliments_moyens.png "Tux")
 
 ### Remarques
 
@@ -88,11 +88,11 @@ a condition de traiter tout type de groupe (group, sous groupe et sous sous grou
 
 De plus, en conceptions de base de données, les code sous-groupe et sous-sous-groupe ne doivent pas être constitués par agrégation (fusion) des groupes parents:
 
-![](C:\Users\gabri\Documents\production_data\prod_ciqual\2025\pb_groupes.png)
+![Image des données de groupe](pb_groupes.png)
 
 On reconsidère le schéma :
 
-![Schema DF excalidraw](C:\Users\gabri\Documents\production_data\prod_ciqual\2025\Schema_DF_DI_Ciqual_Aliments_moyens_bis.png "Tux")
+![Schema DF excalidraw](Schema_DF_DI_Ciqual_Aliments_moyens_bis.png "Tux")
 
 ## Clef de $U$
 
