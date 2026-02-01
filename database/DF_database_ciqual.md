@@ -42,11 +42,9 @@ Sachant que :
 
 - $(alim\_moy\_code \cup alim\_contrib\_code) \subset alim\_code$
 
-L'utilisation du symbole $\subseteq$ est impossible du faite des données actuelles
+L'utilisation du symbole $\subseteq$ est impossible du fait des données actuelles.
 
-- $alim\_contrib\_code \cap alim\_moy\_code = \empty$
-
-- $(alim\_moy\_code \cup alim\_contrib\_code) \cap alim\_code \neq \empty$
+- $alim\_contrib\_code \cap alim\_moy\_code = \emptyset$
 
 #### Aliments moyens
 
@@ -64,11 +62,11 @@ $(alim\_moy\_code, alim\_contrib\_code) \rightarrow pourcentage$
 
 #### Première remarque
 
-Or on constate qu'un équivalent au DF des aliments moyen existe.
+Or, on constate qu'une équivalence entre des DF des aliments moyens et de la table Ciqual existe.
 
-En effet, très justement, on remarque que :
+Très justement, on remarque que :
 
-- $alim\_moy\_nom$ et $alim\_contrib\_nom$ $\Leftrightarrow$ $alim\_nom\_fr$ et que les DF 
+- $alim\_moy\_nom$ et $alim\_contrib\_nom$ $\Leftrightarrow$ $alim\_nom\_fr$ et donc que les DF 
   
   - $alim\_moy\_code \rightarrow alim\_moy\_nom$
   
@@ -84,7 +82,7 @@ De plus, après observation des données en profondeur, on relève que :
 
 - $alim\_ssgrp\_code \rightarrow alim\_grp\_code$
 
-a condition de traiter tout type de groupe (group, sous groupe et sous sous groupe ) d'aliment comme `null` et non comme ayant le `000000` avec des nom `null`.
+Cela est valable à condition de traiter tout type de groupe (groupe, sous-groupe et sous-sous-groupe) d'aliment comme `null` et non comme ayant le code `000000` assigné à un nom `null`.
 
 De plus, en conceptions de base de données, les code sous-groupe et sous-sous-groupe ne doivent pas être constitués par agrégation (fusion) des groupes parents:
 
@@ -113,11 +111,13 @@ $alim\_code \not\subset (alim\_moy\_code \cup alim\_contrib\_code)$
 sont de la forme : 
 
 - $alim\_moy\_code$ est null
-- $alim\_contrib\_code$ est les $alim\_code$ non présent
+- $alim\_contrib\_code$ est un $alim\_code$ non présent
 - $pourcentage$ est null
 
 Alors $alim\_moy\_code$ comprend l'ensemble des aliments génériques et $alim\_contrib\_code$ sont des aliments pouvant, ou pas, être associé à un aliments génériques.
-$alim\_contrib\_code \cap alim\_moy\_code = \empty$ est toujours satisfait
+$alim\_contrib\_code \cap alim\_moy\_code = \emptyset$ est toujours satisfait
+
+Environ 40% des $alim\_code$ sont référencés en tant qu'aliment moyen ou contributeur.
 
 ## Algorithme de Bernstein
 
@@ -126,33 +126,49 @@ $alim\_contrib\_code \cap alim\_moy\_code = \empty$ est toujours satisfait
 #### Réduction à droite
 
 $alim\_grp\_code \rightarrow alim\_grp\_nom\_fr$
+
 $alim\_grp\_code \rightarrow alim\_grp\_nom\_eng$
 
 $alim\_ssgrp\_code \rightarrow alim\_ssgrp\_nom\_fr$
+
 $alim\_ssgrp\_code \rightarrow alim\_ssgrp\_nom\_eng$
 
 $alim\_ssssgrp\_code \rightarrow alim\_ssssgrp\_nom\_fr$
+
 $alim\_ssssgrp\_code \rightarrow alim\_ssssgrp\_nom\_eng$
 
 $alim\_ssgrp\_code \rightarrow alim\_grp\_code$
+
 $alim\_ssssgrp\_code \rightarrow alim\_ssgrp\_code$
 
 $alim\_code \rightarrow alim\_nom\_fr$
+
 $alim\_code \rightarrow alim\_nom\_eng$
+
 $alim\_code \rightarrow alim\_nom\_sci$
+
 $alim\_code \rightarrow facteur\_jones$
+
 $alim\_code \rightarrow alim\_grp\_code$
+
 $alim\_code \rightarrow alim\_ssgrp\_code$
+
 $alim\_code \rightarrow alim\_ssssgrp\_code$
 
 $const\_code \rightarrow const\_nom\_fr$
+
 $const\_code \rightarrow const\_nom\_eng$
+
 $const\_code \rightarrow code\_infoods$ 
 
 $(alim\_code, const\_code) \rightarrow teneur$
+
 $(alim\_code, const\_code) \rightarrow min$
+
 $(alim\_code, const\_code) \rightarrow max$
+
 $(alim\_code, const\_code) \rightarrow code\_confiance$
+
 $(alim\_code, const\_code) \rightarrow source\_code$
 
 $source\_code \rightarrow ref\_citation$
@@ -165,4 +181,65 @@ $(alim\_moy\_code, alim\_contrib\_code) \rightarrow pourcentage$
 
 #### Réduction à gauche
 
+Remplacement 
+- $alim\_moy\_code \rightarrow alim\_moy\_nom$
+  - $alim\_code \rightarrow alim\_nom\_fr$
+
+- $alim\_contrib\_code \rightarrow alim\_contrib\_nom$
+  - $alim\_code \rightarrow alim\_nom\_fr$
+
+Du à la [remarque 1](#première-remarque)
+
 #### Suppression des redondances
+
+$alim\_grp\_code \rightarrow alim\_grp\_nom\_fr$
+
+$alim\_grp\_code \rightarrow alim\_grp\_nom\_eng$
+
+$alim\_ssgrp\_code \rightarrow alim\_ssgrp\_nom\_fr$
+
+$alim\_ssgrp\_code \rightarrow alim\_ssgrp\_nom\_eng$
+
+$alim\_ssssgrp\_code \rightarrow alim\_ssssgrp\_nom\_fr$
+
+$alim\_ssssgrp\_code \rightarrow alim\_ssssgrp\_nom\_eng$
+
+La [remarque 2](#deuxième-remarque) n'est pas applicable car
+$\forall\; alim\_code,\; \exists\; alim\_code\; \neg \text{associe}\; alim\_ssssgrp$
+
+C'est-à-dire qu'il y a des $alim\_code$ dont le $alim\_ssssgrp$ est `null`.
+La remarque 2 est alors supprimé pour éviter une complexité inutile.
+
+$alim\_code \rightarrow alim\_nom\_fr$
+
+$alim\_code \rightarrow alim\_nom\_eng$
+
+$alim\_code \rightarrow alim\_nom\_sci$
+
+$alim\_code \rightarrow facteur\_jones$
+
+$alim\_code \rightarrow alim\_grp\_code$
+
+$alim\_code \rightarrow alim\_ssgrp\_code$
+
+$alim\_code \rightarrow alim\_ssssgrp\_code$
+
+$const\_code \rightarrow const\_nom\_fr$
+
+$const\_code \rightarrow const\_nom\_eng$
+
+$const\_code \rightarrow code\_infoods$
+
+$(alim\_code, const\_code) \rightarrow teneur$
+
+$(alim\_code, const\_code) \rightarrow min$
+
+$(alim\_code, const\_code) \rightarrow max$
+
+$(alim\_code, const\_code) \rightarrow code\_confiance$
+
+$(alim\_code, const\_code) \rightarrow source\_code$
+
+$source\_code \rightarrow ref\_citation$
+
+$(alim\_moy\_code, alim\_contrib\_code) \rightarrow pourcentage$
