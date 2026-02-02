@@ -208,7 +208,8 @@ La [remarque 2](#deuxième-remarque) n'est pas applicable car
 $\forall\; alim\_code,\; \exists\; alim\_code\; \neg \text{associe}\; alim\_ssssgrp$
 
 C'est-à-dire qu'il y a des $alim\_code$ dont le $alim\_ssssgrp$ est `null`.
-La remarque 2 est alors supprimé pour éviter une complexité inutile.
+La remarque 2 n'est pas prise en compte pour éviter une complexité inutile.
+Nous restons donc dans la configuration de données initiale.
 
 $alim\_code \rightarrow alim\_nom\_fr$
 
@@ -243,3 +244,37 @@ $(alim\_code, const\_code) \rightarrow source\_code$
 $source\_code \rightarrow ref\_citation$
 
 $(alim\_moy\_code, alim\_contrib\_code) \rightarrow pourcentage$
+
+### Regroupement des DF et création de schéma
+
+groupe : (**alim_groupe_code**, alim_groupe_fr, alim_groupe_eng)
+
+ssgroupe : (**alim_ssgroupe_code**, alim_ssgroupe_fr, alim_ssgroupe_eng)
+
+ssssgroupe : (**alim_ssssgroupe_code**, alim_ssssgroupe_fr, alim_ssssgroupe_eng)
+
+aliments : (**alim_code**, alim_nom_fr, alim_nom_eng, alim_nom_sci, facteur_jones, alim_grp_code, alim_ssgrp_code, alim_ssssgrp_code)
+
+$alim\_grp\_code \subseteq groupe(alim\_groupe\_code)$
+
+$alim\_ssgrp\_code \subseteq ssgroupe(alim\_ssgroupe\_code)$
+
+$alim\_gssssrp\_code \subseteq ssssgroupe(alim\_ssssgroupe\_code)$
+
+contantes : (**const_code**, const_nom_fr, const_nom_eng, code_infoods)
+
+sources : (**source_code**, ref_citation)
+
+composition : (**alim_code, const_code**, teneur, min, max, code_confiance, source_code)
+
+$alim\_code \subseteq aliments(alim\_code)$
+
+$const\_code \subseteq constantes(const_code)$
+
+$source\_code \subseteq constantes(source\_code) $
+
+alim_moyen : (**alim_moy_code, alim_constib_code**, pourcentage)
+
+$alim\_moy\_code \subseteq aliments(alim\_code)$
+
+$alim\_constib\_code \subseteq aliments(alim\_code)$
