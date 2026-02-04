@@ -1,10 +1,14 @@
+DROP DATABASE IF EXISTS ciqual;
+CREATE DATABASE ciqual;
+
+-- CREATION DE UTILISATEUR CIQUAL DANS FICHIER SQL DEDIE
+
 CREATE TABLE `groupe` (
     alim_groupe_code CHAR(2),
     alim_groupe_fr VARCHAR(75),
     alim_groupe_eng VARCHAR(75),
     PRIMARY KEY (alim_groupe_code)
 );
-
 
 CREATE TABLE `ssgroupe` (
     alim_ssgroupe_code CHAR(4),
@@ -66,13 +70,21 @@ CREATE TABLE `sources` (
     PRIMARY KEY (code_source)
 );
 
+-- AVEC PRISE EN COMPTE DES DONNEES → MODIFICATION DU SCHEMA (TRACE ET <)
 
 CREATE TABLE `composition` (
     alim_code MEDIUMINT,
     const_code MEDIUMINT,
-    teneur,
-    teneur_min,
-    teneur_max,
+    teneur_brute VARCHAR(10),
+
+    -- teneur_val DECIMAL(12,6)
+    -- teneur_trace BOOLEAN == TINYINT(1)
+    -- teneur_inf DECIMAL(10,6)
+
+    -- OU BIEN TOUS DANS TENEUR + attribut type_valeur ENUM('EXACTE','INFÉRIEURE', 'TRACE')
+
+    teneur_min DECIMAL(12,6),
+    teneur_max DECIMAL(14,7),
     code_confiance CHAR(1),
     source_code SMALLINT,
     PRIMARY KEY(alim_code, const_code),
