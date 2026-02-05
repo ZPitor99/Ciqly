@@ -2,11 +2,12 @@
 
 ## Dépendances fonctionnelles
 
-On note respectivement $U$ et $V$ les relation comprenant l'ensemble des attributs nécessaires à garantir les informations fournies par les deux fichiers de données de ANSEES de Ciqual et des aliments moyens.
+On note respectivement $U$ et $V$ les relations comprenant l'ensemble des attributs nécessaires à garantir les informations fournies par les deux fichiers de données de ANSEES de Ciqual et des aliments moyens.
+Une étude appronfondie a été menée tant sur les données `xml` et `xlsx` que par les fichiers de documentation mis à disposition.
 
 ### Dépendances fonctionnelles $U$
 
-A partir de la documentation fournie et des fichiers XML, on déduit les dépendances fonctionnelles afin de constitue un schéma.
+À partir de la documentation fournie et des fichiers XML, on déduit les dépendances fonctionnelles afin de constituer un schéma.
 
 #### Aliments groupes
 
@@ -36,7 +37,7 @@ $source\_code \rightarrow ref\_citation$
 
 ### Dépendance Fonctionnelles $V$
 
-A partir de la documentation fournie et du fichier Excel, on déduit les informations et dépendances fonctionnelles afin de constitue un schéma.
+A partir de la documentation fournie et du fichier Excel, on déduit les informations et dépendances fonctionnelles afin de constituer un schéma.
 
 Sachant que :
 
@@ -104,9 +105,9 @@ De même, on déduit que la clef ($alim\_moy\_code,alim\_contrib\_code$) n'étan
 
 Pour définir une clef commune à $U$ et $V$, il faut satisfaire la contrainte : 
 $(alim\_moy\_code \cup alim\_contrib\_code) = alim\_code$
-Alors, il faudra créer les enregistrement pour satisfaire la DF 
+Alors, il faudra créer l'enregistrement pour satisfaire la DF 
 $(alim\_moy\_code, alim\_contrib\_code) \rightarrow pourcentage$
-pour toute codification d'aliment; c'est à dire tel que les 
+pour toute codification d'aliment; c'est-à-dire tel que les 
 $alim\_code \not\subset (alim\_moy\_code \cup alim\_contrib\_code)$
 sont de la forme : 
 
@@ -205,10 +206,11 @@ $alim\_ssssgrp\_code \rightarrow alim\_ssssgrp\_nom\_fr$
 $alim\_ssssgrp\_code \rightarrow alim\_ssssgrp\_nom\_eng$
 
 La [remarque 2](#deuxième-remarque) n'est pas applicable car
-$\forall\; alim\_code,\; \exists\; alim\_code\; \neg \text{associe}\; alim\_ssssgrp$
+$\forall\; alim\_code,\; \exists\; alim\_code\; \neg\sim \; alim\_ssssgrp$
 
 C'est-à-dire qu'il y a des $alim\_code$ dont le $alim\_ssssgrp$ est `null`.
-La remarque 2 n'est pas prise en compte pour éviter une complexité inutile.
+La remarque deux n'est pas prise en compte pour éviter une complexité inutile.
+En effet, il est possible de stocker uniquement le code du plus petit groupe définis pour cet $alim\_code$. Remonter le fil des groupes, d'un point de vue base de données, est une normalisation moins stricte et démontre un manque d'efficacité par la suite.
 Nous restons donc dans la configuration de données initiale.
 
 $alim\_code \rightarrow alim\_nom\_fr$
@@ -278,3 +280,14 @@ alim_moyen : (**alim_moy_code, alim_constib_code**, pourcentage)
 $alim\_moy\_code \subseteq aliments(alim\_code)$
 
 $alim\_constib\_code \subseteq aliments(alim\_code)$
+
+
+## Création de la base de donnée
+
+La base de donnée a été établie suite à la conception faite précédamment.
+
+Le fichier de création de la base de donnée se situe [ici](../database/scripts_db/init.sql)
+
+(schéma img)
+
+*Le schéma des tables créées a été générer par phpMyAdmin*

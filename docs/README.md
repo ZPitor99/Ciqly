@@ -1,4 +1,4 @@
-# Table Ciqual 2025 - Site de Présentation
+# Table Ciqual 2025 - Site de Présentation Ciqly
 
 ## Description
 
@@ -12,22 +12,28 @@ Ce projet permet de consulter et d'explorer les informations nutritionnelles des
 - **CSS3** - Mise en forme et design
 - **JavaScript** - Interactivité
 - **Alpine.js** - Framework JavaScript léger
-- **SQL** - Base de données
+- **PHP** - Programmation coté serveur
+- **SQL** - Base de données relationnelle
 - **JSON** - Format d'échange de données
 - **XML** - Format de données structurées
+- **Python** - Traitement du XML
 - **PhpStorm** (JetBrains) - Environnement de développement
 
 ## Source des données
 
-Les données et les informations de la Table Ciqual 2025 sont mises à disposition du public par l'Agence nationale de sécurité sanitaire de l'alimentation, de l'environnement et du travail (Anses).
+Les données et les informations de la Table Ciqual et Aliments Moyens 2025 sont mises à disposition du public par l'Agence nationale de sécurité sanitaire de l'alimentation, de l'environnement et du travail (Anses).
 
 **Citation obligatoire :**
 
 > "Anses. 2025. Table de composition nutritionnelle des aliments Ciqual"
 
+> "Anses. 2025. Table des aliments moyens Ciqual 2025"
+
 **Version détaillée pour publication scientifique :**
 
 > "Anses. 2025. Table de composition nutritionnelle des aliments Ciqual 2025. https://doi.org/10.57745/RDMHWY"
+
+> "Anses. 2025. Table des aliments moyens Ciqual 2025, https://doi.org/10.57745/XOJCLN"
 
 ## Conditions d'utilisation
 
@@ -44,7 +50,7 @@ Toute personne réutilisant les données de la table Ciqual est seule responsabl
 
 ```bash
 # Cloner le projet
-git clone [url-du-repo]
+git clone https://github.com/ZPitor99/Ciqly
 
 # Installer les dépendances
 npm install
@@ -61,7 +67,9 @@ npm run build
 
 ## Licence
 
-Données sous Licence Ouverte (Etalab)
+Données sous Licence Ouverte [Etalab](https://alliance.numerique.gouv.fr/licence-ouverte-open-licence/)
+
+Site web sous [Attribution - Utilisation non commerciale - Partage dans les mêmes conditions 4.0 International](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 ## Contact
 
