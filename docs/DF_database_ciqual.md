@@ -37,7 +37,7 @@ $source\_code \rightarrow ref\_citation$
 
 ### Dépendance Fonctionnelles $V$
 
-A partir de la documentation fournie et du fichier Excel, on déduit les informations et dépendances fonctionnelles afin de constituer un schéma.
+À partir de la documentation fournie et du fichier Excel, on déduit les informations et dépendances fonctionnelles afin de constituer un schéma.
 
 Sachant que :
 
@@ -57,7 +57,7 @@ $(alim\_moy\_code, alim\_contrib\_code) \rightarrow pourcentage$
 
 ### Graphe des dépendances fonctionnelles natives
 
-![Schema DF excalidraw](Schema_DF_DI_Ciqual_Aliments_moyens.png "Tux")
+![Schema DF excalidraw](ressources/Schema_DF_DI_Ciqual_Aliments_moyens.png "Tux")
 
 ### Remarques
 
@@ -87,11 +87,11 @@ Cela est valable à condition de traiter tout type de groupe (groupe, sous-group
 
 De plus, en conceptions de base de données, les code sous-groupe et sous-sous-groupe ne doivent pas être constitués par agrégation (fusion) des groupes parents:
 
-![Image des données de groupe](pb_groupes.png)
+![Image des données de groupe](ressources/pb_groupes.png)
 
 On reconsidère le schéma :
 
-![Schema DF excalidraw](Schema_DF_DI_Ciqual_Aliments_moyens_bis.png "Tux")
+![Schema DF excalidraw](ressources/Schema_DF_DI_Ciqual_Aliments_moyens_bis.png)
 
 ## Clef de $U$
 
@@ -183,10 +183,13 @@ $(alim\_moy\_code, alim\_contrib\_code) \rightarrow pourcentage$
 #### Réduction à gauche
 
 Remplacement 
+
 - $alim\_moy\_code \rightarrow alim\_moy\_nom$
+  
   - $alim\_code \rightarrow alim\_nom\_fr$
 
 - $alim\_contrib\_code \rightarrow alim\_contrib\_nom$
+  
   - $alim\_code \rightarrow alim\_nom\_fr$
 
 Du à la [remarque 1](#première-remarque)
@@ -263,7 +266,7 @@ $alim\_ssgrp\_code \subseteq ssgroupe(alim\_ssgroupe\_code)$
 
 $alim\_gssssrp\_code \subseteq ssssgroupe(alim\_ssssgroupe\_code)$
 
-contantes : (**const_code**, const_nom_fr, const_nom_eng, code_infoods)
+constituant : (**const_code**, const_nom_fr, const_nom_eng, code_infoods)
 
 sources : (**source_code**, ref_citation)
 
@@ -271,9 +274,9 @@ composition : (**alim_code, const_code**, teneur, min, max, code_confiance, sour
 
 $alim\_code \subseteq aliments(alim\_code)$
 
-$const\_code \subseteq constantes(const_code)$
+$const\_code \subseteq constituant(const_code)$
 
-$source\_code \subseteq constantes(source\_code) $
+$source\_code \subseteq sources(source\_code) $
 
 alim_moyen : (**alim_moy_code, alim_constib_code**, pourcentage)
 
@@ -281,10 +284,43 @@ $alim\_moy\_code \subseteq aliments(alim\_code)$
 
 $alim\_constib\_code \subseteq aliments(alim\_code)$
 
+---
 
 ## Création de la base de donnée
 
-La base de donnée a été établie suite à la conception faite précédamment.
+La base de donnée a été établie suite à la conception faite précédemment.
+
+### Dernière normalisation
+
+Pour la `teneur` des composition, on liste trois type de valeur possible :
+
+- Une valeur exacte `14,9 - 1410 - 0,547`
+
+- Une valeur inférieure à `< 700 - < 0,001 - < 256`
+
+- Une valeur trace `traces`
+
+Ainsi, teneur va être divisée en :
+
+- `teneur_brute` La teneur inscrite dans le fichier source. (chaine de caractère)
+
+- `teneur_type` Le type de teneur du couple clef : 
+  
+  - `EXACTE`
+  
+  - `INFERIEURE`
+  
+  - `TRACE`
+
+- `teuneur_valeur` La valeur de la teneur. (numérique)
+  
+  - Pour `EXACTE` la valeur intacte.
+  
+  - Pour `INFERIEURE` la valeur privée du symbole `<`
+  
+  - Pour `TRACE` la valeur `0`
+
+### Création des tables
 
 Le fichier de création de la base de donnée se situe [ici](../database/scripts_db/init.sql)
 
