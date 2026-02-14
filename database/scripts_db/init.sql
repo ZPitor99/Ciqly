@@ -2,6 +2,7 @@ DROP DATABASE IF EXISTS ciqual;
 CREATE DATABASE ciqual;
 
 -- CREATION DE UTILISATEUR CIQUAL DANS FICHIER SQL DEDIÉ
+USE ciqual;
 
 CREATE TABLE `groupe` (
     alim_groupe_code CHAR(2),
@@ -28,6 +29,29 @@ CREATE TABLE `ssssgroupe` (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 COMMENT = 'Table des sous-sous-groupes -> nom fr et en';
 
+CREATE TABLE `hierarchie` (
+    alim_groupe_code CHAR(2),
+    alim_ssgroupe_code CHAR(4),
+    alim_ssssgroupe_code CHAR(6),
+    PRIMARY KEY (alim_groupe_code, alim_ssgroupe_code, alim_ssssgroupe_code),
+    INDEX idx_hierarchie_alim_groupe_code (alim_groupe_code),
+    INDEX idx_hierarchie_alim_ssgroupe_code (alim_ssgroupe_code),
+    INDEX idx_hierarchie_alim_ssssgroupe_code (alim_ssssgroupe_code),
+    CONSTRAINT fk_hierarchie_alim_groupe_code
+        FOREIGN KEY (alim_groupe_code) REFERENCES groupe(alim_groupe_code)
+            ON UPDATE CASCADE
+            ON DELETE RESTRICT,
+    CONSTRAINT fk_hierarchie_alim_ssgroupe_code
+        FOREIGN KEY (alim_ssgroupe_code) REFERENCES ssgroupe(alim_ssgroupe_code)
+            ON UPDATE CASCADE
+            ON DELETE RESTRICT,
+    CONSTRAINT fk_hierarchie_alim_ssssgroupe_code
+        FOREIGN KEY (alim_ssssgroupe_code) REFERENCES ssssgroupe(alim_ssssgroupe_code)
+            ON UPDATE CASCADE
+            ON DELETE RESTRICT
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+COMMENT = 'Table des hierarchies des groupes';
+
 
 CREATE TABLE `aliments` (
     alim_code MEDIUMINT,
@@ -40,19 +64,9 @@ CREATE TABLE `aliments` (
     alim_ssssgrp_code CHAR(6),
     PRIMARY KEY (alim_code),
     INDEX idx_aliments_alim_nom_fr (alim_nom_fr),
-    INDEX idx_aliments_alim_grp_code (alim_grp_code),
-    INDEX idx_aliments_alim_ssgrp_code (alim_ssgrp_code),
-    INDEX idx_aliments_alim_ssssgrp_code (alim_ssssgrp_code),
+    INDEX idx_aliments_hierarchie (alim_grp_code, alim_ssgrp_code, alim_ssssgrp_code),
     CONSTRAINT fk_aliments_alim_grp_code
-        FOREIGN KEY (alim_grp_code) REFERENCES groupe(alim_groupe_code)
-            ON UPDATE CASCADE
-            ON DELETE RESTRICT,
-    CONSTRAINT fk_aliments_alim_ssgrp_code
-        FOREIGN KEY (alim_ssgrp_code) REFERENCES ssgroupe(alim_ssgroupe_code)
-            ON UPDATE CASCADE
-            ON DELETE RESTRICT,
-    CONSTRAINT fk_aliments_alim_ssssgrp_code
-        FOREIGN KEY (alim_ssssgrp_code) REFERENCES ssssgroupe(alim_ssssgroupe_code)
+        FOREIGN KEY (alim_grp_code, alim_ssgrp_code, alim_ssssgrp_code) REFERENCES hierarchie(alim_groupe_code, alim_ssgroupe_code, alim_ssssgroupe_code)
             ON UPDATE CASCADE
             ON DELETE RESTRICT
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
@@ -92,9 +106,8 @@ CREATE TABLE `composition` (
     INDEX idx_composition_alim_code (alim_code),
     INDEX idx_composition_const_code (const_code),
     INDEX idx_composition_source_code (source_code),
-    INDEX idx_composition_teneur_type (teneur_type),
-    INDEX idx_composition_teneur_valeur (teneur_valeur),
     INDEX idx_composition_teneur_type_valeur (teneur_type, teneur_valeur),
+    INDEX idx_composition_teneur_valeur (teneur_valeur),
     CONSTRAINT fk_composition_alim_code
         FOREIGN KEY (alim_code) REFERENCES aliments(alim_code)
             ON UPDATE RESTRICT
