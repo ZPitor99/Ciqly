@@ -4,7 +4,9 @@
 
 Site web de présentation des données nutritionnelles de la Table Ciqual 2025.
 
-Ce projet permet de consulter et d'explorer les informations nutritionnelles des aliments mises à disposition par l'Anses (Agence nationale de sécurité sanitaire de l'alimentation, de l'environnement et du travail).
+Ce projet permet de consulter et d’explorer les informations nutritionnelles des aliments mises à disposition par l'Anses (Agence nationale de sécurité sanitaire de l'alimentation, de l'environnement et du travail).
+
+Le fichier explicatif de la conception de la base de donnée et du traitement des données Ciqual est situé dans le dossier de documentation: [DF_ciqual](DF_database_ciqual.md)
 
 ## Technologies utilisées
 
@@ -13,33 +15,21 @@ Ce projet permet de consulter et d'explorer les informations nutritionnelles des
 - **JavaScript** - Interactivité
 - **Alpine.js** - Framework JavaScript léger
 - **PHP** - Programmation coté serveur
-- **SQL** - Base de données relationnelle
+- **SQL/PLSQL** - Base de données relationnelle
 - **JSON** - Format d'échange de données
 - **XML** - Format de données structurées
 - **Python** - Traitement du XML
-- **PhpStorm** (JetBrains) - Environnement de développement
+- **PhpStorm - PyCharm - WebStorm** (JetBrains) - Environnement de développement
 
 ## Source des données
 
 Les données et les informations de la Table Ciqual et Aliments Moyens 2025 sont mises à disposition du public par l'Agence nationale de sécurité sanitaire de l'alimentation, de l'environnement et du travail (Anses).
 
-**Citation obligatoire :**
-
-> "Anses. 2025. Table de composition nutritionnelle des aliments Ciqual"
-
-> "Anses. 2025. Table des aliments moyens Ciqual 2025"
-
-**Version détaillée pour publication scientifique :**
-
-> "Anses. 2025. Table de composition nutritionnelle des aliments Ciqual 2025. https://doi.org/10.57745/RDMHWY"
-
-> "Anses. 2025. Table des aliments moyens Ciqual 2025, https://doi.org/10.57745/XOJCLN"
-
 ## Conditions d'utilisation
 
 La réutilisation des informations mises en ligne sur le site Anses-Ciqual est soumise à la condition que ces dernières ne soient pas altérées, que leur sens ne soit pas dénaturé et que la source ainsi que la version soient mentionnées, conformément aux dispositions de la loi n° 2016-1321 du 7 octobre 2016 pour une République numérique, et du code des relations entre le public et l'administration.
 
-Les données de la table Ciqual sont ouvertes au public et téléchargeables gratuitement.
+Les données de la table Ciqual sont ouvertes au public et téléchargeable gratuitement.
 
 
 ## Responsabilité
@@ -67,13 +57,24 @@ npm run build
 
 ## Licence
 
+### Données nutritionnelles
+
 Données sous Licence Ouverte [Etalab](https://alliance.numerique.gouv.fr/licence-ouverte-open-licence/)
 
-Site web sous [Attribution - Utilisation non commerciale - Partage dans les mêmes conditions 4.0 International](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+**Citation obligatoire :**
+
+> "Anses. 2025. Table de composition nutritionnelle des aliments Ciqual 2025. https://doi.org/10.57745/RDMHWY"
+
+> "Anses. 2025. Table des aliments moyens Ciqual 2025, https://doi.org/10.57745/XOJCLN"
+
+### Code source et site web
+© 2025 ZPitor99
+
+Le code source de ce site web est mis à disposition sous licence [Attribution - Utilisation non commerciale - Partage dans les mêmes conditions 4.0 International](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 ## Contact
 
-Pour plus d'informations sur les données Ciqual : [https://ciqual.anses.fr](https://ciqual.anses.fr)
+Pour plus d'informations sur les données Ciqual: [https://ciqual.anses.fr](https://ciqual.anses.fr)
 
 ---
 
