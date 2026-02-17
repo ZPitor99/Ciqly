@@ -1,4 +1,6 @@
 import re
+import csv
+import os
 #Fonction de traitement des champs des fichiers XML
 
 def get_text(elem_xml, attr_releve):
@@ -15,6 +17,11 @@ def get_text(elem_xml, attr_releve):
     return None
 
 def normalise_teneur(teneur_brute):
+    """
+    Fonction de traitement de la chaine de character donnée en paramètre provenant des données Ciqual de quantité de nutriment.
+    :param teneur_brute: Le champ str de teneur qui correspond à un aliment — constituant
+    :return: Le couple de valeur suite au traitement
+    """
     if teneur_brute is None:
         return None, None
 
@@ -30,3 +37,24 @@ def normalise_teneur(teneur_brute):
         return "EXACTE", float(teneur_brute.replace(",", ".").strip())
     else:
         return "ATT", None
+
+
+def ecrire_fichier_csv_liste_dict(nom_fichier, donnees):
+    """
+    Crée et remplie le fichier csv à l'emplacement donné avec les informations fournies.
+    :param nom_fichier: L'emplacement du fichier cvs à remplir avec les données
+    :param donnees: Une liste de dictionnaire tq clef = entête, valeur = donnée pour cet attribut
+    :return: None
+    """
+    if nom_fichier is None or donnees is None:
+        return
+
+    dossier = os.path.dirname(nom_fichier)
+    if dossier and not os.path.exists(dossier):
+        os.makedirs(dossier)
+
+    with open(nom_fichier, mode='w', newline='', encoding='utf-8') as fichier:
+        stylo = csv.DictWriter(fichier, fieldnames=donnees[0].keys())
+        stylo.writeheader()
+        stylo.writerows(donnees)
+    return
