@@ -1,6 +1,5 @@
 from lxml import etree
 from tools_script_insert import get_text, normalise_teneur
-import sys
 
 xml = "../../dataverse_files/compo_2025_11_03.xml"
 

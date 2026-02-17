@@ -1,12 +1,9 @@
-DROP DATABASE IF EXISTS ciqual;
 CREATE DATABASE ciqual
     WITH
     OWNER = ciqly_web
     ENCODING = 'UTF8'
-    LC_COLLATE = 'fr_FR.UTF-8'
-    LC_CTYPE = 'fr_FR.UTF-8'
     CONNECTION LIMIT = -1;
-
+COMMENT ON DATABASE ciqual IS 'Base de données du Site Web Ciqly - https://github.com/ZPitor99/Ciqly';
 
 CREATE TABLE groupe (
     alim_groupe_code CHAR(2),
