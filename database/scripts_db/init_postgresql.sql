@@ -73,7 +73,7 @@ CREATE TABLE constituants (
     const_code INTEGER,
     const_nom_fr VARCHAR(100) NOT NULL,
     const_nom_eng VARCHAR(100),
-    nom_infoods VARCHAR(10),
+    code_INFOODS VARCHAR(10),
     PRIMARY KEY (const_code)
 );
 COMMENT ON TABLE constituants IS 'Table des constituants nutritionnels recherchés sur les aliments';
@@ -94,7 +94,7 @@ CREATE TABLE composition (
     const_code INTEGER,
     teneur_brute VARCHAR(10),
     teneur_type tn_type,
-    teneur_valeur SMALLINT,
+    teneur_valeur DECIMAL(14,7),
     teneur_min DECIMAL(12,6),
     teneur_max DECIMAL(14,7),
     code_confiance CHAR(1),
