@@ -49,6 +49,9 @@ def ecrire_fichier_csv_liste_dict(nom_fichier, donnees):
     if nom_fichier is None or donnees is None:
         return
 
+    if os.path.exists(nom_fichier):
+        os.remove(nom_fichier)
+
     dossier = os.path.dirname(nom_fichier)
     if dossier and not os.path.exists(dossier):
         os.makedirs(dossier)
