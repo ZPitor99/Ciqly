@@ -323,7 +323,7 @@ Ainsi, teneur va être divisée en :
 
 ### Création des tables
 
-Le fichier de création de la base de donnée se situe [ici](../database/scripts_db/ign/init.sql)
+Le fichier de création de la base de donnée se situe [ici](../database/scripts_db/init_postgresql.sql)
 
 (schéma img)
 

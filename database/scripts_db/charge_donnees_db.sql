@@ -1,8 +1,6 @@
 -- Utiliser le path absolue sur le serveur
 
 SET ciqual.csv_data = 'database/python_import_script/csv/';
-SET ciqual.csv_data = 'C:\Users\gabri\Documents\Ciqly\database\python_import_script\csv\';
-
 
 DO $$
 BEGIN
@@ -116,6 +114,3 @@ BEGIN
 
 END;
 $$;
-
-
-SELECT * FROM hierarchie h, groupe g, ssgroupe sg, ssssgroupe ssg WHERE h.alim_groupe_code = g.alim_groupe_code AND h.alim_ssgroupe_code = sg.alim_ssgroupe_code AND h.alim_ssssgroupe_code = ssg.alim_ssssgroupe_code;
