@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="description"
-          content="CIQUAL — Base de données de composition nutritionnelle des aliments. Explorez les valeurs nutritives de milliers d'aliments."/>
+          content="CIQLY — Base de données de composition nutritionnelle des aliments. Explorez les valeurs nutritives de milliers d'aliments."/>
     <title>Ciqly</title>
     <script type="module" src="index.js"></script>
-    <link href="css/style_index.css" rel="stylesheet" type="text/css">
 
 </head>
 <body>
@@ -28,7 +27,7 @@
                 <ul class="nav__links" role="list">
                     <li><a href="#explorer" aria-current="page">Explorer</a></li>
                     <li><a href="#categories">Catégories</a></li>
-                    <li><a href="#methodologie">Méthodologie</a></li>
+                    <li><a href="#nutriments">Nutriments</a></li>
                     <li><a href="#api">API</a></li>
                 </ul>
 
@@ -236,6 +235,101 @@
         </div>
     </section>
 
+    <!-- DATA TABLE -->
+    <section class="featured section" aria-labelledby="table-section-title">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <div class="section-label">Données</div>
+                    <h2 class="section-title" id="table-section-title">Aliments fréquemment consultés</h2>
+                </div>
+                <a href="#" class="section-link">Voir tout →</a>
+            </div>
+
+            <div class="data-table-wrap">
+                <div class="data-table-header">
+                    <span class="data-table-title">Résultats — Pour 100 g d'aliment</span>
+                    <div class="data-table-filters" role="group" aria-label="Filtrer par catégorie">
+                        <button class="filter-chip active">Tous</button>
+                        <button class="filter-chip">Viandes</button>
+                        <button class="filter-chip">Légumes</button>
+                        <button class="filter-chip">Fruits</button>
+                        <button class="filter-chip">Laitiers</button>
+                    </div>
+                </div>
+
+                <div style="overflow-x:auto">
+                    <table class="data-table" aria-label="Données nutritionnelles pour 100g">
+                        <thead>
+                        <tr>
+                            <th scope="col">Aliment</th>
+                            <th scope="col">Énergie</th>
+                            <th scope="col">Protéines</th>
+                            <th scope="col">Glucides</th>
+                            <th scope="col">Lipides</th>
+                            <th scope="col">Fibres</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><span class="food-badge"></span> Saumon atlantique, cuit</span>
+                            </td>
+                            <td><span class="nutrient-pill">208 kcal</span></td>
+                            <td>25,4 g</td>
+                            <td>0 g</td>
+                            <td><span class="nutrient-pill--high nutrient-pill">12,3 g</span></td>
+                            <td>0 g</td>
+                        </tr>
+                        <tr>
+                            <td><span class="food-badge"></span> Brocoli, cuit à l'eau</span>
+                            </td>
+                            <td>28 kcal</td>
+                            <td>2,7 g</td>
+                            <td>2,6 g</td>
+                            <td>0,3 g</td>
+                            <td><span class="nutrient-pill">3,4 g</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="food-badge"></span> Pomme, avec peau</td>
+                            <td>54 kcal</td>
+                            <td>0,2 g</td>
+                            <td><span class="nutrient-pill--high nutrient-pill">13,8 g</span></td>
+                            <td>0,2 g</td>
+                            <td>2,4 g</td>
+                        </tr>
+                        <tr>
+                            <td><span class="food-badge"></span> Poulet, blanc, rôti</span>
+                            </td>
+                            <td>177 kcal</td>
+                            <td><span class="nutrient-pill">27,3 g</span></td>
+                            <td>0 g</td>
+                            <td>7,8 g</td>
+                            <td>0 g</td>
+                        </tr>
+                        <tr>
+                            <td><span class="food-badge"></span> Yaourt nature, 3,5% MG</span>
+                            </td>
+                            <td>61 kcal</td>
+                            <td>4,3 g</td>
+                            <td>4,7 g</td>
+                            <td>3,5 g</td>
+                            <td>0 g</td>
+                        </tr>
+                        <tr>
+                            <td><span class="food-badge"></span> Pain de blé entier</span>
+                            </td>
+                            <td>247 kcal</td>
+                            <td>8,7 g</td>
+                            <td><span class="nutrient-pill--high nutrient-pill">45,2 g</span></td>
+                            <td>2,9 g</td>
+                            <td><span class="nutrient-pill">6,8 g</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
     <!-- INFO STRIP -->
