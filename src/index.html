@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -25,13 +25,13 @@
                 </a>
 
                 <ul class="nav__links" role="list">
-                    <li><a href="#explorer" aria-current="page">Explorer</a></li>
+                    <li><a href="#" aria-current="page">Explorer</a></li>
                     <li><a href="#categories">Catégories</a></li>
-                    <li><a href="#nutriments">Nutriments</a></li>
-                    <li><a href="#api">API</a></li>
+                    <li><a href="#">Nutriments</a></li>
+                    <li><a href="#">API</a></li>
                 </ul>
 
-                <a href="#telecharger" class="nav__cta">
+                <a href="#" class="nav__cta">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                          aria-hidden="true">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -81,7 +81,7 @@
                             </svg>
                             Explorer les aliments
                         </a>
-                        <a href="#methodologie" class="btn btn--outline">À propos de CIQUAL</a>
+                        <a href="#footer" class="btn btn--outline">À propos de CIQLY</a>
                     </div>
 
                     <div class="hero__stats" role="list" aria-label="Statistiques">
@@ -235,7 +235,7 @@
         </div>
     </section>
 
-    <!-- DATA TABLE -->
+    <!-- DATA TABLE → Aller chercher dans l'api les aliments les + consultés → affichage avec alpine -->
     <section class="featured section" aria-labelledby="table-section-title">
         <div class="container">
             <div class="section-header">
@@ -272,7 +272,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span class="food-badge"></span> Saumon atlantique, cuit</span>
+                            <td><span class="food-badge"></span> Saumon atlantique, cuit
                             </td>
                             <td><span class="nutrient-pill">208 kcal</span></td>
                             <td>25,4 g</td>
@@ -281,7 +281,7 @@
                             <td>0 g</td>
                         </tr>
                         <tr>
-                            <td><span class="food-badge"></span> Brocoli, cuit à l'eau</span>
+                            <td><span class="food-badge"></span> Brocoli, cuit à l'eau
                             </td>
                             <td>28 kcal</td>
                             <td>2,7 g</td>
@@ -298,7 +298,7 @@
                             <td>2,4 g</td>
                         </tr>
                         <tr>
-                            <td><span class="food-badge"></span> Poulet, blanc, rôti</span>
+                            <td><span class="food-badge"></span> Poulet, blanc, rôti
                             </td>
                             <td>177 kcal</td>
                             <td><span class="nutrient-pill">27,3 g</span></td>
@@ -307,7 +307,7 @@
                             <td>0 g</td>
                         </tr>
                         <tr>
-                            <td><span class="food-badge"></span> Yaourt nature, 3,5% MG</span>
+                            <td><span class="food-badge"></span> Yaourt nature, 3,5% MG
                             </td>
                             <td>61 kcal</td>
                             <td>4,3 g</td>
@@ -316,7 +316,7 @@
                             <td>0 g</td>
                         </tr>
                         <tr>
-                            <td><span class="food-badge"></span> Pain de blé entier</span>
+                            <td><span class="food-badge"></span> Pain de blé entier
                             </td>
                             <td>247 kcal</td>
                             <td>8,7 g</td>
@@ -463,7 +463,7 @@
 </main>
 
 <!-- ── FOOTER ─────────────────────────────────────────────── -->
-<footer class="footer" role="contentinfo">
+<footer class="footer" role="contentinfo" id="footer">
     <div class="container">
         <div class="footer__grid">
             <div>
@@ -507,7 +507,14 @@
         </div>
 
         <div class="footer__bottom">
-            <span>© 2025 ZPitor99</span>
+            <span>© 2025 ZPitor99 - FRANCE</span>
+
+            <span class="footer__badge" aria-label="Données ouvertes">
+          <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png" loading="lazy"
+               width="44" height="16" alt="image cc-by-nc-nd">
+          <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" hreflang="fr">CC BY-NC-ND 4.0</a>
+        </span>
+
             <span class="footer__badge" aria-label="Données ouvertes">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                aria-hidden="true"><path
