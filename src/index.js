@@ -15,3 +15,8 @@ import '@fontsource/lora/400-italic.css';
 
 import './css/style_commun.css'
 import './css/style_index.css'
+
+
+function traduire(){
+
+}

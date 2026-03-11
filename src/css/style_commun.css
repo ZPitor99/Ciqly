@@ -96,6 +96,11 @@ a {
     text-decoration: none;
 }
 
+button {
+    color: inherit;
+    text-decoration: none;
+}
+
 ul, ol { list-style: none; }
 
 button {
@@ -475,6 +480,23 @@ p { color: var(--ink-mid); line-height: 1.75; }
 }
 .nav__links a:hover,
 .nav__links a[aria-current="page"] {
+    color: var(--ink);
+    background: var(--sky-soft);
+}
+
+.nav__links button {
+    display: block;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+    border: none;
+    background: white;
+}
+
+.nav__links button:hover {
     color: var(--ink);
     background: var(--sky-soft);
 }
