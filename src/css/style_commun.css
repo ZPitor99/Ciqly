@@ -239,6 +239,49 @@ p { color: var(--ink-mid); line-height: 1.75; }
 }
 .section-link:hover { gap: 0.55rem; }
 
+.search-section {
+    background: var(--white);
+    padding-block: 3.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+
+/* ================================================================
+   5,5. Table
+   ================================================================ */
+
+.data-table { width: 100%; border-collapse: collapse; }
+
+.data-table thead th {
+    padding: 0.75rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    background: var(--sand-soft);
+    border-bottom: 1px solid var(--border);
+}
+
+.data-table thead th:not(:first-child) { text-align: right; }
+
+.data-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background var(--transition);
+}
+.data-table tbody tr:last-child { border-bottom: none; }
+.data-table tbody tr:hover { background: var(--sky-soft); }
+
+.data-table tbody td {
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+    color: var(--ink-mid);
+    vertical-align: middle;
+}
+
+.data-table tbody td:first-child { color: var(--ink); font-weight: 500; }
+.data-table tbody td:not(:first-child) { text-align: right; }
 
 /* ================================================================
    6. BOUTONS
@@ -529,6 +572,13 @@ p { color: var(--ink-mid); line-height: 1.75; }
     padding-block: 3.5rem 2rem;
 }
 
+.footer__grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
 .footer__brand {
     display: flex;
     align-items: center;
@@ -574,6 +624,19 @@ p { color: var(--ink-mid); line-height: 1.75; }
     font-size: 0.8rem;
 }
 
+.footer__desc { font-size: 0.85rem; line-height: 1.7; max-width: 28ch; }
+
+.footer__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(185, 225, 255, 0.12);
+    border: 1px solid rgba(185, 225, 255, 0.2);
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    color: var(--sky);
+}
 
 /* ================================================================
    12. UTILITAIRES DIVERS
