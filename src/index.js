@@ -16,7 +16,17 @@ import '@fontsource/lora/400-italic.css';
 import './css/style_commun.css'
 import './css/style_index.css'
 
+let langue = "fr"
+
+window.onload = init
+
+function init(){
+    document.getElementById("trad").addEventListener('click', (event) => {
+        traduire()
+    })
+}
+
 
 function traduire(){
-
+    langue = (langue === "fr") ? "en" : "fr";
 }

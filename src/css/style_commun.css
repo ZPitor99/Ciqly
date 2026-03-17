@@ -29,7 +29,7 @@
     --sky:         #B9E1FF;   /* bleu ciel — accents, tags, highlights */
     --sky-soft:    #E4F4FF;   /* bleu très clair — fonds hover, badges */
     --sky-mid:     #8ECFFA;   /* bleu moyen — barres, icônes */
-    --sky-dark:    #4AABEE;   /* bleu foncé — liens, CTA secondaires */
+    --sky-dark: #40a1e4;   /* bleu foncé — liens, CTA secondaires */
 
     --white:       #FFFFFF;
 
@@ -113,6 +113,9 @@ input, textarea, select {
     font-size: inherit;
 }
 
+hr {
+    margin: 20px 0 20px 0;
+}
 
 /* ================================================================
    3. ACCESSIBILITÉ
@@ -186,6 +189,7 @@ h1, h2, h3, .h1, .h2, .h3 {
     line-height: 1.2;
     letter-spacing: -0.015em;
     color: var(--ink);
+    margin: 10px 0 10px 0;
 }
 
 h1, .h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
@@ -204,7 +208,7 @@ h4, .h4 { font-size: 1.05rem; }
 h5, .h5 { font-size: 0.9rem; }
 h6, .h6 { font-size: 0.8rem; }
 
-p { color: var(--ink-mid); line-height: 1.75; }
+p { color: var(--ink-mid); line-height: 1.75; text-align: justify }
 
 /* Label de section (petit chapeau au-dessus du titre) */
 .section-label {
@@ -227,6 +231,13 @@ p { color: var(--ink-mid); line-height: 1.75; }
     margin-bottom: 2.5rem;
 }
 
+.section-header-center {
+    display: grid;
+    place-items: center;
+    padding: 25px;
+    margin: 0;
+}
+
 .section-link {
     font-size: 0.875rem;
     font-weight: 600;
@@ -234,8 +245,8 @@ p { color: var(--ink-mid); line-height: 1.75; }
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    white-space: nowrap;
     transition: gap var(--transition);
+    white-space: nowrap;
 }
 .section-link:hover { gap: 0.55rem; }
 
@@ -601,7 +612,7 @@ p { color: var(--ink-mid); line-height: 1.75; }
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.09em;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.5);
     margin-bottom: 1rem;
 }
 
@@ -624,7 +635,7 @@ p { color: var(--ink-mid); line-height: 1.75; }
     font-size: 0.8rem;
 }
 
-.footer__desc { font-size: 0.85rem; line-height: 1.7; max-width: 28ch; }
+.footer__desc { font-size: 0.85rem; line-height: 1.7; max-width: 28ch; color: var(--white)}
 
 .footer__badge {
     display: inline-flex;

@@ -42,46 +42,97 @@
 <!-- ── MAIN ─────────────────────────────────────────────── -->
 <main id="main-content">
 
-    <h1>Les nutriments</h1>
+    <section>
+        <div class="bg-gradient">
+            <h1 class="section-header-center">Les nutriments</h1>
+        </div>
+    </section>
 
-    <section class="search-section">
+    <section class="search-section bg-sand">
+
         <div class="container">
-            <div class="featured section">
+            <div class="section-header">
                 <h2>Les nutriments principaux</h2>
             </div>
-            <h3>Les nutriments mis en avant par l'ANSES</h3>
+            <h3>Informations sur les nutriments</h3>
+
+            <br>
+            <h3>Valeurs énergétiques sur les nutriments</h3>
+
+            <h4>Les Facteurs d'Atwater</h4>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aperiam, dolores enim et ipsum iusto modi necessitatibus nihil! Asperiores libero magnam modi natus officiis, omnis provident repellendus unde vero. Pariatur?
+                Dans les années 1880-1890, Wilbur Olin Atwater, chimiste américain,
+                définie dans ses travaux sur la nutrition l'énergie brute d'un aliment.<br>
+                L'énergie brute (GE) d'un aliment représente la quantité totale d'énergie libérée
+                lors de sa combustion complète, mesurée par calorimétrie de bombe. Elle est égale
+                à la somme des chaleurs de combustion de ses trois macronutriments : les protéines
+                (GE<sub>p</sub>), les lipides (GE<sub>f</sub>) et les glucides calculés par différence
+                (GE<sub>cho</sub>), selon le système des analyses proximales.<br>
+                Cette formule — <strong>GE = GE<sub>p</sub> + GE<sub>f</sub> + GE<sub>cho</sub></strong> —
+                constitue le point de départ de la chaîne d'évaluation de la valeur énergétique des aliments,
+                bien que l'énergie effectivement disponible pour l'organisme soit inférieure en raison des
+                pertes digestives et métaboliques.
             </p>
+
+            <hr>
+
+            <h4>Complément sur les valeurs énergétiques de la table Ciqual</h4>
+            <p>
+                Au-delà des facteurs d'Atwater, la valeur énergétiques des aliments de la table Ciqual
+                a été calculée en utilisant les coefficients suivants :
+            </p>
+            <br>
+            <ul>
+                <li>- pour les lipides : 37 kJ/g (9 kcal/g) ;</li>
+                <li>- pour les protéines : 17 kJ/g (4 kcal/g) ;</li>
+                <li>- pour les glucides (à l'exception des polyols) : 17 kJ/g (4 kcal/g) ;</li>
+                <li>- pour l'alcool (éthanol) : 29 kJ/g (7 kcal/g) ;</li>
+                <li>- pour les acides organiques : 13 kJ/g (3 kcal/g) ;</li>
+                <li>- pour les polyols : 10 kJ/g (2,4 kcal/g) ;</li>
+                <li>- pour les fibres alimentaires : 8 kJ/g (2 kcal/g) ;</li>
+            </ul>
         </div>
     </section>
 
 
-    <section class="featured section">
+    <section class="search-section bg-white">
         <div class="container">
             <div class="section-header">
                 <h2>Tous les nutriments</h2>
+                <a href="https://www.fao.org/infoods/infoods/standards-guidelines/food-component-identifiers-tagnames/en/"
+                   target="_blank" hreflang="en" class="section-link">Site Infoods →</a>
             </div>
 
             <h3>Les nutriments renseignés dans l'étude Ciqual</h3>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aperiam, dolores enim et ipsum iusto modi necessitatibus nihil! Asperiores libero magnam modi natus officiis, omnis provident repellendus unde vero. Pariatur?
+                Le code INFOODS a pour but d'identifier de manière claire et non ambiguë les composants alimentaires dans des bases de données de composition des aliments.
+                Il utilise des codes ou des abréviations standardisés pour permettre de comparer et combiner correctement les valeurs nutritionnelles provenant de différentes sources.
+                <br>
+                <cite>
+                    « Le système garantit une identification claire et indépendante de la langue des composants, permettant aux utilisateurs de distinguer les valeurs comparables et combinables de celles qui sont différentes »
+                </cite>
+                et
+                <cite>
+                    « Les tagnames INFOODS sont comme des codes ou des abréviations […] permettant de définir les composants de façon claire et sans ambiguïté avec seulement quelques caractères »
+                </cite>
+                .
             </p>
             <div style="overflow-x:auto">
-                <table class="data-table" aria-label="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx">
+                <table class="data-table" aria-label="Tableau des nutriments de l'étude Ciqual">
                     <thead>
                     <tr>
                         <th scope="col">Nutriment</th>
                         <th scope="col">Code INFOODS</th>
-
                     </tr>
                     </thead>
+
                     <tbody>
-                    <tr>
-                        <td><span class="food-badge"></span>Vitamine B1 ou Thiamine (mg/100 g)
-                        </td>
-                        <td>THIA</td>
-                    </tr>
+                        <template >
+                            <tr>
+                                <td><span class="food-badge"></span></td>
+                                <td></td>
+                            </tr>
+                        </template>
                     </tbody>
                 </table>
             </div>

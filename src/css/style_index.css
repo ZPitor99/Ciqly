@@ -294,7 +294,7 @@
     border-radius: 999px;
     background: linear-gradient(90deg, var(--sky-mid), var(--sky-dark));
 }
-.bar-val { font-size: 0.7rem; font-weight: 600; color: var(--ink-soft); width: 48px; text-align: right; flex-shrink: 0; }
+.bar-val { font-size: 0.7rem; font-weight: 600; color: var(--ink-soft); width: 50px; text-align: right; flex-shrink: 0; }
 
 /* ═══════════════════════════════════════════════════════════
    SEARCH SECTION
@@ -794,14 +794,14 @@
 }
 
 
-.footer__desc { font-size: 0.85rem; line-height: 1.7; max-width: 28ch; }
+.footer__desc { font-size: 0.85rem; line-height: 1.7; max-width: 28ch; color: var(--white)}
 
 .footer__col-title {
     font-size: 0.78rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.09em;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255,255,255,0.5);
     margin-bottom: 1rem;
 }
 

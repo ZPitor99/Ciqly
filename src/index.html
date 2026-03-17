@@ -25,10 +25,10 @@
                 </a>
 
                 <ul class="nav__links" role="list">
-                    <li><a href="#" aria-current="page">Explorer</a></li>
+                    <li><a href="#">Explorer</a></li>
                     <li><a href="#categories">Catégories</a></li>
-                    <li><a href="#">Nutriments</a></li>
-                    <li><button onclick="traduire()">Translate</button></li>
+                    <li><a href="pages/nutriments.html">Nutriments</a></li>
+                    <li><button id="trad" data-fr="Translate" data-en="Traduire">Translate</button></li>
                 </ul>
 
                 <a href="#" class="nav__cta">
@@ -58,12 +58,12 @@
             <div class="hero__inner">
                 <div class="hero__content">
             <span class="hero__tag">
-              <span class="hero__tag-dot" aria-hidden="true"></span>
               Base de données ANSES
             </span>
 
                     <h1 class="hero__title" id="hero-title">
-                        Données nutritionnelles<br/>
+                        <span>Données nutritionnelles</span>
+                        <br/>
                         <em>à portée de main</em>
                     </h1>
 
@@ -72,14 +72,14 @@
                         référence officielle française pour la qualité nutritive des aliments.
                     </p>
 
-                    <div class="hero__actions">
-                        <a href="#explorer" class="btn btn--primary">
+                    <div class="hero__actions" >
+                        <a href="#explorer" class="btn btn--primary" aria-label="Loupe rechercher">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="2.5" aria-hidden="true">
                                 <circle cx="11" cy="11" r="8"/>
                                 <path d="m21 21-4.35-4.35"/>
                             </svg>
-                            Explorer les aliments
+                            <span>Explorer les aliments</span>
                         </a>
                         <a href="#footer" class="btn btn--outline">À propos de CIQLY</a>
                     </div>
@@ -112,30 +112,31 @@
                                 <div class="bar-row">
                                     <span class="bar-name">Protéines</span>
                                     <div class="bar-track">
-                                        <div class="bar-fill" style="width:80%"></div>
+                                        <div class="bar-fill" style="width:56%"></div>
                                     </div>
-                                    <span class="bar-val">27,3 g</span>
+                                    <span class="bar-val">28,9 g</span>
                                 </div>
                                 <div class="bar-row">
                                     <span class="bar-name">Lipides</span>
                                     <div class="bar-track">
-                                        <div class="bar-fill" style="width:38%"></div>
+                                        <div class="bar-fill" style="width:44%"></div>
                                     </div>
-                                    <span class="bar-val">7,8 g</span>
+                                    <span class="bar-val">9,88 g</span>
                                 </div>
                                 <div class="bar-row">
                                     <span class="bar-name">Glucides</span>
                                     <div class="bar-track">
-                                        <div class="bar-fill" style="width:5%"></div>
+                                        <div class="bar-fill" style="width:0"></div>
                                     </div>
                                     <span class="bar-val">0 g</span>
                                 </div>
+                                <br>
                                 <div class="bar-row">
                                     <span class="bar-name">Énergie</span>
                                     <div class="bar-track">
-                                        <div class="bar-fill" style="width:63%"></div>
+                                        <div class="bar-fill" style="width:11%"></div>
                                     </div>
-                                    <span class="bar-val">177 kcal</span>
+                                    <span class="bar-val">204 kcal</span>
                                 </div>
                             </div>
                         </div>
@@ -333,7 +334,7 @@
 
 
     <!-- INFO STRIP -->
-    <section class="info-strip section--tight" aria-labelledby="info-title">
+    <section class="info-strip section--tight">
         <div class="container">
             <div class="info-grid">
                 <div class="info-block">
@@ -509,7 +510,7 @@
         <div class="footer__bottom">
             <span>© 2025 ZPitor99 - FRANCE</span>
 
-            <span class="footer__badge" aria-label="Données ouvertes">
+            <span class="footer__badge" aria-label="Logo cc-by-nc-nd">
           <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png" loading="lazy"
                width="44" height="16" alt="image cc-by-nc-nd">
           <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" hreflang="fr">CC BY-NC-ND 4.0</a>
