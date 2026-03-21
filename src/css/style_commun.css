@@ -212,7 +212,7 @@ h4, .h4 { font-size: 1.05rem; }
 h5, .h5 { font-size: 0.9rem; }
 h6, .h6 { font-size: 0.8rem; }
 
-p { color: var(--ink-mid); line-height: 1.75; text-align: justify }
+p { color: var(--ink-mid); line-height: 1.75; }
 
 /* Label de section (petit chapeau au-dessus du titre) */
 .section-label {
