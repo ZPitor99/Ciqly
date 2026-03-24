@@ -105,7 +105,7 @@
                                 l'apport satisfaisant, c'est-à-dire le statut nutritionnel jugé satisfaisant.
                                 L'<abbr title="Apport satisfaisant">AS</abbr> est utilisé quand le <abbr title="Besoin nutritionnel moyen">BNM</abbr> ne peut pas être estimé, faute de données suffisantes.<br>
                                 D'autre part, La <abbr title="Limite supérieure de sécurité">LSS</abbr> est définie comme l'apport journalier maximal considéré comme peu susceptible de présenter un risque d'effets indésirables sur la santé.<br>
-                                Ci-joint les recommandations d'apport mineral quotidien : <a href="/extrait_apport_mensue_mineraux_anses.pdf" class="section-link" aria-label="Extrait du rapport pdf de l'ANSES" download>Télécharger les tableaux pdf</a><br>
+                                Ci-joint les recommandations d'apport mineral quotidien : <a href="/extrait_apport_mensue_mineraux_anses.pdf" class="section-link" aria-label="Extrait du rapport pdf de l'ANSES" title="Extrait du rapport pdf de l'ANSES" download>Télécharger les tableaux pdf</a><br>
                                 C.f Ressources puis Références en <a href="#footer"><strong>bas de page</strong></a> pour accéder au document complet ou directement sur le site de l'ANSES.
                             </p>
                         </div>
@@ -126,7 +126,7 @@
                                 l'apport satisfaisant, c'est-à-dire le statut nutritionnel jugé satisfaisant.
                                 L'<abbr title="Apport satisfaisant">AS</abbr> est utilisé quand le <abbr title="Besoin nutritionnel moyen">BNM</abbr> ne peut pas être estimé, faute de données suffisantes.<br>
                                 D'autre part, La <abbr title="Limite supérieure de sécurité">LSS</abbr> est définie comme l'apport journalier maximal considéré comme peu susceptible de présenter un risque d'effets indésirables sur la santé.<br>
-                                Ci-joint les recommandations d'apport vitamin quotidien : <a href="/extrait_apport_mensuel_vitamines_anses.pdf" class="section-link" aria-label="Extrait du rapport pdf de l'ANSES" download>Télécharger les tableaux pdf</a><br>
+                                Ci-joint les recommandations d'apport vitamin quotidien : <a href="/extrait_apport_mensuel_vitamines_anses.pdf" class="section-link" aria-label="Extrait du rapport pdf de l'ANSES" title="Extrait du rapport pdf de l'ANSES" download>Télécharger les tableaux pdf</a><br>
                                 C.f Ressources puis Références en <a href="#footer"><strong>bas de page</strong></a> pour accéder au document complet ou directement sur le site de l'ANSES.
                             </p>
                         </div>
@@ -201,8 +201,10 @@
                 </cite>
                 .
             </p>
-            <div style="overflow-x:auto">
+            <br>
+            <div style="overflow-x:auto" x-data="infoods">
                 <table class="data-table" aria-label="Tableau des nutriments de l'étude Ciqual">
+                    <caption>Tableau des codes INFOODS de l'étude Ciqual triés par code</caption>
                     <thead>
                     <tr>
                         <th scope="col">Nutriment</th>
@@ -211,10 +213,10 @@
                     </thead>
 
                     <tbody>
-                        <template >
+                        <template x-for="item in table_infoods" :key="item.nom">
                             <tr>
-                                <td><span class="food-badge"></span></td>
-                                <td></td>
+                                <td><span class="food-badge" x-text="item.nom"></span></td>
+                                <td x-text="item.code"></td>
                             </tr>
                         </template>
                     </tbody>

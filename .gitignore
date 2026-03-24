@@ -37,3 +37,4 @@ database/scripts_db/ign/
 #Fichier de données (stockage et production des scripts)
 database/scripts_db/python_import_script/csv/
 dataverse_files/
+public/
