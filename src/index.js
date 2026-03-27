@@ -22,10 +22,25 @@ function init(){
     document.getElementById("trad").addEventListener('click', (event) => {
         traduire()
     })
-    burger()
+    burger();
+    initSearchTag();
 }
 
 
 function traduire(){
     langue = (langue === "fr") ? "en" : "fr";
+}
+
+
+//BOUTON RECOMMANDATION RECHERCHE
+function initSearchTag(){
+    const searchTag = document.getElementById(".search-input");
+    const tags = document.querySelectorAll(".search-tags .tag");
+
+    tags.forEach(tag => {
+        tag.addEventListener("click", (event) => {
+            document.getElementById("search-field").value = tag.textContent.trim();
+        })
+    })
+
 }

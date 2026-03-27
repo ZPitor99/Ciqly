@@ -151,23 +151,29 @@
     <section class="search-section" id="explorer" aria-labelledby="search-title">
         <div class="container">
             <div class="search-wrap">
-                <h2 id="search-title">Rechercher un aliment</h2>
+                <label for="search-field">
+                    <h2 id="search-title">Rechercher un aliment</h2>
+                </label>
                 <p>Entrez un nom d'aliment pour consulter sa fiche nutritionnelle complète</p>
 
-                <div class="search-box" role="search">
-                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                         aria-hidden="true">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="m21 21-4.35-4.35"/>
-                    </svg>
-                    <input
-                            type="search"
-                            class="search-input"
-                            placeholder="Ex : pomme, lait entier, saumon…"
-                            aria-label="Rechercher un aliment"
-                    />
-                    <button class="search-btn" type="submit">Rechercher</button>
-                </div>
+                <form action="#">
+                    <div class="search-box" role="search">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input
+                                id="search-field"
+                                type="search"
+                                class="search-input"
+                                placeholder="Ex : pomme, lait entier, saumon…"
+                                aria-label="Rechercher un aliment"
+                                minlength = "3"
+                        />
+                        <button class="search-btn" type="submit">Rechercher</button>
+                    </div>
+                </form>
 
                 <div class="search-tags" aria-label="Recherches suggérées">
                     <button class="tag">Poivron rouge, sauté/poêlé</button>
