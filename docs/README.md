@@ -1,12 +1,14 @@
 # Table Ciqual 2025 - Site de Présentation Ciqly
 
+[Read in English](README.en.md)
+
 ## Description
 
 Site web de présentation des données nutritionnelles de la Table Ciqual 2025.
 
-Ce projet permet de consulter et d’explorer les informations nutritionnelles des aliments mises à disposition par l'Anses (Agence nationale de sécurité sanitaire de l'alimentation, de l'environnement et du travail).
+Ce projet permet de consulter et d’explorer les informations nutritionnelles des aliments mises à disposition par l'ANSES (Agence nationale de sécurité sanitaire de l'alimentation, de l'environnement et du travail).
 
-Le fichier explicatif de la conception de la base de donnée et du traitement des données Ciqual est situé dans le dossier de documentation: [DF_ciqual](DF_database_ciqual.md)
+Le fichier explicatif de la conception de la base de donnée et du traitement des données Ciqual est situé dans le dossier de documentation : [DF_ciqual](DF_database_ciqual.md)
 
 ## Technologies utilisées
 
@@ -15,11 +17,11 @@ Le fichier explicatif de la conception de la base de donnée et du traitement de
 - **JavaScript** - Interactivité
 - **Alpine.js** - Framework JavaScript léger
 - **PHP** - Programmation coté serveur
-- **SQL/PLSQL** - Base de données relationnelle
+- **SQL/PLSQL** - Base de données relationnelle (PostgreSQL)
 - **JSON** - Format d'échange de données
 - **XML** - Format de données structurées
 - **Python** - Traitement du XML
-- **PhpStorm - PyCharm - WebStorm** (JetBrains) - Environnement de développement
+- **PhpStorm - PyCharm - WebStorm** (JetBrains) — Environnement de développement
 
 ## Source des données
 

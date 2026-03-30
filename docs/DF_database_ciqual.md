@@ -1,6 +1,6 @@
 # Conception de la base de données
 
-*Git Hub effectue un mauvais affichage des écritures des DF, préférer un autre éditeur/visualiseur*
+*Git Hub effectue un mauvais affichage des écritures des DF, préférer un autre éditeur pour visualiser le contenu *
 
 ## Dépendances fonctionnelles
 
@@ -325,6 +325,3 @@ Ainsi, teneur va être divisée en :
 
 Le fichier de création de la base de donnée se situe [ici](../database/scripts_db/init_postgresql.sql)
 
-(schéma img)
-
-*Le schéma des tables créées a été générer par phpMyAdmin*
