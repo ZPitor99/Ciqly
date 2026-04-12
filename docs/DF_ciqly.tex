@@ -1,0 +1,637 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{parskip}
+\usepackage{microtype}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=black
+}
+
+% --- En-têtes ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Conception de la base de données --- Ciqly}
+\lhead{}
+\cfoot{\thepage}
+
+\usepackage{mdframed}
+
+\newmdenv[
+    linewidth=0.5pt,
+    linecolor=black,
+    leftmargin=0pt,
+    rightmargin=0pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
+    innertopmargin=8pt,
+    innerbottommargin=8pt
+]{rappelbox}
+
+
+\newmdenv[
+    linewidth=0.4pt,
+    linecolor=black,
+    leftmargin=8pt,
+    rightmargin=0pt,
+    innerleftmargin=8pt,
+    innerrightmargin=8pt,
+    innertopmargin=6pt,
+    innerbottommargin=6pt,
+    topline=false,
+    bottomline=false,
+    rightline=false
+]{notebox}
+
+\newcommand{\attr}[1]{\texttt{#1}}
+\newcommand{\citeg}[1]{\textnormal{\footnotesize[#1]}}
+
+% ------------------------------------------------------------------
+\begin{document}
+
+    \begin{titlepage}
+        \centering
+        \vspace*{3cm}
+        {\LARGE \textbf{Conception de la base de données}}\\[1em]
+        {\large Base de donnée du site web Ciqly}\\[3cm]
+        \vfill
+    \end{titlepage}
+
+    \tableofcontents
+    \newpage
+
+% ==================================================================
+
+
+    \section{Rappels}
+
+    \begin{rappelbox}
+        \textbf{Notion XVII.5 : Dépendance fonctionnelle (\textit{Functional dependency})}
+        \hfill\citeg{Gardarin, p.\,685}\\[0.5em]
+        Soit $R(A_1, A_2, \ldots, A_n)$ un schéma de relation, et $X$ et $Y$ des sous-ensembles de
+        $\{A_1, A_2, \ldots, A_n\}$. On dit que $X \rightarrow Y$ ($X$ détermine $Y$, ou $Y$ dépend
+        fonctionnellement de $X$) si, pour toute extension $r$ de $R$, pour tout tuple $t_1$ et $t_2$ de
+        $r$, on a :
+        \[
+            \Pi_X(t_1) = \Pi_X(t_2) \;\Rightarrow\; \Pi_Y(t_1) = \Pi_Y(t_2)
+        \]
+    \end{rappelbox}
+
+    \begin{notebox}
+        \small
+        \textbf{Remarque.} Une dépendance fonctionnelle est une \emph{assertion sur toutes les valeurs
+        possibles} des attributs, et non sur leurs valeurs actuelles : elle caractérise une intention et non
+        une extension de la relation. Il est donc impossible de déduire les DF d'une réalisation particulière ;
+        leur identification exige une analyse sémantique du domaine métier.
+        \hfill\citeg{Gardarin, p.\,685}
+    \end{notebox}
+
+% ==================================================================
+
+
+    \section{Dépendances fonctionnelles}
+
+    On note respectivement $U$ et $V$ les relations comprenant l'ensemble des attributs nécessaires à
+    garantir les informations fournies par les deux fichiers de données de l'ANSES : la table CIQUAL
+    et la table des aliments moyens. Une étude approfondie a été menée tant sur les données \texttt{XML}
+    et \texttt{XLSX} que sur les fichiers de documentation mis à disposition.
+
+% ------------------------------------------------------------------
+
+    \subsection{Dépendances fonctionnelles de \texorpdfstring{$U$}{U}}
+
+    À partir de la documentation fournie et des fichiers XML, on déduit les dépendances fonctionnelles
+    afin de constituer un schéma.
+
+    \subsubsection*{Groupes d'aliments}
+
+    \begin{align*}
+        \attr{alim\_grp\_code}     &\rightarrow \attr{alim\_grp\_nom\_fr},\; \attr{alim\_grp\_nom\_eng} \\
+        \attr{alim\_ssgrp\_code}   &\rightarrow \attr{alim\_ssgrp\_nom\_fr},\; \attr{alim\_ssgrp\_nom\_eng} \\
+        \attr{alim\_ssssgrp\_code} &\rightarrow \attr{alim\_ssssgrp\_nom\_fr},\; \attr{alim\_ssssgrp\_nom\_eng}
+    \end{align*}
+
+    \subsubsection*{Aliments}
+
+    \begin{align*}
+        \attr{alim\_code} &\rightarrow \attr{alim\_nom\_fr},\; \attr{alim\_nom\_eng},\; \attr{alim\_nom\_sci},\; \attr{facteur\_jones} \\
+        \attr{alim\_code} &\rightarrow \attr{alim\_grp\_code},\; \attr{alim\_ssgrp\_code},\; \attr{alim\_ssssgrp\_code}
+    \end{align*}
+
+    \subsubsection*{Constituant}
+
+    \[
+        \attr{const\_code} \rightarrow \attr{const\_nom\_fr},\; \attr{const\_nom\_eng},\; \attr{code\_infoods}
+    \]
+
+    \subsubsection*{Composition}
+
+    \[
+        (\attr{alim\_code},\, \attr{const\_code}) \rightarrow \attr{teneur},\; \attr{min},\; \attr{max},\; \attr{code\_confiance},\; \attr{source\_code}
+    \]
+
+    \subsubsection*{Sources}
+
+    \[
+        \attr{source\_code} \rightarrow \attr{ref\_citation}
+    \]
+
+% ------------------------------------------------------------------
+
+    \subsection{Dépendances fonctionnelles de \texorpdfstring{$V$}{V}}
+
+    À partir de la documentation fournie et du fichier Excel, on déduit les dépendances fonctionnelles
+    afin de constituer un schéma.
+
+    On dispose des propriétés suivantes sur les ensembles de codes :
+
+    \begin{itemize}
+        \item $(\attr{alim\_moy\_code} \cup \attr{alim\_contrib\_code}) \subset \attr{alim\_code}$\\
+        L'utilisation du symbole $\subseteq$ est exclue au stade des données brutes : on ne peut pas
+        garantir que tout \attr{alim\_code} est référencé en tant qu'aliment moyen ou contributeur.
+        Cette propriété ne sera satisfaite qu'après extension de la relation (voir
+        section~\ref{sec:unifier}).
+
+        \item $\attr{alim\_contrib\_code} \cap \attr{alim\_moy\_code} = \emptyset$
+    \end{itemize}
+
+    \subsubsection*{Aliments moyens}
+
+    \begin{align*}
+        \attr{alim\_moy\_code}    &\rightarrow \attr{alim\_moy\_nom} \\
+        \attr{alim\_contrib\_code}&\rightarrow \attr{alim\_contrib\_nom} \\
+        (\attr{alim\_moy\_code},\, \attr{alim\_contrib\_code}) &\rightarrow \attr{pourcentage}
+    \end{align*}
+
+% ------------------------------------------------------------------
+
+    \subsection{Remarques}
+    \label{sec:remarques}
+
+    \subsubsection*{Première remarque --- Redondance entre \texorpdfstring{$U$}{U} et \texorpdfstring{$V$}{V}}
+    \label{sec:remarque1}
+
+    On constate une équivalence entre certaines dépendances fonctionnelles des aliments moyens et celles
+    de la table CIQUAL. En effet :
+    \[
+        \attr{alim\_moy\_nom} \equiv \attr{alim\_contrib\_nom} \equiv \attr{alim\_nom\_fr}
+    \]
+    Les dépendances
+    \begin{align*}
+        \attr{alim\_moy\_code}    &\rightarrow \attr{alim\_moy\_nom} \\
+        \attr{alim\_contrib\_code}&\rightarrow \attr{alim\_contrib\_nom}
+    \end{align*}
+    sont donc équivalentes à $\attr{alim\_code} \rightarrow \attr{alim\_nom\_fr}$ et produisent une
+    redondance. Elles ont été inscrites précédemment afin de respecter la structure des fichiers sources
+    originaux.
+
+    \subsubsection*{Deuxième remarque --- Hiérarchie des groupes}
+    \label{sec:remarque2}
+
+    Après observation approfondie des données, on relève les dépendances additionnelles suivantes :
+    \begin{align*}
+        \attr{alim\_ssssgrp\_code} &\rightarrow \attr{alim\_ssgrp\_code} \\
+        \attr{alim\_ssgrp\_code}   &\rightarrow \attr{alim\_grp\_code}
+    \end{align*}
+
+    \textbf{Note :} ces dépendances sont valables à condition de traiter tout groupe absent (groupe,
+    sous-groupe ou sous-sous-groupe) comme \texttt{NULL}, et non comme porteur du code \texttt{000000}
+    associé à un nom \texttt{NULL}.
+
+    Deux solutions sont envisageables :
+
+    \begin{enumerate}
+        \item \textbf{Décomposition hiérarchique.} Diviser les trois types de groupe en tables distinctes,
+        et faire référer chaque groupe fils à son groupe père par une cléf étrangère. Cette solution
+        implique une micro-redondance sur les codes \texttt{NULL} (\texttt{000000}, \texttt{0000}),
+        mais uniquement pour les codes, les noms étant \texttt{NULL}.\\[0.3em]
+        \textbf{Cependant, cette solution viole la Deuxième Forme Normale (2NF).}
+        En effet, si la cléf d'un sous-groupe est définie comme le couple
+        $(\attr{code\_fils},\, \attr{code\_pere})$, alors $\attr{alim\_ssgroupe\_nom}$ dépend
+        uniquement de $\attr{code\_fils}$ : il s'agit d'une \emph{dépendance partielle} au sens de
+        la Notion~XVII.10 \hspace{0.2em}\citeg{Gardarin, p.\,690--691}, ce qui constitue une
+        violation caractérisée de la 2NF.
+
+        \item \textbf{Conservation de la structure XML.} Définir chaque enregistrement de groupe par le
+        triplet $(\attr{alim\_grp\_code},\, \attr{alim\_ssgrp\_code},\, \attr{alim\_ssssgrp\_code})$,
+        qui détermine les noms. Chaque groupe est par ailleurs défini indépendamment par son code,
+        ce qui élimine la redondance des noms. La hiérarchie des groupes est portée par le triplet.
+        Cette solution traite également naturellement le cas \texttt{NULL} mentionné ci-dessus.
+    \end{enumerate}
+
+    \textbf{La solution retenue est la deuxième}, car la première viole la 2NF comme expliqué ci-dessus.
+    De plus, en conception de bases de données, les codes de sous-groupe et de sous-sous-groupe ne doivent
+    pas être construits par agrégation (fusion) des codes des groupes parents.
+
+% ==================================================================
+
+
+    \section{Cléf de \texorpdfstring{$U$}{U}}
+
+    \begin{rappelbox}
+        \textbf{Notion XVII.8 : Cléf de relation (\textit{Relation key})}
+        \hfill\citeg{Gardarin, p.\,689}\\[0.5em]
+        Sous-ensemble $X$ des attributs d'une relation $R(A_1, A_2, \ldots, A_n)$ tel que :
+        \begin{enumerate}
+            \item $X \rightarrow A_1\, A_2\, \ldots\, A_n$
+            \item Il n'existe pas de sous-ensemble $Y \subsetneq X$ tel que $Y \rightarrow A_1\, A_2\, \ldots\, A_n$.
+        \end{enumerate}
+        En clair, une cléf est un ensemble \emph{minimal} d'attributs qui détermine tous les autres.
+        Un ensemble d'attributs qui inclut une cléf sans en être une est appelé \emph{supercléf}. On parle
+        de \emph{cléf candidate} pour désigner une cléf quelconque, et de \emph{cléf primaire} pour la cléf
+        choisie comme identifiant principal.
+    \end{rappelbox}
+
+    D'après les dépendances fonctionnelles établies, le couple $(\attr{alim\_code},\, \attr{const\_code})$
+    est une cléf minimale de $U$ : il est irréductible et détermine l'ensemble de tous les attributs de $U$.
+
+% ==================================================================
+
+
+    \section{Cléf de \texorpdfstring{$V$}{V}}
+
+    De même, le couple $(\attr{alim\_moy\_code},\, \attr{alim\_contrib\_code})$ est une cléf minimale de
+    $V$. Ce couple constitue, par construction, un couple d'instances de \attr{alim\_code}, chacun
+    désignant un aliment distinct : l'un générique (aliment moyen), l'autre contributeur. Il est
+    irréductible et détermine l'ensemble de tous les attributs de $V$.
+
+% ==================================================================
+
+
+    \section{Unifier \texorpdfstring{$U$}{U} et \texorpdfstring{$V$}{V}}
+    \label{sec:unifier}
+
+    Pour définir un schéma unifié de $U$ et $V$, il faut satisfaire la contrainte :
+    \[
+        (\attr{alim\_moy\_code} \cup \attr{alim\_contrib\_code}) \subseteq \attr{alim\_code}
+    \]
+
+    Les données brutes vérifient seulement l'inclusion stricte $\subset$ (environ 40\,\% des
+    \attr{alim\_code} sont référencés comme aliment moyen ou contributeur). Afin d'étendre cette relation
+    à l'ensemble des \attr{alim\_code}, on procède à l'insertion de \emph{n-uplets artificiels} pour tout
+    $c \in \attr{alim\_code}$ tel que
+    $c \notin (\attr{alim\_moy\_code} \cup \attr{alim\_contrib\_code})$ :
+
+    \begin{itemize}
+        \item $\attr{alim\_moy\_code} = \texttt{NULL}$
+        \item $\attr{alim\_contrib\_code} = c$ \quad (code présent dans \attr{alim\_code} mais non encore référencé)
+        \item $\attr{pourcentage} = \texttt{NULL}$
+    \end{itemize}
+
+    \begin{notebox}
+        \small
+        Ces n-uplets artificiels ont pour seul objet de satisfaire formellement la contrainte d'inclusion
+        ensembliste. Ils ne portent aucune information sémantique sur une appartenance réelle à un groupe
+        d'aliments moyens ou de contributeurs. Leur présence dans la relation est une décision de conception
+        et non un fait du domaine.
+    \end{notebox}
+
+    Après cette extension, on obtient :
+    \[
+        (\attr{alim\_moy\_code} \cup \attr{alim\_contrib\_code}) = \attr{alim\_code}
+    \]
+    La disjonction $\attr{alim\_contrib\_code} \cap \attr{alim\_moy\_code} = \emptyset$ reste satisfaite
+    puisque les n-uplets artificiels sont insérés uniquement dans \attr{alim\_contrib\_code}.
+
+    Ainsi, \attr{alim\_moy\_code} contient l'ensemble des aliments génériques, et
+    \attr{alim\_contrib\_code} contient l'ensemble des aliments susceptibles d'être ou non associés à un
+    aliment générique.
+
+% ==================================================================
+
+
+    \section{Algorithme de Bernstein}
+
+    \begin{rappelbox}
+        \textbf{Algorithme de synthèse en Troisième Forme Normale}
+        \hfill\citeg{Gardarin, p.\,695}\\[0.5em]
+        Une décomposition en 3\textsuperscript{e} FN peut être générée par un algorithme de synthèse ayant
+        pour entrées l'ensemble des attributs ainsi que les dépendances fonctionnelles. Le principe consiste à
+        construire d'abord une \emph{couverture minimale} $F$ des DF élémentaires, puis à partitionner $F$
+        en groupes $F_i$ tels que les DF de chaque $F_i$ aient le même ensemble d'attributs à gauche. Chaque
+        groupe produit une relation en 3\textsuperscript{e} FN dont la cléf est cet ensemble d'attributs
+        gauches.
+    \end{rappelbox}
+
+    \begin{rappelbox}
+        \textbf{Notion XVII.7 : Couverture minimale (\textit{Minimal cover})}
+        \hfill\citeg{Gardarin, p.\,688}\\[0.5em]
+        Ensemble $F$ de DF élémentaires associé à un ensemble d'attributs vérifiant les deux propriétés
+        suivantes :
+        \begin{enumerate}
+            \item Aucune dépendance dans $F$ n'est redondante : pour toute DF $f \in F$, l'ensemble $F \setminus \{f\}$ n'est pas équivalent à $F$ (sa fermeture transitive est strictement plus petite).
+            \item Toute DF élémentaire de l'ensemble des attributs appartient à la fermeture transitive $F^+$.
+        \end{enumerate}
+        La couverture minimale n'est en général pas unique.
+    \end{rappelbox}
+
+    \begin{rappelbox}
+        \textbf{Référence algorithmique}\\[0.3em]
+        \textit{Bernstein P.A., « Synthesizing Third Normal Form Relations from Functional Dependencies »,
+            ACM Transactions on Database Systems, Vol.\,1, n°\,4, p.\,277--298, 1976.}
+    \end{rappelbox}
+
+% ------------------------------------------------------------------
+
+    \subsection{Couverture minimale}
+
+    \subsubsection*{Réduction à droite}
+    \bigskip
+    \begin{rappelbox}
+        \textbf{Notion XVII.6 : Dépendance fonctionnelle élémentaire}
+        \hfill\citeg{Gardarin, p.\,686}\\[0.5em]
+        Dépendance fonctionnelle de la forme $X \rightarrow A$, où $A$ est un attribut unique n'appartenant
+        pas à $X$ ($A \notin X$) et où il n'existe pas $X' \subsetneq X$ tel que $X' \rightarrow A$.\\[0.3em]
+        La seule règle d'inférence s'appliquant aux DF élémentaires est la transitivité.
+    \end{rappelbox}
+
+    La réduction à droite consiste à décomposer chaque DF de façon à n'avoir qu'un seul attribut à
+    droite, conformément à la Notion~XVII.6 ci-dessus.
+
+    \begin{align*}
+        \attr{alim\_grp\_code}     &\rightarrow \attr{alim\_grp\_nom\_fr} \\
+        \attr{alim\_grp\_code}     &\rightarrow \attr{alim\_grp\_nom\_eng} \\
+        \attr{alim\_ssgrp\_code}   &\rightarrow \attr{alim\_ssgrp\_nom\_fr} \\
+        \attr{alim\_ssgrp\_code}   &\rightarrow \attr{alim\_ssgrp\_nom\_eng} \\
+        \attr{alim\_ssssgrp\_code} &\rightarrow \attr{alim\_ssssgrp\_nom\_fr} \\
+        \attr{alim\_ssssgrp\_code} &\rightarrow \attr{alim\_ssssgrp\_nom\_eng} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_nom\_fr} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_nom\_eng} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_nom\_sci} \\
+        \attr{alim\_code}          &\rightarrow \attr{facteur\_jones} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_grp\_code} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_ssgrp\_code} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_ssssgrp\_code} \\
+        \attr{const\_code}         &\rightarrow \attr{const\_nom\_fr} \\
+        \attr{const\_code}         &\rightarrow \attr{const\_nom\_eng} \\
+        \attr{const\_code}         &\rightarrow \attr{code\_infoods} \\
+        (\attr{alim\_code},\,\attr{const\_code}) &\rightarrow \attr{teneur} \\
+        (\attr{alim\_code},\,\attr{const\_code}) &\rightarrow \attr{min} \\
+        (\attr{alim\_code},\,\attr{const\_code}) &\rightarrow \attr{max} \\
+        (\attr{alim\_code},\,\attr{const\_code}) &\rightarrow \attr{code\_confiance} \\
+        (\attr{alim\_code},\,\attr{const\_code}) &\rightarrow \attr{source\_code} \\
+        \attr{source\_code}        &\rightarrow \attr{ref\_citation} \\
+        \attr{alim\_moy\_code}     &\rightarrow \attr{alim\_moy\_nom} \\
+        \attr{alim\_contrib\_code} &\rightarrow \attr{alim\_contrib\_nom} \\
+        (\attr{alim\_moy\_code},\,\attr{alim\_contrib\_code}) &\rightarrow \attr{pourcentage}
+    \end{align*}
+
+    \subsubsection*{Réduction à gauche}
+
+    Par application de la remarque~\ref{sec:remarque1} (équivalence sémantique des noms), les dépendances
+    redondantes suivantes sont remplacées :
+    \begin{align*}
+        \attr{alim\_moy\_code}    &\rightarrow \attr{alim\_moy\_nom}
+        \quad \longmapsto \quad \attr{alim\_code} \rightarrow \attr{alim\_nom\_fr} \\
+        \attr{alim\_contrib\_code}&\rightarrow \attr{alim\_contrib\_nom}
+        \quad \longmapsto \quad \attr{alim\_code} \rightarrow \attr{alim\_nom\_fr}
+    \end{align*}
+
+    \subsubsection*{Suppression des redondances}
+
+    Après réduction à droite, réduction à gauche et élimination des DF redondantes, on obtient la
+    couverture minimale suivante :
+
+    \begin{align*}
+        \attr{alim\_grp\_code}     &\rightarrow \attr{alim\_grp\_nom\_fr} \\
+        \attr{alim\_grp\_code}     &\rightarrow \attr{alim\_grp\_nom\_eng} \\
+        \attr{alim\_ssgrp\_code}   &\rightarrow \attr{alim\_ssgrp\_nom\_fr} \\
+        \attr{alim\_ssgrp\_code}   &\rightarrow \attr{alim\_ssgrp\_nom\_eng} \\
+        \attr{alim\_ssssgrp\_code} &\rightarrow \attr{alim\_ssssgrp\_nom\_fr} \\
+        \attr{alim\_ssssgrp\_code} &\rightarrow \attr{alim\_ssssgrp\_nom\_eng} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_nom\_fr} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_nom\_eng} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_nom\_sci} \\
+        \attr{alim\_code}          &\rightarrow \attr{facteur\_jones} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_grp\_code} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_ssgrp\_code} \\
+        \attr{alim\_code}          &\rightarrow \attr{alim\_ssssgrp\_code} \\
+        \attr{const\_code}         &\rightarrow \attr{const\_nom\_fr} \\
+        \attr{const\_code}         &\rightarrow \attr{const\_nom\_eng} \\
+        \attr{const\_code}         &\rightarrow \attr{code\_infoods} \\
+        (\attr{alim\_code},\,\attr{const\_code}) &\rightarrow \attr{teneur} \\
+        (\attr{alim\_code},\,\attr{const\_code}) &\rightarrow \attr{min} \\
+        (\attr{alim\_code},\,\attr{const\_code}) &\rightarrow \attr{max} \\
+        (\attr{alim\_code},\,\attr{const\_code}) &\rightarrow \attr{code\_confiance} \\
+        (\attr{alim\_code},\,\attr{const\_code}) &\rightarrow \attr{source\_code} \\
+        \attr{source\_code}        &\rightarrow \attr{ref\_citation} \\
+        (\attr{alim\_moy\_code},\,\attr{alim\_contrib\_code}) &\rightarrow \attr{pourcentage}
+    \end{align*}
+
+% ------------------------------------------------------------------
+
+    \subsection{Regroupement des DF et création des schémas}
+
+    \begin{rappelbox}
+        \textbf{Notion XVII.11 : Troisième forme normale (\textit{Third normal form})}
+        \hfill\citeg{Gardarin, p.\,691--692}\\[0.5em]
+        Une relation $R$ est en troisième forme normale si et seulement si :
+        \begin{enumerate}
+            \item Elle est en deuxième forme normale.
+            \item Tout attribut n'appartenant pas à une cléf ne dépend pas d'un autre attribut non-cléf.
+        \end{enumerate}
+    \end{rappelbox}
+
+    \begin{notebox}
+        \small
+        \textbf{Précision.} La 3\textsuperscript{e} FN implique automatiquement la 2\textsuperscript{e} FN :
+        toute relation en 3NF est nécessairement en 2NF (la condition 1 est automatiquement vérifiée dès
+        lors que la condition 2 est satisfaite, mais elle figure par souci de clarté). Si la relation possède
+        plusieurs cléfs candidates, la définition doit être vérifiée pour chacune d'elles
+        successivement. \hfill\citeg{Gardarin, p.\,692}
+    \end{notebox}
+
+    On regroupe les dépendances fonctionnelles par déterminant pour constituer les relations en 3NF.
+    Les attributs soulignés constituent la cléf primaire de chaque relation ; les contraintes d'inclusion
+    ($\subseteq$) expriment les cléfs étrangères.
+
+    \bigskip
+    \noindent\textbf{Relations de groupes :}
+    \begin{align*}
+        &\textbf{groupe}(\underline{\attr{alim\_grp\_code}},\; \attr{alim\_grp\_nom\_fr},\; \attr{alim\_grp\_nom\_eng}) \\
+        &\textbf{ssgroupe}(\underline{\attr{alim\_ssgrp\_code}},\; \attr{alim\_ssgrp\_nom\_fr},\; \attr{alim\_ssgrp\_nom\_eng}) \\
+        &\textbf{ssssgroupe}(\underline{\attr{alim\_ssssgrp\_code}},\; \attr{alim\_ssssgrp\_nom\_fr},\; \attr{alim\_ssssgrp\_nom\_eng})
+    \end{align*}
+
+    Afin de satisfaire la remarque~\ref{sec:remarque2}, on définit la relation de hiérarchie suivante,
+    qui porte la structure des groupes sous la forme d'un triplet-cléf :
+    \[
+        \textbf{hierarchie\_groupe}(\underline{\attr{alim\_grp\_code},\; \attr{alim\_ssgrp\_code},\; \attr{alim\_ssssgrp\_code}})
+    \]
+
+    avec les contraintes d'inclusion :
+    \begin{align*}
+        \attr{alim\_grp\_code}     &\subseteq \textbf{groupe}[\attr{alim\_grp\_code}] \\
+        \attr{alim\_ssgrp\_code}   &\subseteq \textbf{ssgroupe}[\attr{alim\_ssgrp\_code}] \\
+        \attr{alim\_ssssgrp\_code} &\subseteq \textbf{ssssgroupe}[\attr{alim\_ssssgrp\_code}]
+    \end{align*}
+
+    \bigskip
+    \noindent\textbf{Relation des aliments :}
+    \[
+        \textbf{aliments}(\underline{\attr{alim\_code}},\; \attr{alim\_nom\_fr},\; \attr{alim\_nom\_eng},\; \attr{alim\_nom\_sci},\; \attr{facteur\_jones},\;
+    \]
+    \[ \attr{alim\_grp\_code},\; \attr{alim\_ssgrp\_code},\; \attr{alim\_ssssgrp\_code})\]
+    \[
+        (\attr{alim\_grp\_code},\; \attr{alim\_ssgrp\_code},\; \attr{alim\_ssssgrp\_code}) \subseteq \textbf{hierarchie\_groupe}[
+    \]
+    \[\attr{alim\_grp\_code},\; \attr{alim\_ssgrp\_code},\; \attr{alim\_ssssgrp\_code}]\]
+
+    \bigskip
+    \noindent\textbf{Relations auxiliaires :}
+    \begin{align*}
+        &\textbf{constituant}(\underline{\attr{const\_code}},\; \attr{const\_nom\_fr},\; \attr{const\_nom\_eng},\; \attr{code\_infoods}) \\
+        &\textbf{sources}(\underline{\attr{source\_code}},\; \attr{ref\_citation})
+    \end{align*}
+
+    \bigskip
+    \noindent\textbf{Relation de composition :}
+    \[
+        \textbf{composition}(\underline{\attr{alim\_code},\; \attr{const\_code}},\; \attr{teneur},\; \attr{min},\; \attr{max},\; \attr{code\_confiance},\; \attr{source\_code})
+    \]
+    \begin{align*}
+        \attr{alim\_code}   &\subseteq \textbf{aliments}[\attr{alim\_code}] \\
+        \attr{const\_code}  &\subseteq \textbf{constituant}[\attr{const\_code}] \\
+        \attr{source\_code} &\subseteq \textbf{sources}[\attr{source\_code}]
+    \end{align*}
+
+    \bigskip
+    \noindent\textbf{Relation des aliments moyens :}
+    \[
+        \textbf{alim\_moyen}(\underline{\attr{alim\_moy\_code},\; \attr{alim\_contrib\_code}},\; \attr{pourcentage})
+    \]
+    \begin{align*}
+        \attr{alim\_moy\_code}    &\subseteq \textbf{aliments}[\attr{alim\_code}] \\
+        \attr{alim\_contrib\_code}&\subseteq \textbf{aliments}[\attr{alim\_code}]
+    \end{align*}
+
+% ==================================================================
+
+
+    \section{Création de la base de données}
+
+    La base de données a été établie à partir de la conception effectuée précédemment.
+
+% ------------------------------------------------------------------
+
+    \subsection{Raffinement de l'attribut \texttt{teneur}}
+
+    Pour l'attribut \attr{teneur} de la relation \textbf{composition}, on distingue trois types de valeurs
+    présentes dans les fichiers sources :
+
+    \begin{itemize}
+        \item \textbf{Valeur exacte :} \texttt{14,9} — \texttt{1410} — \texttt{0,547}
+        \item \textbf{Valeur inférieure à un seuil :} \texttt{< 700} — \texttt{< 0,001} — \texttt{< 256}
+        \item \textbf{Valeur trace :} \texttt{traces}
+    \end{itemize}
+    \bigskip
+    \begin{rappelbox}
+        \textbf{Notion XVII.9 : Première forme normale (\textit{First normal form})}
+        \hfill\citeg{Gardarin, p.\,689--690}\\[0.5em]
+        Une relation est en première forme normale si tout attribut contient une \emph{valeur atomique}.
+    \end{rappelbox}
+
+    \begin{notebox}
+        \small
+        Le raffinement de \attr{teneur} relève d'un double impératif.\\[0.3em]
+        \textbf{Impératif de modélisation (1NF).} L'attribut \attr{teneur\_brute} encode à la fois un
+        qualificatif de type et une valeur numérique, voire un symbole non numérique (\texttt{traces}). Sa
+        décomposition en attributs distincts rend le schéma conforme au principe d'atomicité de la
+        1NF au sens applicatif.\\[0.3em]
+        \textbf{Impératif de traitement analytique.} Le mot \texttt{traces} est une valeur non numérique
+        qui bloque tout calcul statistique (moyenne, variance, etc.). Sa transformation en valeur
+        conventionnelle $0$ dans \attr{teneur\_valeur} permet ces traitements, tandis que
+        \attr{teneur\_brute} conserve l'information sémantique pour la présentation à l'utilisateur, où
+        afficher $0$ à la place de \texttt{traces} serait sémantiquement incorrect.
+    \end{notebox}
+
+    En conséquence, \attr{teneur} est décomposé en trois attributs :
+
+    \begin{itemize}
+        \item \attr{teneur\_brute} : chaîne de caractères reproduisant la valeur telle qu'inscrite dans le
+        fichier source.
+        \item \attr{teneur\_type} : type de teneur du couple-cléf, prenant l'une des valeurs :
+        \texttt{EXACTE}, \texttt{INFERIEURE}, \texttt{TRACE}.
+        \item \attr{teneur\_valeur} : valeur numérique de la teneur, définie selon \attr{teneur\_type} :
+        \begin{itemize}
+            \item Pour \texttt{EXACTE} : la valeur numérique intacte.
+            \item Pour \texttt{INFERIEURE} : la valeur numérique privée du symbole \texttt{<}.
+            \item Pour \texttt{TRACE} : la valeur conventionnelle $0$.
+        \end{itemize}
+    \end{itemize}
+
+% ==================================================================
+    \newpage
+
+
+    \section*{Références bibliographiques}
+    \addcontentsline{toc}{section}{Références bibliographiques}
+
+    Les notions théoriques mobilisées dans ce document s'appuient sur l'ouvrage suivant :
+
+    \bigskip
+    \noindent\textbf{[Gardarin]} \quad Gardarin, G. \textit{Bases de données}. Eyrolles, 1\textsuperscript{re} édition. 826~pages.
+
+    \bigskip
+    \noindent Les pages précisément citées sont les suivantes :
+
+    \begin{itemize}
+        \item \textbf{p.\,685} --- Notion~XVII.5 : Dépendance fonctionnelle. Définition formelle.
+        Remarque sur le caractère intentionnel (et non extensionnel) des DF : impossibilité de les
+        déduire d'une réalisation particulière de la relation.
+
+        \item \textbf{p.\,686} --- Notion~XVII.6 : Dépendance fonctionnelle élémentaire. DF à partie
+        droite singleton, irréductible à gauche. Axiomes d'Armstrong (réflexivité, augmentation,
+        transitivité) et règles dérivées (union, pseudo-transitivité, décomposition).
+
+        \item \textbf{p.\,688} --- Notion~XVII.7 : Couverture minimale. Définition par les propriétés
+        d'absence de redondance et de complétude par fermeture transitive. Non-unicité de la
+        couverture minimale.
+
+        \item \textbf{p.\,689} --- Notion~XVII.8 : cléf de relation. Définition formelle par les DF.
+        Distinction cléf primaire / supercléf / cléf candidate.
+
+        \item \textbf{p.\,689--690} --- Notion~XVII.9 : Première forme normale. Atomicité des valeurs
+        d'attributs et opération de désimbrication (UNNEST).
+
+        \item \textbf{p.\,690--691} --- Notion~XVII.10 : Deuxième forme normale. Absence de dépendance
+        partielle d'un attribut non-cléf sur une partie de la cléf. Schéma typique de violation et
+        règle de décomposition associée.
+
+        \item \textbf{p.\,691--692} --- Notion~XVII.11 : Troisième forme normale. Absence de dépendance
+        transitive entre attributs non-cléf. Implication de la 3NF par la 2NF. Vérification pour
+        chaque cléf candidate.
+
+        \item \textbf{p.\,695} --- Algorithme de synthèse en 3\textsuperscript{e} FN. Principe de
+        construction par couverture minimale et partitionnement en groupes de DF de même déterminant.
+        Chaque groupe produit une relation en 3NF dont la cléf est le déterminant commun.
+    \end{itemize}
+
+    \bigskip
+    \noindent\textbf{[Bernstein76]} \quad Bernstein, P.A. \textit{« Synthesizing Third Normal Form
+    Relations from Functional Dependencies »}. ACM Transactions on Database Systems, Vol.\,1, n°\,4,
+    p.\,277--298, 1976.\\
+    \textit{Algorithme de synthèse appliqué en section~\ref{sec:unifier} et suivantes pour la
+    génération du schéma en 3NF à partir de la couverture minimale.}
+
+    \bigskip
+    \noindent\textbf{[Ciqual2025]} \quad Du~Chaffaut,~L., Oseredczuk,~M., Gauvreau-Béziat,~J.
+    \textit{Table de composition nutritionnelle des aliments Ciqual 2025}.
+    Version~1. Agence nationale de sécurité sanitaire de l'alimentation, de l'environnement
+    et du travail (ANSES). Recherche Data Gouv, 2025.\\
+    \textsc{doi} : \href{https://doi.org/10.57745/RDMHWY}{\texttt{10.57745/RDMHWY}}
+    [consulté le 19~novembre~2025].
+
+\end{document}
