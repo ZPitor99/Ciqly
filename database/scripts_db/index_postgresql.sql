@@ -11,7 +11,7 @@ CREATE INDEX idx_composition_alim_code ON composition(alim_code);
 CREATE INDEX idx_composition_const_code ON composition(const_code);
 CREATE INDEX idx_composition_source_code ON composition(source_code);
 CREATE INDEX idx_composition_teneur_type_valeur ON composition(teneur_type, teneur_valeur);
-CREATE INDEX idx_composition_teneur_valeur ON composition(teneur_valeur);
+CREATE INDEX idx_composition_teneur_valeur ON composition(teneur_valeur NULLS FIRST);
 
 CREATE INDEX idx_alim_moyen_alim_moy_code ON alim_moyen(alim_moy_code);
 CREATE INDEX idx_alim_moyen_alim_contrib_code ON alim_moyen(alim_contrib_code);
