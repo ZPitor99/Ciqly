@@ -1,3 +1,19 @@
+<?php
+
+require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','class','php_vite','Manifest.php'));
+
+session_start();
+
+$vite = new Manifest(
+        dev: false,
+        manifest_path: __DIR__.'/../../public/dist/.vite/manifest.json',
+        base_path: '/dist/'
+);
+
+$tags = $vite->createTags("js/footer.js")
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,37 +22,17 @@
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="description" content="Synthèses des document de référent utilisé dans Ciqly">
     <title>Ciqly - Références</title>
-    <link rel="icon" type="image/x-icon" href="../assets/images/icone_ciqly.ico">
+    <link rel="icon" type="image/x-icon" href="/static/images/icone_ciqly.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/icone_ciqly-32.png">
+    <link rel="icon" type="image/png" sizes="180x180" href="/static/images/icone_ciqly-180.png">
+    <link rel="icon" type="image/svg+xml" href="/static/images/icone_ciqly.svg">
+    <?= $tags->css ?>
 </head>
 <body>
 
-
-<a href="#main-content" class="skip-link">Aller au contenu principal</a>
-
-
-<header role="banner">
-    <nav class="nav" aria-label="Navigation principale">
-        <div class="container">
-            <div class="nav__inner">
-                <a href="/" class="nav__brand" aria-label="Ciqly — Accueil">
-                    <span class="nav__brand-dot" aria-hidden="true"></span>
-                    CIQLY
-                </a>
-
-                <ul class="nav__links" role="list">
-                    <li><a href="../index.html">Explorer</a></li>
-                    <li><a href="../index.html#categories">Catégories</a></li>
-                    <li><a href="nutriments.html">Nutriments</a></li>
-                    <li><button id="trad" data-fr="Translate" data-en="Traduire">Translate</button></li>
-                </ul>
-
-                <button class="nav__hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
-                    <span></span><span></span><span></span>
-                </button>
-            </div>
-        </div>
-    </nav>
-</header>
+<?php
+include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')));
+?>
 
 <!-- ── MAIN ─────────────────────────────────────────────── -->
 <main id="main-content">
@@ -54,7 +50,7 @@
                     La documentation de la table ciqual et aliments moyens explicite les méthodes d'obtention des données, le calcul des données et l'interprétation des valeurs obtenues.
                     Cette dernière donne aussi des informations complémentaires sur les nutriments et présente les fichiers de données de la table Ciqual.
                 </p>
-                <a href="/documentation_table_ciqual.pdf" class="section-link" aria-label="Documentation pdf Ciqual de l'ANSES" title="Documentation pdf Ciqual de l'ANSES" download>Télécharger la documentation pdf</a>
+                <a href="/static/documentation_table_ciqual.pdf" target="_blank" class="section-link" aria-label="Documentation pdf Ciqual de l'ANSES" title="Documentation pdf Ciqual de l'ANSES" download>Télécharger la documentation pdf</a>
             </div>
 
             <div>
@@ -101,7 +97,7 @@
                     Le rapport émis par l'ANSES sur les recommandations suites à étude menée à propos des vitamines et minéraux.
                     Des extraits des tableaux résultant de ce rapport ont été repris dans la section Nutriment du site web.
                 </p>
-                <a href="/references_nutritionnelles_en_vitamines_mineraux.pdf" title="Rapport complet Vitamines et Minéraux - pdf" class="section-link">Actualisation des références nutritionnelles françaises en vitamines et minéraux - Mars 2021</a>
+                <a href="/static/references_nutritionnelles_en_vitamines_mineraux.pdf" target="_blank" title="Rapport complet Vitamines et Minéraux - pdf" class="section-link" download>Actualisation des références nutritionnelles françaises en vitamines et minéraux - Mars 2021</a>
                 <p>
                     Concernant les macros nutriments, les données à caractère informationnel sûr les nutriments sont tirées des deux sites ci-dessous.
                 </p>
@@ -123,10 +119,10 @@
                 <p>Les documents traitant de la classification INFOODS sont rassemblé ici. À la lumière de ces documents, la partie INFOODS de la section Nutriment du site web a été établie.</p>
                 <ul>
                     <li>
-                        <a href="/review_of_international_food_classification.pdf" title="Classification aliments - pdf" hreflang="en" class="section-link" download><span lang="en">Report on the Technical meeting on attributing AOAC methods to INFOODS tagnames</span></a>
+                        <a href="/static/review_of_international_food_classification.pdf" target="_blank" title="Classification aliments - pdf" hreflang="en" class="section-link" download><span lang="en">Report on the Technical meeting on attributing AOAC methods to INFOODS tagnames</span></a>
                     </li>
                     <li>
-                        <a href="/classification_infoods.pdf" title="Classification INFOODS - pdf" hreflang="en" class="section-link"><span lang="en">Review of International Food Classification and Description</span></a>
+                        <a href="/static/classification_infoods.pdf" target="_blank" title="Classification INFOODS - pdf" hreflang="en" class="section-link" download><span lang="en">Review of International Food Classification and Description</span></a>
                     </li>
                 </ul>
             </div>
@@ -135,67 +131,10 @@
 </main>
 
 <!-- ── FOOTER ─────────────────────────────────────────────── -->
-<footer class="footer" role="contentinfo" id="footer">
-    <div class="container">
-        <div class="footer__grid">
-            <div>
-                <div class="footer__brand">
-                    <span class="footer__brand-dot" aria-hidden="true"></span>
-                    CIQUAL
-                </div>
-                <p class="footer__desc">Base de données publique de composition nutritionnelle des aliments, produite
-                    par l'ANSES.</p>
-            </div>
+<?php
+include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','footer.html')));
+?>
 
-            <div>
-                <div class="footer__col-title">Données</div>
-                <ul class="footer__links">
-                    <li><a href="#">Explorer les aliments</a></li>
-                    <li><a href="https://ciqual.anses.fr/#/cms/telechargement/node/20" target="_blank" hreflang="fr">Téléchargement</a></li>
-                    <li><a href="#">Aliments moyens</a></li>
-                    <li><a href="#">Documentation API</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <div class="footer__col-title">Ressources</div>
-                <ul class="footer__links">
-                    <li><a href="#">Méthodologie</a></li>
-                    <li><a href="references.html">Références</a></li>
-                    <li><a href="glossaire.html">Glossaire</a></li>
-                    <li><a href="remerciments.html">Remerciement</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <div class="footer__col-title">À propos</div>
-                <ul class="footer__links">
-                    <li><a href="https://ciqual.anses.fr/" target="_blank" hreflang="fr">L'ANSES</a></li>
-                    <li><a href="#">Mentions légales</a></li>
-                    <li><a href="#">Accessibilité</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="footer__bottom">
-            <span>© 2025 ZPitor99 - FRANCE</span>
-
-            <span class="footer__badge" aria-label="Données ouvertes">
-          <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png" loading="lazy"
-               width="44" height="16" alt="image cc-by-nc-nd">
-          <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" hreflang="fr">CC BY-NC-ND 4.0</a>
-        </span>
-
-            <span class="footer__badge" aria-label="Données ouvertes">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               aria-hidden="true"><path
-                  d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-          <a href="https://alliance.numerique.gouv.fr/licence-ouverte-open-licence/" target="_blank" hreflang="fr">Licence Ouverte Etalab</a>
-        </span>
-        </div>
-    </div>
-</footer>
 </body>
-<script type="module" src="../js/footer.js"></script>
+<?= $tags->js ?>
 </html>

@@ -1,3 +1,19 @@
+<?php
+
+require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','class','php_vite','Manifest.php'));
+
+session_start();
+
+$vite = new Manifest(
+        dev: false,
+        manifest_path: __DIR__.'/../../public/dist/.vite/manifest.json',
+        base_path: '/dist/'
+);
+
+$tags = $vite->createTags("js/nutriments.js")
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,38 +23,19 @@
     <meta name="description"
           content="Nutriments - CIQLY — Informations relatives aux nutriments utilisés dans le Ciqual."/>
     <title>Nutriments - Ciqly</title>
-    <link rel="icon" type="image/x-icon" href="../assets/images/icone_ciqly.ico">
+    <link rel="icon" type="image/x-icon" href="/static/images/icone_ciqly.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/icone_ciqly-32.png">
+    <link rel="icon" type="image/png" sizes="180x180" href="/static/images/icone_ciqly-180.png">
+    <link rel="icon" type="image/svg+xml" href="/static/images/icone_ciqly.svg">
+    <?= $tags->css ?>
 
 </head>
 <body>
 
 
-<a href="#main-content" class="skip-link">Aller au contenu principal</a>
-
-
-<header role="banner">
-    <nav class="nav" aria-label="Navigation principale">
-        <div class="container">
-            <div class="nav__inner">
-                <a href="/" class="nav__brand" aria-label="Ciqly — Accueil">
-                    <span class="nav__brand-dot" aria-hidden="true"></span>
-                    CIQLY
-                </a>
-
-                <ul class="nav__links" role="list">
-                    <li><a href="../index.html">Explorer</a></li>
-                    <li><a href="../index.html#categories">Catégories</a></li>
-                    <li><a href="#">Nutriments</a></li>
-                    <li><button id="trad" data-fr="Translate" data-en="Traduire">Translate</button></li>
-                </ul>
-
-                <button class="nav__hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
-                    <span></span><span></span><span></span>
-                </button>
-            </div>
-        </div>
-    </nav>
-</header>
+<?php
+include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')));
+?>
 
 <!-- ── MAIN ─────────────────────────────────────────────── -->
 <main id="main-content">
@@ -105,7 +102,7 @@
                                 l'apport satisfaisant, c'est-à-dire le statut nutritionnel jugé satisfaisant.
                                 L'<abbr title="Apport satisfaisant">AS</abbr> est utilisé quand le <abbr title="Besoin nutritionnel moyen">BNM</abbr> ne peut pas être estimé, faute de données suffisantes.<br>
                                 D'autre part, La <abbr title="Limite supérieure de sécurité">LSS</abbr> est définie comme l'apport journalier maximal considéré comme peu susceptible de présenter un risque d'effets indésirables sur la santé.<br>
-                                Ci-joint les recommandations d'apport mineral quotidien : <a href="/extrait_apport_mensue_mineraux_anses.pdf" class="section-link" aria-label="Extrait du rapport pdf de l'ANSES" title="Extrait du rapport pdf de l'ANSES" download>Télécharger les tableaux pdf</a><br>
+                                Ci-joint les recommandations d'apport mineral quotidien : <a href="/static/extrait_apport_mensuel_mineraux_anses.pdf" class="section-link" aria-label="Extrait du rapport pdf de l'ANSES" title="Extrait du rapport pdf de l'ANSES" download>Télécharger les tableaux pdf</a><br>
                                 C.f Ressources puis Références en <a href="#footer"><strong>bas de page</strong></a> pour accéder au document complet ou directement sur le site de l'ANSES.
                             </p>
                         </div>
@@ -126,7 +123,7 @@
                                 l'apport satisfaisant, c'est-à-dire le statut nutritionnel jugé satisfaisant.
                                 L'<abbr title="Apport satisfaisant">AS</abbr> est utilisé quand le <abbr title="Besoin nutritionnel moyen">BNM</abbr> ne peut pas être estimé, faute de données suffisantes.<br>
                                 D'autre part, La <abbr title="Limite supérieure de sécurité">LSS</abbr> est définie comme l'apport journalier maximal considéré comme peu susceptible de présenter un risque d'effets indésirables sur la santé.<br>
-                                Ci-joint les recommandations d'apport vitamin quotidien : <a href="/extrait_apport_mensuel_vitamines_anses.pdf" class="section-link" aria-label="Extrait du rapport pdf de l'ANSES" title="Extrait du rapport pdf de l'ANSES" download>Télécharger les tableaux pdf</a><br>
+                                Ci-joint les recommandations d'apport vitamin quotidien : <a href="/static/extrait_apport_mensuel_vitamines_anses.pdf" class="section-link" aria-label="Extrait du rapport pdf de l'ANSES" title="Extrait du rapport pdf de l'ANSES" download>Télécharger les tableaux pdf</a><br>
                                 C.f Ressources puis Références en <a href="#footer"><strong>bas de page</strong></a> pour accéder au document complet ou directement sur le site de l'ANSES.
                             </p>
                         </div>
@@ -228,67 +225,10 @@
 </main>
 
 <!-- ── FOOTER ─────────────────────────────────────────────── -->
-<footer class="footer" role="contentinfo" id="footer">
-    <div class="container">
-        <div class="footer__grid">
-            <div>
-                <div class="footer__brand">
-                    <span class="footer__brand-dot" aria-hidden="true"></span>
-                    CIQUAL
-                </div>
-                <p class="footer__desc">Base de données publique de composition nutritionnelle des aliments, produite
-                    par l'ANSES.</p>
-            </div>
+<?php
+include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','footer.html')));
+?>
 
-            <div>
-                <div class="footer__col-title">Données</div>
-                <ul class="footer__links">
-                    <li><a href="#">Explorer les aliments</a></li>
-                    <li><a href="https://ciqual.anses.fr/#/cms/telechargement/node/20" target="_blank" hreflang="fr">Téléchargement</a></li>
-                    <li><a href="#">Aliments moyens</a></li>
-                    <li><a href="#">Documentation API</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <div class="footer__col-title">Ressources</div>
-                <ul class="footer__links">
-                    <li><a href="methodologie.html">Méthodologie</a></li>
-                    <li><a href="references.html">Références</a></li>
-                    <li><a href="glossaire.html">Glossaire</a></li>
-                    <li><a href="remerciments.html">Remerciement</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <div class="footer__col-title">À propos</div>
-                <ul class="footer__links">
-                    <li><a href="https://ciqual.anses.fr/" target="_blank" hreflang="fr">L'ANSES</a></li>
-                    <li><a href="#">Mentions légales</a></li>
-                    <li><a href="#">Accessibilité</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="footer__bottom">
-            <span>© 2025 ZPitor99 - FRANCE</span>
-
-            <span class="footer__badge" aria-label="Données ouvertes">
-          <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png" loading="lazy"
-               width="44" height="16" alt="image cc-by-nc-nd">
-          <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" hreflang="fr">CC BY-NC-ND 4.0</a>
-        </span>
-
-            <span class="footer__badge" aria-label="Données ouvertes">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               aria-hidden="true"><path
-                  d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-          <a href="https://alliance.numerique.gouv.fr/licence-ouverte-open-licence/" target="_blank" hreflang="fr">Licence Ouverte Etalab</a>
-        </span>
-        </div>
-    </div>
-</footer>
 </body>
-<script type="module" src="../js/nutriments.js"></script>
+<?= $tags->js ?>
 </html>
