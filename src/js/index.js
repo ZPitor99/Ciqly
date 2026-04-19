@@ -7,10 +7,10 @@ import '@fontsource/lora/400.css';
 import '@fontsource/lora/600.css';
 import '@fontsource/lora/400-italic.css';
 
-import './css/style_commun.css'
-import './css/style_index.css'
+import '../css/style_commun.css'
+import '../css/style_index.css'
 import Alpine from 'alpinejs'
-import { burger } from '/js/partage';
+import {burger} from "./partage.js";
 
 window.Alpine = Alpine
 Alpine.start()
