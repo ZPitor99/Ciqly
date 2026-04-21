@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Met dans $_ENV, la variable d'environnement de prive à la base de donnée.
+ * (Utilisateur en lecture seul)
+ * Lève une exception si introuvable.
+ * @param string $path la variable d'environnement
+ * @return void
+ */
 function loadEnv(string $path): void
 {
     if (!file_exists($path)) {
@@ -11,8 +18,6 @@ function loadEnv(string $path): void
     foreach ($lines as $line) {
         // Ignorer les commentaires
         if (str_starts_with(trim($line), '#')) continue;
-
-        // Séparer clé = valeur
         if (!str_contains($line, '=')) continue;
 
         [$key, $value] = explode('=', $line, 2);
@@ -20,10 +25,8 @@ function loadEnv(string $path): void
         $key = trim($key);
         $value = trim($value);
 
-        // Retirer les guillemets optionnels : "valeur" ou 'valeur'
         $value = trim($value, '"\'');
 
-        // Mettre dans $_ENV
         $_ENV[$key] = $value;
     }
 }

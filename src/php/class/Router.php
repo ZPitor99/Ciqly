@@ -2,6 +2,12 @@
 declare(strict_types=1);
 
 
+/**
+ * Implémentation du Design Patter Repository.
+ * Fournit une abstraction de l'accès aux données en séparant
+ * la logique métier de la source de données directe.
+ * Elle centralise les opérations d'accès aux données.
+ */
 final class Router
 {
     private string $uri;
