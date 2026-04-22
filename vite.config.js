@@ -12,6 +12,7 @@ export default defineConfig({
 
         rollupOptions: {
             input: {
+                categories: resolve(__dirname, 'src/js/categories.js'),
                 footer: resolve(__dirname, 'src/js/footer.js'),
                 index: resolve(__dirname, 'src/js/index.js'),
                 nutriments: resolve(__dirname, 'src/js/nutriments.js'),

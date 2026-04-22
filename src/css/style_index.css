@@ -379,51 +379,6 @@
 }
 
 
-.cat-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-}
-
-.cat-card {
-    background: var(--white);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem 1.25rem;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: all var(--transition);
-    text-align: center;
-}
-
-.cat-card:hover {
-    box-shadow: var(--shadow-lift);
-    transform: translateY(-4px);
-    border-color: var(--sky-mid);
-}
-
-.cat-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin: 0 auto 0.85rem;
-}
-
-.cat-name {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.2rem;
-}
-
-.cat-count {
-    font-size: 0.75rem;
-    color: var(--ink-soft);
-}
-
 /* ═══════════════════════════════════════════════════════════
    FEATURED TABLE
 ═══════════════════════════════════════════════════════════ */

@@ -385,6 +385,55 @@ p { color: var(--ink-mid); line-height: 1.75; }
     background: var(--sand-soft);
 }
 
+/* ================================================================
+   7. CATEGORIES
+   ================================================================ */
+
+.cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.cat-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.25rem;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: center;
+}
+
+.cat-card:hover {
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-4px);
+    border-color: var(--sky-mid);
+}
+
+.cat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 0.85rem;
+}
+
+.cat-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+}
+
+.cat-count {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+}
+
 
 /* ================================================================
    8. BADGES & TAGS
@@ -718,6 +767,99 @@ p { color: var(--ink-mid); line-height: 1.75; }
 .mt-4 { margin-top: 1.5rem;  }
 .mt-6 { margin-top: 2.5rem;  }
 
+/* ================================================================
+   FORMULAIRE DE SÉLECTION
+   ================================================================ */
+
+.selection-form {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-card);
+}
+
+.selection-form form {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.selection-form > form > div {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.selection-form label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    letter-spacing: 0.01em;
+}
+
+.selection-form select {
+    background: var(--white);
+    border: 1px solid var(--sand-mid);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    transition: var(--transition);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%233D4F66' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.selection-form select:hover {
+    border-color: var(--sky-mid);
+    background-color: var(--sky-soft);
+}
+
+.selection-form select:focus {
+    outline: none;
+    border-color: var(--sky-dark);
+    box-shadow: 0 0 0 3px rgba(64, 161, 228, 0.1);
+}
+
+.selection-form button {
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 2rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+    height: fit-content;
+}
+
+.selection-form button:hover {
+    background: var(--ink-mid);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lift);
+}
+
+.selection-form button:active {
+    transform: translateY(0);
+}
+
+.selection-form form.form-inline {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1rem;
+    align-items: end;
+}
+
 
 /* ================================================================
    13. RESPONSIVE
@@ -729,6 +871,24 @@ p { color: var(--ink-mid); line-height: 1.75; }
 @media (max-width: 768px) {
     .section       { padding-block: 3.5rem; }
     .section--tight { padding-block: 2rem; }
+
+    .selection-form form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .selection-form > form > div {
+        min-width: 100%;
+    }
+
+    .selection-form button {
+        width: 100%;
+        padding: 0.875rem;
+    }
+
+    .selection-form form.form-inline {
+        grid-template-columns: 1fr;
+    }
 
     /* Nav mobile */
     .nav__links, .nav__cta { display: none; }
@@ -767,6 +927,7 @@ p { color: var(--ink-mid); line-height: 1.75; }
 
     /* Footer */
     .footer__grid { grid-template-columns: 1fr 1fr; }
+
 }
 
 @media (max-width: 480px) {
