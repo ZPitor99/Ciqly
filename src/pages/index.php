@@ -61,13 +61,13 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
                     </p>
 
                     <div class="hero__actions" >
-                        <a href="#explorer" class="btn btn--primary" aria-label="Loupe rechercher">
+                        <a href="/exploitation" class="btn btn--primary" aria-label="Loupe rechercher">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="2.5" aria-hidden="true">
                                 <circle cx="11" cy="11" r="8"/>
                                 <path d="m21 21-4.35-4.35"/>
                             </svg>
-                            <span>Explorer les aliments</span>
+                            <span>Explorer les données</span>
                         </a>
                         <a href="#footer" class="btn btn--outline">À propos de CIQLY</a>
                     </div>
@@ -182,7 +182,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
                     <div class="section-label">Parcourir</div>
                     <h2 class="section-title" id="cat-title">Catégories d'aliments</h2>
                 </div>
-                <a href="#" class="section-link">Voir toutes les catégories →</a>
+                <a href="/categories" class="section-link">Voir toutes les catégories →</a>
             </div>
 
             <div class="cat-grid" role="list">
@@ -238,7 +238,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
                     <div class="section-label">Données</div>
                     <h2 class="section-title" id="table-section-title">Aliments fréquemment consultés</h2>
                 </div>
-                <a href="#" class="section-link">Voir tout →</a>
+                <a href="/exploitation" class="section-link">Voir tout →</a>
             </div>
 
             <div class="data-table-wrap">
@@ -346,7 +346,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
                 <div class="info-block">
                     <h3 class="info-block__title">API ouverte</h3>
                     <br>
-                    <p class="info-block__text">Accédez librement aux données via notre API pour intégrer les
+                    <p class="info-block__text">Accédez librement aux données via l'API du site pour intégrer les
                         informations nutritionnelles dans vos applications.</p>
                 </div>
             </div>
