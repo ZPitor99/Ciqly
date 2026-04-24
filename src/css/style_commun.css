@@ -405,7 +405,7 @@ p { color: var(--ink-mid); line-height: 1.75; }
     text-align: center;
 }
 
-.cat-card:hover {
+.cat-card:hover, .cat-card-selected {
     box-shadow: var(--shadow-lift);
     transform: translateY(-4px);
     border-color: var(--sky-mid);

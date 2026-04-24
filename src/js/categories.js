@@ -90,4 +90,15 @@ Alpine.start()
 window.onload = init
 function init() {
     burger()
+
+    let artc = document.getElementsByClassName('cat-card');
+    for (let i = 0; i < artc.length; i++) {
+        artc[i].addEventListener('click', (e) => {
+            let artc_to_remove = document.getElementsByClassName('cat-card');
+            for (let i = 0; i < artc_to_remove.length; i++) {
+                artc_to_remove[i].classList.remove('cat-card-selected')
+            }
+            artc[i].classList.add('cat-card-selected');
+        })
+    }
 }
