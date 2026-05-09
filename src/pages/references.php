@@ -128,6 +128,21 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
             </div>
         </div>
     </section>
+    <section class="search-section bg-white">
+        <div class="container">
+            <h2>Autres informations misent en avant sur le site</h2>
+            <div>
+                <a href="https://www.circana.com/fr-fr" hreflang="fr">
+                    <img src="/static/images/circana-fr.png" alt="Logo de Circana LLC">
+                </a>
+                <blockquote lang="en" cite="https://www.circana.com/fr-fr">
+                    "Consumers cite food & beverage and exercise as the top contributors to well-being, increasing in importance."
+                </blockquote>
+                <p>Source: <cite>Circana, NET® HABTS, YE March 2024</cite></p>
+                <a href="/static/circana_global_health_and_wellness_market_extract.pdf" target="_blank" title="The Global Health and Wellness Market - pdf" hreflang="en" class="section-link" download><span lang="en">The Global Health and Wellness Market - A Pulse on Consumer Well-Being</span></a>
+            </div>
+        </div>
+    </section>
 </main>
 
 <!-- ── FOOTER ─────────────────────────────────────────────── -->
