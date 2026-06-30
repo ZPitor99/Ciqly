@@ -20,7 +20,7 @@ final class Database
     }
 
     /**
-     * Créé une instance de prive à la base de donnée PostgreSQL avec les identifiants d'environnement
+     * Créé une instance prive à la base de donnée PostgreSQL avec les identifiants d'environnement
      * @return PDO Une instance de la prive
      */
     public static function get(): PDO

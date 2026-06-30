@@ -1,12 +1,10 @@
 <?php
 declare(strict_types=1);
-
+require_once join(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'rpc_function.php'));
+require_once join(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'config.php'));
 
 /**
- * Implémentation du Design Patter Repository.
- * Fournit une abstraction de l'accès aux données en séparant
- * la logique métier de la source de données directe.
- * Elle centralise les opérations d'accès aux données.
+ * Mise en place d'une API RPC
  */
 final class Router
 {
@@ -21,68 +19,89 @@ final class Router
     {
         $prefix = API_PREFIX;
 
-        //Doit commencer par le préfixe
+        // Doit commencer par le préfixe
         if (!str_starts_with($this->uri, $prefix)) {
-            Reponse::error("Route introuvable", 404);
+            Reponse::error('Route introuvable', 404);
         }
 
-        //Récupérer après le préfixe
-        $path = substr($this->uri, strlen($prefix));
-        $segments = array_filter(explode('/', ltrim($path, '/')));
-        $segments = array_values($segments);
-
-        if (count($segments) === 0) {
-            Reponse::json(['ressources' => array_keys(RESSOURCES)]);
+        // Seul POST est autorisé pour le RPC
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            Reponse::error('Méthode HTTP non autorisée', 405);
         }
 
-        $resource = $segments[0];
-        $spe = $segments[1] ?? null;
+        $input = $this->getJsonBody();
 
-        //IMP pour les tables
-        if (!array_key_exists($resource, RESSOURCES)) {
-            Reponse::error("Resource « $resource » inconnue", 404);
+        if (!isset($input['method']) || !is_string($input['method'])) {
+            Reponse::error("Champ 'method' manquant ou invalide");
         }
 
-        $target = RESSOURCES[$resource];
+        $method = $input['method'];
+        $params = $input['params'] ?? [];
 
-        //Valider l'ID : $spe (R+*)
-        if ($spe !== null) {
-            if (!ctype_alnum($spe) || (int)$spe < 0) {
-                Reponse::error("ID $spe invalide", 404);
-            }
-            targetOne($target, $spe);
-        } else {
-            targetAll($target);
+        if (!is_array($params)) {
+            Reponse::error("Champ 'params' invalide (objet attendu)");
+        }
+
+        // La méthode doit exister dans la table de correspondance
+        if (!array_key_exists($method, RESSOURCES)) {
+            Reponse::error("Méthode '$method' inconnue", 404);
+        }
+
+        $fonction = RESSOURCES[$method];
+
+        if (!function_exists($fonction)) {
+            Reponse::error("Handler '$fonction' non implémenté", 500);
+        }
+
+        try {
+            $pdo    = Database::get();
+            $result = call_user_func($fonction, $pdo, $params);
+            Reponse::json(['result' => $result]);
+        } catch (InvalidArgumentException $e) {
+            Reponse::error($e->getMessage());
+        } catch (PDOException $e) {
+            //logs servers
+            error_log($e->getMessage());
+            Reponse::error('Erreur base de données', 500);
+        } catch (Throwable $e) {
+            //logs servers
+            error_log($e->getMessage());
+            Reponse::error('Erreur serveur', 500);
         }
     }
-}
 
+    /**
+     * Lit et décode le corps JSON de la requête.
+     * Vérifie la taille du body POST : file_get_contents('php://input') sans limite peut être un vecteur de DoS
+     * @return array<string, mixed>
+     */
+    private function getJsonBody(): array
+    {
+        $maxSize = 1024 * 16; // 16 Ko, ajustable selon tes besoins
 
-function targetAll(string $target): void
-{
-    try {
-        $db = Database::get();
-        $stmt = $db->prepare("SELECT * FROM $target");
-        $stmt->execute();
-        $rows = $stmt->fetchAll();
-        Reponse::json($rows);
-    } catch (PDOException $e) {
-        Reponse::error("Erreur base de données", 500);
-    }
-}
+        $contentLength = (int)($_SERVER['CONTENT_LENGTH'] ?? 0);
 
-function targetOne(string $target, string $id): void
-{
-    try {
-        $db = Database::get();
-        $stmt = $db->prepare("SELECT * FROM $target WHERE alim_groupe_code = :id");
-        $stmt->execute([':id' => $id]);
-        $row = $stmt->fetch();
-        if ($row === false) {
-            Reponse::error("Enregistrement introuvable", 404);
+        if ($contentLength > $maxSize) {
+            Reponse::error('Corps de requête trop volumineux', 413);
         }
-        Reponse::json($row);
-    } catch (PDOException $e) {
-        Reponse::error("Erreur base de données", 500);
+
+        $raw = file_get_contents('php://input');
+
+        if ($raw === false || $raw === '') {
+            Reponse::error('Corps de requête vide', 400);
+        }
+
+        // Double vérification (CONTENT_LENGTH peut être absent/falsifié)
+        if (strlen($raw) > $maxSize) {
+            Reponse::error('Corps de requête trop volumineux', 413);
+        }
+
+        $data = json_decode($raw, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($data)) {
+            Reponse::error('JSON invalide : ' . json_last_error_msg(), 400);
+        }
+
+        return $data;
     }
 }

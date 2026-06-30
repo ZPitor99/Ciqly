@@ -2,8 +2,8 @@
 const API_PREFIX = '/api';
 
 const RESSOURCES = [
-    'aliment' => 'aliments',
-    'groupe' => 'groupe',
-    'hierarchie_complette' => 'vw',
-    'sources' => 'sources'
+    'aliment' => 'rpc_aliment',
+    'groupe' => 'rpc_vwgroupe',
+    'sources' => 'rpc_sources',
+    'groupe_to_sous_groupe' => 'rpc_VW_SSGROUPE_WID'
 ];
