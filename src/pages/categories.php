@@ -47,62 +47,86 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
                 </div>
 
                 <div class="cat-grid" role="list">
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(0)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 5 }"
+                             @click="selectGroupe(5)">
                         <div class="cat-icon" style="background:#E4F4FF">🥩</div>
                         <div class="cat-name">Viandes, Œufs et Poissons</div>
                         <div class="cat-count">791 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(1)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 3 }"
+                             @click="selectGroupe(3)">
                         <div class="cat-icon" style="background:#F0FBF0">🍐</div>
                         <div class="cat-name">Fruits, Légumes, Légumineuses et Oléagineux</div>
                         <div class="cat-count">653 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(2)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 2 }"
+                             @click="selectGroupe(2)">
                         <div class="cat-icon" style="background:#FAF3EE">🥘</div>
                         <div class="cat-name">Entrées & plats composés</div>
                         <div class="cat-count">407 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(3)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 8 }"
+                             @click="selectGroupe(8)">
                         <div class="cat-icon" style="background:#FFF8E4">🍰</div>
                         <div class="cat-name">Produits sucrés</div>
                         <div class="cat-count">361 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(4)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 6 }"
+                             @click="selectGroupe(6)">
                         <div class="cat-icon" style="background:#E4F4FF">🥛</div>
                         <div class="cat-name">Produits laitiers</div>
                         <div class="cat-count">356 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(5)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 7 }"
+                             @click="selectGroupe(7)">
                         <div class="cat-icon" style="background:#FFF4E6">🍹</div>
                         <div class="cat-name">Eaux et autres boissons</div>
                         <div class="cat-count">325 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(6)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 11 }"
+                             @click="selectGroupe(11)">
                         <div class="cat-icon" style="background:#F0FBF0">🧂</div>
                         <div class="cat-name">aides culinaires et ingredients</div>
                         <div class="cat-count">214 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(7)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 4 }"
+                             @click="selectGroupe(4)">
                         <div class="cat-icon" style="background:#F0FBF0">🌾</div>
                         <div class="cat-name">Produits céréaliers</div>
                         <div class="cat-count">214 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(8)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 10 }"
+                             @click="selectGroupe(10)">
                         <div class="cat-icon" style="background:#FFF8E4">🧈</div>
                         <div class="cat-name">Matières grasses</div>
                         <div class="cat-count">72 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(9)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 12 }"
+                             @click="selectGroupe(12)">
                         <div class="cat-icon" style="background:#FAF3EE">🍼</div>
                         <div class="cat-name">Aliments infantiles</div>
                         <div class="cat-count">39 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(10)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 9 }"
+                             @click="selectGroupe(9)">
                         <div class="cat-icon" style="background:#F5F0FF">🍧</div>
                         <div class="cat-name">Glaces & Sorbets</div>
                         <div class="cat-count">30 aliments</div>
                     </article>
-                    <article class="cat-card" role="article" tabindex="0" @click="selectGroupe(11)">
+                    <article class="cat-card" role="article" tabindex="0"
+                             :class="{ 'cat-card-selected': groupeSelectionne === 1 }"
+                             @click="selectGroupe(1)">
                         <div class="cat-icon" style="background:#E4F4FF">📃</div>
                         <div class="cat-name">Non classifié</div>
                         <div class="cat-count">1 aliments</div>
@@ -112,15 +136,22 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
         </section>
 
         <!-- FORMULAIRE -->
-        <section class="categories section bg-white"  aria-labelledby="cat-title">
+        <section class="categories section bg-white" aria-labelledby="cat-title">
             <div class="container">
+
                 <template x-if="groupeSelectionne !== null">
                     <div class="selection-form">
-                        <form method="GET" class="form-inline">
+                        <form method="POST" action="/" class="form-inline">
+
+                            <!-- Transmettre le groupe au serveur -->
+                            <input type="hidden" name="groupe" :value="groupeSelectionne">
+
                             <div>
                                 <label for="sous_groupe">Sous-groupe</label>
-                                <select name="sous_groupe" id="sous_groupe" x-model="sousGroupeSelectionne" @change="loadSousSousGroupes()">
-                                    <option value="">Tous</option>
+                                <select name="sous_groupe" id="sous_groupe"
+                                        x-model="sousGroupeSelectionne"
+                                        @change="loadSousSousGroupes()">
+                                    <option value="all">Tous</option>
                                     <template x-for="sg in sousGroupesCourant" :key="sg.id">
                                         <option :value="sg.id" x-text="sg.nom"></option>
                                     </template>
@@ -129,8 +160,9 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
 
                             <div>
                                 <label for="sous_sous_groupe">Sous-sous-groupe</label>
-                                <select name="sous_sous_groupe" id="sous_sous_groupe" x-model="sousSousGroupeSelectionne">
-                                    <option value="">Tous</option>
+                                <select name="sous_sous_groupe" id="sous_sous_groupe"
+                                        x-model="sousSousGroupeSelectionne">
+                                    <option value="all">Tous</option>
                                     <template x-for="ssg in sousSousGroupesCourant" :key="ssg.id">
                                         <option :value="ssg.id" x-text="ssg.nom"></option>
                                     </template>
@@ -141,10 +173,10 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
                         </form>
                     </div>
                 </template>
+
             </div>
         </section>
     </div>
-
 
 </main>
 

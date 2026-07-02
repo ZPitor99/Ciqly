@@ -8,97 +8,87 @@ import '@fontsource/lora/600.css';
 import '@fontsource/lora/400-italic.css';
 
 import '../css/style_commun.css'
-import {burger} from "./partage.js";
+import { burger } from "./partage.js";
 import Alpine from "alpinejs";
 
-window.Alpine = Alpine
+window.Alpine = Alpine;
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('groupe_content', () => ({
+        // Référentiels chargés une seule fois
+        groupeToSousGroupe: {},
+        sousGroupeToSousSousGroupe: {},
+
+        // Sélection courante
         groupeSelectionne: null,
-        sousGroupeSelectionne: '',
-        sousSousGroupeSelectionne: '',
+        sousGroupeSelectionne: 'all',
+        sousSousGroupeSelectionne: 'all',
 
-        sousGroupeCourant: [],
-        sousSousGroupeCourant: [],
-
-        groupeToSousGroupe: {
-            "0": [
-                {"id": "viande-1", "nom": "Viandes crues"},
-                {"id": "viande-2", "nom": "Viandes cuites"},
-                {"id": "viande-3", "nom": "Poissons"}
-            ],
-            "1": [{"id": "viande-1", "nom": "Viandes crues"}]
-        },
-        sousGroupeToSousSousGroupe: {
-            "viande-1": [
-                {"id": "boeuf", "nom": "Bœuf"},
-                {"id": "porc", "nom": "Porc"}
-            ]
-        },
+        // Listes affichées dans les <select>
+        sousGroupesCourant: [],
+        sousSousGroupesCourant: [],
 
         async init() {
             try {
-                //const data1 = await fetch('json1');
-                //this.groupeData = await data1.json();
+                const res1 = await fetch('/api', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ method: 'groupeToSousGroupe', params: {} })
+                });
+                const data1 = await res1.json();
+                console.log(data1);
+                this.groupeToSousGroupe = data1.result ?? data1;
 
-                //const data2 = await fetch('json2');
-                //this.groupeData = await data2.json();
-
-                //fetch("/api/groupe_content").then(res => res.json()).then(data => this.data = data);
-                console.log("Initializing...");
-            }catch(err) {
-                console.log('Erreur de chargement du JSON via API',err);
+                const res2 = await fetch('/api', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ method: 'sousGroupeToSousSousGroupe', params: {} })
+                });
+                const data2 = await res2.json();
+                console.log(data2);
+                this.sousGroupeToSousSousGroupe = data2.result ?? data2;
+            } catch (err) {
+                console.log('Erreur de chargement du JSON via API', err);
             }
-
         },
 
+        // Appelé au clic sur une carte de groupe
         selectGroupe(index) {
             this.groupeSelectionne = index;
-            this.sousGroupeSelectionne = '';
-            this.sousSousGroupeSelectionne = '';
-            this.sousSousGroupesCourant = [];
+            this.sousGroupeSelectionne = 'all';
+            this.sousSousGroupeSelectionne = 'all';
 
-            // Charger les sous-groupes correspondants
-            if (this.groupeToSousGroupe && this.groupeToSousGroupe[index]) {
-                this.sousGroupesCourant = this.groupeToSousGroupe[index];
-            } else {
-                this.sousGroupesCourant = [];
-            }
+            this.sousGroupesCourant = this.groupeToSousGroupe[index] ?? [];
+
+            // "Tous" par défaut → on précharge l'agrégat des sous-sous-groupes
+            this.loadSousSousGroupes();
         },
 
-        // Chargement des sous-sous-groupes
+        // Recalcule la liste des sous-sous-groupes selon le sous-groupe choisi
         loadSousSousGroupes() {
-            if (this.sousGroupeSelectionne === '') {
-                this.sousSousGroupesCourant = [];
-                this.sousSousGroupeSelectionne = '';
-                return;
-            }
-
-            if (this.sousGroupeToSousSousGroupe && this.sousGroupeToSousSousGroupe[this.sousGroupeSelectionne]) {
-                this.sousSousGroupesCourant = this.sousGroupeToSousSousGroupe[this.sousGroupeSelectionne];
+            if (this.sousGroupeSelectionne === 'all') {
+                // Tous les sous-sous-groupes de tous les sous-groupes du groupe sélectionné
+                const agregat = new Map(); // dédoublonne par id au cas où
+                for (const sg of this.sousGroupesCourant) {
+                    const liste = this.sousGroupeToSousSousGroupe[sg.id] ?? [];
+                    for (const ssg of liste) {
+                        agregat.set(ssg.id, ssg);
+                    }
+                }
+                this.sousSousGroupesCourant = Array.from(agregat.values());
             } else {
-                this.sousSousGroupesCourant = [];
+                this.sousSousGroupesCourant =
+                    this.sousGroupeToSousSousGroupe[this.sousGroupeSelectionne] ?? [];
             }
 
-            this.sousSousGroupeSelectionne = '';
+            this.sousSousGroupeSelectionne = 'all';
         }
-    }))
-})
-Alpine.start()
+    }));
+});
 
+Alpine.start();
 
-window.onload = init
+window.onload = init;
 function init() {
-    burger()
-
-    let artc = document.getElementsByClassName('cat-card');
-    for (let i = 0; i < artc.length; i++) {
-        artc[i].addEventListener('click', (e) => {
-            let artc_to_remove = document.getElementsByClassName('cat-card');
-            for (let i = 0; i < artc_to_remove.length; i++) {
-                artc_to_remove[i].classList.remove('cat-card-selected')
-            }
-            artc[i].classList.add('cat-card-selected');
-        })
-    }
+    burger();
 }
