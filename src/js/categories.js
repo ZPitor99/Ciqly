@@ -36,7 +36,6 @@ document.addEventListener('alpine:init', () => {
                     body: JSON.stringify({ method: 'groupeToSousGroupe', params: {} })
                 });
                 const data1 = await res1.json();
-                console.log(data1);
                 this.groupeToSousGroupe = data1.result ?? data1;
 
                 const res2 = await fetch('/api', {
@@ -45,7 +44,6 @@ document.addEventListener('alpine:init', () => {
                     body: JSON.stringify({ method: 'sousGroupeToSousSousGroupe', params: {} })
                 });
                 const data2 = await res2.json();
-                console.log(data2);
                 this.sousGroupeToSousSousGroupe = data2.result ?? data2;
             } catch (err) {
                 console.log('Erreur de chargement du JSON via API', err);
@@ -70,9 +68,9 @@ document.addEventListener('alpine:init', () => {
                 // Tous les sous-sous-groupes de tous les sous-groupes du groupe sélectionné
                 const agregat = new Map(); // dédoublonne par id au cas où
                 for (const sg of this.sousGroupesCourant) {
-                    const liste = this.sousGroupeToSousSousGroupe[sg.id] ?? [];
+                    const liste = this.sousGroupeToSousSousGroupe[sg.alim_ssssgroupe_code] ?? [];
                     for (const ssg of liste) {
-                        agregat.set(ssg.id, ssg);
+                        agregat.set(ssg.alim_ssssgroupe_code, ssg);
                     }
                 }
                 this.sousSousGroupesCourant = Array.from(agregat.values());
