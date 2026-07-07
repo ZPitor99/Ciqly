@@ -34,7 +34,7 @@ $tags = $vite->createTags("js/index.js")
 <body>
 
 <?php
-include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')));
+include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 ?>
 
 <!-- ── MAIN ─────────────────────────────────────────────── -->

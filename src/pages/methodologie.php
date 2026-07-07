@@ -27,10 +27,17 @@ $tags = $vite->createTags("js/footer.js")
     <link rel="icon" type="image/svg+xml" href="/static/images/icone_ciqly.svg">
     <?= $tags->css ?>
 </head>
+
+<main>
+    <div class="main-container" >
+
+    </div>
+</main>
+
 <body>
 
 <?php
-include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')));
+include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 ?>
 
 <!-- ── MAIN ─────────────────────────────────────────────── -->

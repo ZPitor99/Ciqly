@@ -9,11 +9,21 @@
                 </a>
 
                 <ul class="nav__links" role="list">
-                    <li><a href="/">Explorer</a></li>
-                    <li><a href="/categories">Catégories</a></li>
+                    <li><a href="/">Accueil</a></li>
+                    <li><a href="/categories">Groupes</a></li>
                     <li><a href="/nutriments">Nutriments</a></li>
-                    <li><a href="/assemblage">Calcul</a></li>
+                    <li><a href="/assemblage">Calcul
+
+                            <?php if (count($_SESSION['panier']) > 0): ?>
+                                <span class="badge"><?= count($_SESSION['panier']) ?></span>
+                            <?php endif; ?>
+
+                        </a></li>
+
+                    <li><a href="/analyse">Analyse</a></li>
+                    <!--
                     <li><button id="trad" data-fr="Translate" data-en="Traduire">Translate</button></li>
+                    -->
                 </ul>
 
                 <button class="nav__hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
