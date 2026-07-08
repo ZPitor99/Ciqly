@@ -14,17 +14,14 @@ import Alpine from "alpinejs";
 window.Alpine = Alpine;
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('groupe_content', () => ({
-        // Référentiels chargés une seule fois
+    Alpine.data('groupe_content', (groupeInitial = null, sousGroupeInitial = 'all', sousSousGroupeInitial = 'all') => ({
         groupeToSousGroupe: {},
         sousGroupeToSousSousGroupe: {},
 
-        // Sélection courante
-        groupeSelectionne: null,
-        sousGroupeSelectionne: 'all',
-        sousSousGroupeSelectionne: 'all',
+        groupeSelectionne: groupeInitial,
+        sousGroupeSelectionne: sousGroupeInitial,
+        sousSousGroupeSelectionne: sousSousGroupeInitial,
 
-        // Listes affichées dans les <select>
         sousGroupesCourant: [],
         sousSousGroupesCourant: [],
 
@@ -35,51 +32,57 @@ document.addEventListener('alpine:init', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ method: 'groupeToSousGroupe', params: {} })
                 });
-                const data1 = await res1.json();
-                this.groupeToSousGroupe = data1.result ?? data1;
+                this.groupeToSousGroupe = (await res1.json()).result ?? {};
+                console.log(this.groupeToSousGroupe);
 
                 const res2 = await fetch('/api', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ method: 'sousGroupeToSousSousGroupe', params: {} })
                 });
-                const data2 = await res2.json();
-                this.sousGroupeToSousSousGroupe = data2.result ?? data2;
+                this.sousGroupeToSousSousGroupe = (await res2.json()).result ?? {};
+
+                // Si un groupe est déjà sélectionné (retour depuis l'URL),
+                // on reconstruit les listes de selects correspondantes
+                if (this.groupeSelectionne !== null) {
+                    this.sousGroupesCourant = [...(this.groupeToSousGroupe[this.groupeSelectionne] ?? [])]
+                        .sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+                    this.recalculerSousSousGroupes();
+                }
             } catch (err) {
-                console.log('Erreur de chargement du JSON via API', err);
+                console.error('Erreur de chargement du JSON via API', err);
             }
         },
 
-        // Appelé au clic sur une carte de groupe
         selectGroupe(index) {
             this.groupeSelectionne = index;
             this.sousGroupeSelectionne = 'all';
             this.sousSousGroupeSelectionne = 'all';
 
-            this.sousGroupesCourant = this.groupeToSousGroupe[index] ?? [];
+            this.sousGroupesCourant = [...(this.groupeToSousGroupe[index] ?? [])]
+                .sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
 
-            // "Tous" par défaut → on précharge l'agrégat des sous-sous-groupes
-            this.loadSousSousGroupes();
+            this.recalculerSousSousGroupes();
         },
 
-        // Recalcule la liste des sous-sous-groupes selon le sous-groupe choisi
         loadSousSousGroupes() {
-            if (this.sousGroupeSelectionne === 'all') {
-                // Tous les sous-sous-groupes de tous les sous-groupes du groupe sélectionné
-                const agregat = new Map(); // dédoublonne par id au cas où
-                for (const sg of this.sousGroupesCourant) {
-                    const liste = this.sousGroupeToSousSousGroupe[sg.alim_ssssgroupe_code] ?? [];
-                    for (const ssg of liste) {
-                        agregat.set(ssg.alim_ssssgroupe_code, ssg);
-                    }
-                }
-                this.sousSousGroupesCourant = Array.from(agregat.values());
-            } else {
-                this.sousSousGroupesCourant =
-                    this.sousGroupeToSousSousGroupe[this.sousGroupeSelectionne] ?? [];
-            }
-
+            this.recalculerSousSousGroupes();
             this.sousSousGroupeSelectionne = 'all';
+        },
+
+        recalculerSousSousGroupes() {
+            if (this.sousGroupeSelectionne === 'all') {
+                const agregat = new Map();
+                for (const sg of this.sousGroupesCourant) {
+                    const liste = this.sousGroupeToSousSousGroupe[sg.id] ?? [];
+                    for (const ssg of liste) agregat.set(ssg.id, ssg);
+                }
+                this.sousSousGroupesCourant = Array.from(agregat.values())
+                    .sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+            } else {
+                this.sousSousGroupesCourant = [...(this.sousGroupeToSousSousGroupe[this.sousGroupeSelectionne] ?? [])]
+                    .sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
+            }
         }
     }));
 });

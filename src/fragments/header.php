@@ -14,7 +14,7 @@
                     <li><a href="/nutriments">Nutriments</a></li>
                     <li><a href="/assemblage">Calcul
 
-                            <?php if (count($_SESSION['panier']) > 0): ?>
+                            <?php if (isset($_SESSION['panier'])): ?>
                                 <span class="badge"><?= count($_SESSION['panier']) ?></span>
                             <?php endif; ?>
 

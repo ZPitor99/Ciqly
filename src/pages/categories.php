@@ -1,7 +1,7 @@
 <?php
 
 require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','class','php_vite','Manifest.php'));
-
+require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','utilitaire', 'fonctions.php'));
 session_start();
 
 $vite = new Manifest(
@@ -10,7 +10,24 @@ $vite = new Manifest(
     base_path: '/dist/'
 );
 
-$tags = $vite->createTags("js/categories.js")
+$tags = $vite->createTags("js/categories.js");
+
+if (!isset($_SESSION['panier'])) {
+    $_SESSION['panier'] = [];
+}
+
+$pdo = Database::get();
+
+// Lecture des filtres depuis l'URL
+$groupeSelectionne = isset($_GET['groupe']) ? (int) $_GET['groupe'] : null;
+$sousGroupe = $_GET['sous_groupe'] ?? 'all';
+$sousSousGroupe = $_GET['sous_sous_groupe'] ?? 'all';
+
+$aliments = peupler_aliment($groupeSelectionne, $sousGroupe, $sousSousGroupe);
+
+// URL courante (avec filtres) pour que le panier redirige au bon endroit
+$urlRetour = $_SERVER['REQUEST_URI'];
+
 
 ?>
 
@@ -30,14 +47,14 @@ $tags = $vite->createTags("js/categories.js")
 <body>
 
 <?php
-include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')));
+include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 ?>
 
 <!-- ── MAIN ─────────────────────────────────────────────── -->
 <main id="main-content">
 
     <!-- CATEGORIES -->
-    <div x-data="groupe_content">
+    <div x-data="groupe_content(<?= (int) ($groupeSelectionne ?? 0) ?: 'null' ?>, '<?= htmlspecialchars($sousGroupe) ?>', '<?= htmlspecialchars($sousSousGroupe) ?>')">
         <section class="categories section bg-sand" id="categories" aria-labelledby="cat-title">
             <div class="container">
                 <div class="section-header">
@@ -93,7 +110,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
                              :class="{ 'cat-card-selected': groupeSelectionne === 11 }"
                              @click="selectGroupe(11)">
                         <div class="cat-icon" style="background:#F0FBF0">🧂</div>
-                        <div class="cat-name">aides culinaires et ingredients</div>
+                        <div class="cat-name">Aides culinaires et ingredients</div>
                         <div class="cat-count">214 aliments</div>
                     </article>
                     <article class="cat-card" role="article" tabindex="0"
@@ -141,10 +158,9 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
 
                 <template x-if="groupeSelectionne !== null">
                     <div class="selection-form">
-                        <form method="POST" action="/" class="form-inline">
+                        <form method="GET" class="form-inline">
 
-                            <!-- Transmettre le groupe au serveur -->
-                            <input type="hidden" name="groupe" :value="groupeSelectionne">
+                            <input type="hidden" name="groupe" :value="groupeSelectionne-1">
 
                             <div>
                                 <label for="sous_groupe">Sous-groupe</label>
@@ -175,6 +191,44 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.html')))
                 </template>
 
             </div>
+        </section>
+    </div>
+
+    <div class="container">
+        <section class="resultats-aliments" id="liste_aliments">
+            <?php if ($groupeSelectionne !== null): ?>
+                <?php if (empty($aliments)): ?>
+                    <p class="liste-vide">Aucun aliment trouvé pour cette sélection.</p>
+                <?php else: ?>
+                    <h2>Aliments des groupes sélectionnés</h2>
+                    <ul class="liste-aliments">
+                        <?php foreach ($aliments as $aliment): ?>
+                            <?php $dejaDansPanier = in_array($aliment['alim_code'], $_SESSION['panier'], true); ?>
+                            <li class="aliment-item<?= $dejaDansPanier ? ' aliment-selectionne' : '' ?>">
+                                <span class="aliment-nom"><?= htmlspecialchars($aliment['alim_nom_fr']) ?></span>
+
+                                <form method="POST" action="/action_panier_aliment" class="aliment-form">
+                                    <input type="hidden" name="alim_code" value="<?= $aliment['alim_code'] ?>">
+                                    <input type="hidden" name="alim_nom" value="<?= $aliment['alim_nom_fr'] ?>">
+                                    <input type="hidden" name="action" value="<?= $dejaDansPanier ? 'retirer' : 'ajouter' ?>">
+                                    <input type="hidden" name="retour" value="<?= htmlspecialchars($urlRetour) ?>">
+                                    <button type="submit" class="btn-icone" aria-label="<?= $dejaDansPanier ? 'Retirer du panier' : 'Ajouter au panier' ?>">
+                                        <?php if ($dejaDansPanier): ?>
+                                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                <path d="M4 10.5L8 14.5L16 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        <?php else: ?>
+                                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                <path d="M10 4V16M4 10H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        <?php endif; ?>
+                                    </button>
+                                </form>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            <?php endif; ?>
         </section>
     </div>
 
