@@ -12,6 +12,11 @@ export function burger(){
 
         hamburger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
         navLinks.classList.toggle('nav__links--open');
-        navCta.classList.toggle('nav__cta--open');
+        try {
+            navCta.classList.toggle('nav__cta--open');
+        }catch (err){
+            // Error navCta null mais essentiel pour le burger menu
+        }
+
     });
 }

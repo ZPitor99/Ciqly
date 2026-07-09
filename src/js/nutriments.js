@@ -26,7 +26,6 @@ document.addEventListener('alpine:init', () => {
             request.send();
             request.onreadystatechange = () => {
                 if (request.readyState === 4 && request.status === 200) {
-                    console.log(request.responseText);
                     this.table_infoods = JSON.parse(request.responseText);
                 }
             }

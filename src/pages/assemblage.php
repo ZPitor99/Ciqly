@@ -10,7 +10,7 @@ $vite = new Manifest(
     base_path: '/dist/'
 );
 
-$tags = $vite->createTags("js/")
+$tags = $vite->createTags("js/assemblage.js");
 
 ?>
 
@@ -36,12 +36,22 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 <!-- ── MAIN ─────────────────────────────────────────────── -->
 <main id="main-content">
 
-    <section>
-        <p>Form pour ajout</p>
-    </section>
+    <section class="categories section bg-sand" id="categories" aria-labelledby="cat-title">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h1 class="section-title" id="cat-title">Les aliments</h1>
+                </div>
+                <?php
+                $alim_codes = array_keys($_SESSION['panier']);
 
-    <section>
-        <p>Les aliments</p>
+                for ($i = 0; $i < count($alim_codes); $i++) {
+                    $courant = $alim_codes[$i];
+                    echo $courant . $_SESSION['panier'][$courant]['nom'] .  $_SESSION['panier'][$courant]['quantite'] . '</br>';
+                }
+                ?>
+            </div>
+        </div>
     </section>
 
     <section>

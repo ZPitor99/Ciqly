@@ -19,9 +19,6 @@ let langue = "fr"
 
 window.onload = init
 function init(){
-    document.getElementById("trad").addEventListener('click', (event) => {
-        traduire()
-    })
     burger();
     initSearchTag();
 }
