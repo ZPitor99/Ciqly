@@ -12,12 +12,12 @@
                     <li><a href="/">Accueil</a></li>
                     <li><a href="/categories">Groupes</a></li>
                     <li><a href="/nutriments">Nutriments</a></li>
-                    <li><a href="/assemblage">Calcul
-
-                            <?php if (isset($_SESSION['panier'])): ?>
+                    <li><a href="/assemblage" class="panier-link">
+                        <span class="panier-text">Panier
+                            <?php if (isset($_SESSION['panier']) && count($_SESSION['panier']) > 0): ?>
                                 <span class="badge"><?= count($_SESSION['panier']) ?></span>
                             <?php endif; ?>
-
+                        </span>
                         </a></li>
 
                     <li><a href="/analyse">Analyse</a></li>

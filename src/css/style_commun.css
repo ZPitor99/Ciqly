@@ -438,14 +438,28 @@ p { color: var(--ink-mid); line-height: 1.75; }
 /* ================================================================
    8. BADGES & TAGS
    ================================================================ */
+.panier-text {
+    position: relative;
+    display: inline-block;
+}
+
 .badge {
+    position: absolute;
+    top: -0.55rem;
+    right: -0.75rem;
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.25rem 0.7rem;
+    justify-content: center;
+    min-width: 1.05rem;
+    height: 1.05rem;
+    padding: 0 0.28rem;
     border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
+    background-color: var(--ink);
+    color: var(--sand-soft);
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1;
+    box-sizing: border-box;
 }
 
 .badge--sky  { background: var(--sky-soft);  color: var(--sky-dark); }
