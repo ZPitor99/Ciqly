@@ -1,0 +1,101 @@
+/* ================================================================
+   FORMULAIRE D'ASSEMBLAGE
+   ================================================================ */
+
+.assemblage-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.assemblage-ligne {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.assemblage-ligne:last-of-type {
+    border-bottom: none;
+}
+
+.assemblage-ligne label {
+    flex: 0 0 auto;
+    min-width: 160px;
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    font-weight: 500;
+}
+
+.assemblage-champ {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.assemblage-champ input[type="number"] {
+    width: 90px;
+    text-align: right;
+    background: var(--white);
+    border: 1px solid var(--sand-mid);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    transition: var(--transition);
+}
+
+.assemblage-champ input[type="number"]:hover {
+    border-color: var(--sky-mid);
+}
+
+.assemblage-champ input[type="number"]:focus {
+    outline: none;
+    border-color: var(--sky-dark);
+    box-shadow: 0 0 0 3px rgba(64, 161, 228, 0.1);
+}
+
+.assemblage-unite {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    width: 1rem;
+}
+
+.assemblage-submit {
+    align-self: flex-start;
+    margin-top: 1.5rem;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 2rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.assemblage-submit:hover {
+    background: var(--ink-mid);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lift);
+}
+
+.assemblage-submit:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+    .assemblage-ligne {
+        gap: 0.75rem;
+    }
+    .assemblage-ligne label {
+        min-width: 0;
+        flex: 1;
+    }
+    .assemblage-submit {
+        width: 100%;
+        text-align: center;
+    }
+}

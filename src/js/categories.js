@@ -8,6 +8,7 @@ import '@fontsource/lora/600.css';
 import '@fontsource/lora/400-italic.css';
 
 import '../css/style_commun.css'
+import '../css/style_aliments_liste.css'
 import { burger } from "./partage.js";
 import Alpine from "alpinejs";
 
