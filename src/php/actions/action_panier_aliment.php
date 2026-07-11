@@ -12,7 +12,7 @@ $retour = $_POST['retour'] ?? '/';
 
 if ($id !== null) {
     if ($action === 'ajouter' && !in_array($id, array_keys($_SESSION['panier']), true)) {
-        $_SESSION['panier'][$id] = ["nom" => $nom, "quantite" => 0];
+        $_SESSION['panier'][$id] = ["nom" => $nom, "quantite" => 100];
     } elseif ($action === 'retirer') {
         unset($_SESSION['panier'][$id]);
     }

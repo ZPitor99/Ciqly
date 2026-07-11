@@ -194,6 +194,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
         </section>
     </div>
 
+    <!-- Affichage Aliments -->
     <div class="container">
         <section class="resultats-aliments" id="liste_aliments">
             <?php if ($groupeSelectionne !== null): ?>

@@ -186,7 +186,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 
             <h3>Les nutriments renseignés dans l'étude Ciqual</h3>
             <p>
-                Le code INFOODS a pour but d'identifier de manière claire et non ambiguë les composants alimentaires dans des bases de données de composition des aliments.
+                Le code INFOODS a pour but d'identifier de manière unique les composants alimentaires dans des bases de données de composition des aliments.
                 Il utilise des codes ou des abréviations standardisés pour permettre de comparer et combiner correctement les valeurs nutritionnelles provenant de différentes sources.
                 <br>
                 <cite>
