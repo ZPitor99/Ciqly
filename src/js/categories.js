@@ -34,7 +34,6 @@ document.addEventListener('alpine:init', () => {
                     body: JSON.stringify({ method: 'groupeToSousGroupe', params: {} })
                 });
                 this.groupeToSousGroupe = (await res1.json()).result ?? {};
-                console.log(this.groupeToSousGroupe);
 
                 const res2 = await fetch('/api', {
                     method: 'POST',
@@ -89,6 +88,17 @@ document.addEventListener('alpine:init', () => {
 });
 
 Alpine.start();
+
+Alpine.nextTick(() => {
+    const scrollTarget = document.body.dataset.scrollTo;
+
+    if (scrollTarget) {
+        document.getElementById(scrollTarget)?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+});
 
 window.onload = init;
 function init() {

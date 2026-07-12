@@ -44,27 +44,28 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
             </div>
             <div class="assemblage-form">
                 <?php
-                if (isset($_SESSION['panier'])){
+                if (isset($_SESSION['panier']) && $_SESSION['panier'] != []) {
                     $alim_codes = array_keys($_SESSION['panier']);
 
                     echo '<form action="/assemblage" method="POST">';
 
                     for ($i = 0; $i < count($alim_codes); $i++) {
                         $courant = $alim_codes[$i];
-
-                        echo '<div class="assemblage-ligne">';
-                        echo '  <label for="'.$courant.'">'.$_SESSION['panier'][$courant]['nom'].'</label>';
-                        echo '  <div class="assemblage-champ">';
-                        echo '      <input type="number"
-                        name="'.$courant.'"
-                        id="'.$courant.'"
-                        value="'.$_SESSION['panier'][$courant]['quantite'].'"
+                        echo <<<HTML
+                        <div class="assemblage-ligne">
+                            <label for="$courant">{$_SESSION['panier'][$courant]["nom"]}</label>
+                            <div class="assemblage-champ">
+                              <input type="number"
+                        name="$courant"
+                        id="$courant"
+                        value="{$_SESSION['panier'][$courant]['quantite']}"
                         min="0"
                         step="10"
-                        required>';
-                        echo '      <span class="assemblage-unite">g</span>';
-                        echo '  </div>';
-                        echo '</div>';
+                        required>
+                              <span class="assemblage-unite">g</span>
+                          </div>
+                        </div>
+                        HTML;
                     }
 
                     echo '<button type="submit" class="assemblage-submit">Assembler</button>';
@@ -72,6 +73,13 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 }
                 else{
                     $_SESSION['panier'] = [];
+                    echo <<<'HTML'
+                    <div>
+                        <p>Aucun aliment sélectionné.
+                        Rechercher un aliment dans la liste des aliments par groupe.</p>
+                        <a href="/categories" target="_self" hreflang="fr" class="section-link">Vers la sélection des aliments</a>
+                    </div>
+                    HTML;
                 }
                 ?>
             </div>

@@ -16,18 +16,15 @@ if (!isset($_SESSION['panier'])) {
     $_SESSION['panier'] = [];
 }
 
+// Action pour récupérer les aliments une fois les groupes sélectionnés
 $pdo = Database::get();
-
-// Lecture des filtres depuis l'URL
+// Lecture des filtres depuis l'URL (GET)
 $groupeSelectionne = isset($_GET['groupe']) ? (int) $_GET['groupe'] : null;
 $sousGroupe = $_GET['sous_groupe'] ?? 'all';
 $sousSousGroupe = $_GET['sous_sous_groupe'] ?? 'all';
-
 $aliments = peupler_aliment($groupeSelectionne, $sousGroupe, $sousSousGroupe);
-
 // URL courante (avec filtres) pour que le panier redirige au bon endroit
 $urlRetour = $_SERVER['REQUEST_URI'];
-
 
 ?>
 
@@ -44,7 +41,7 @@ $urlRetour = $_SERVER['REQUEST_URI'];
     <link rel="icon" type="image/svg+xml" href="/static/images/icone_ciqly.svg">
     <?= $tags->css ?>
 </head>
-<body>
+<body <?= !empty($aliments) ? 'data-scroll-to="selection_groupe"' : '' ?> >
 
 <?php
 include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
@@ -54,7 +51,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 <main id="main-content">
 
     <!-- CATEGORIES -->
-    <div x-data="groupe_content(<?= (int) ($groupeSelectionne ?? 0) ?: 'null' ?>, '<?= htmlspecialchars($sousGroupe) ?>', '<?= htmlspecialchars($sousSousGroupe) ?>')">
+    <div x-data="groupe_content(<?= (int) ($groupeSelectionne+1 ?? 0) ?: 'null' ?>, '<?= htmlspecialchars($sousGroupe) ?>', '<?= htmlspecialchars($sousSousGroupe) ?>')">
         <section class="categories section bg-sand" id="categories" aria-labelledby="cat-title">
             <div class="container">
                 <div class="section-header">
@@ -157,7 +154,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
             <div class="container">
 
                 <template x-if="groupeSelectionne !== null">
-                    <div class="selection-form">
+                    <div class="selection-form" id="selection_groupe">
                         <form method="GET" class="form-inline">
 
                             <input type="hidden" name="groupe" :value="groupeSelectionne-1">
@@ -197,12 +194,14 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
     <!-- Affichage Aliments -->
     <div class="container">
         <section class="resultats-aliments" id="liste_aliments">
+
             <?php if ($groupeSelectionne !== null): ?>
                 <?php if (empty($aliments)): ?>
                     <p class="liste-vide">Aucun aliment trouvé pour cette sélection.</p>
                 <?php else: ?>
                     <h2>Aliments des groupes sélectionnés</h2>
                     <ul class="liste-aliments">
+
                         <?php foreach ($aliments as $aliment): ?>
                             <?php $dejaDansPanier = in_array($aliment['alim_code'], $_SESSION['panier'], true); ?>
                             <li class="aliment-item<?= $dejaDansPanier ? ' aliment-selectionne' : '' ?>">
@@ -227,9 +226,11 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                                 </form>
                             </li>
                         <?php endforeach; ?>
+
                     </ul>
                 <?php endif; ?>
             <?php endif; ?>
+
         </section>
     </div>
 
