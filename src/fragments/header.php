@@ -11,7 +11,6 @@
                 <ul class="nav__links" role="list">
                     <li><a href="/">Accueil</a></li>
                     <li><a href="/categories">Groupes</a></li>
-                    <li><a href="/nutriments">Nutriments</a></li>
                     <li><a href="/assemblage" class="panier-link">
                         <span class="panier-text">Panier
                             <?php if (isset($_SESSION['panier']) && count($_SESSION['panier']) > 0): ?>
@@ -19,7 +18,7 @@
                             <?php endif; ?>
                         </span>
                         </a></li>
-
+                    <li><a href="/nutriments">Nutriments</a></li>
                     <li><a href="/analyse">Analyse</a></li>
                     <!--
                     <li><button id="trad" data-fr="Translate" data-en="Traduire">Translate</button></li>

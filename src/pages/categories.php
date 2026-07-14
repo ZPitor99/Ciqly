@@ -25,7 +25,10 @@ $sousSousGroupe = $_GET['sous_sous_groupe'] ?? 'all';
 $aliments = peupler_aliment($groupeSelectionne, $sousGroupe, $sousSousGroupe);
 // URL courante (avec filtres) pour que le panier redirige au bon endroit
 $urlRetour = $_SERVER['REQUEST_URI'];
-
+$groupeSelectionne = $groupeSelectionne ?? 0;
+if ($groupeSelectionne != 0) {
+    $groupeSelectionne++;
+}
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +54,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 <main id="main-content">
 
     <!-- CATEGORIES -->
-    <div x-data="groupe_content(<?= (int) ($groupeSelectionne+1 ?? 0) ?: 'null' ?>, '<?= htmlspecialchars($sousGroupe) ?>', '<?= htmlspecialchars($sousSousGroupe) ?>')">
+    <div x-data="groupe_content(<?= (int) ($groupeSelectionne ?? 0) ?: 'null' ?>, '<?= htmlspecialchars($sousGroupe) ?>', '<?= htmlspecialchars($sousSousGroupe) ?>')">
         <section class="categories section bg-sand" id="categories" aria-labelledby="cat-title">
             <div class="container">
                 <div class="section-header">
@@ -195,7 +198,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
     <div class="container">
         <section class="resultats-aliments" id="liste_aliments">
 
-            <?php if ($groupeSelectionne !== null): ?>
+            <?php if (isset($_GET['groupe'])): ?>
                 <?php if (empty($aliments)): ?>
                     <p class="liste-vide">Aucun aliment trouvé pour cette sélection.</p>
                 <?php else: ?>
@@ -203,14 +206,13 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     <ul class="liste-aliments">
 
                         <?php foreach ($aliments as $aliment): ?>
-                            <?php $dejaDansPanier = in_array($aliment['alim_code'], $_SESSION['panier'], true); ?>
+                            <?php $dejaDansPanier = in_array($aliment['alim_code'], array_keys($_SESSION['panier']), true); ?>
                             <li class="aliment-item<?= $dejaDansPanier ? ' aliment-selectionne' : '' ?>">
                                 <span class="aliment-nom"><?= htmlspecialchars($aliment['alim_nom_fr']) ?></span>
 
                                 <form method="POST" action="/action_panier_aliment" class="aliment-form">
                                     <input type="hidden" name="alim_code" value="<?= $aliment['alim_code'] ?>">
                                     <input type="hidden" name="alim_nom" value="<?= $aliment['alim_nom_fr'] ?>">
-                                    <input type="hidden" name="action" value="<?= $dejaDansPanier ? 'retirer' : 'ajouter' ?>">
                                     <input type="hidden" name="retour" value="<?= htmlspecialchars($urlRetour) ?>">
                                     <button type="submit" class="btn-icone" aria-label="<?= $dejaDansPanier ? 'Retirer du panier' : 'Ajouter au panier' ?>">
                                         <?php if ($dejaDansPanier): ?>

@@ -251,6 +251,7 @@ p { color: var(--ink-mid); line-height: 1.75; }
     gap: 0.3rem;
     transition: gap var(--transition);
     white-space: nowrap;
+    text-decoration: underline;
 }
 .section-link:hover { gap: 0.55rem; }
 
