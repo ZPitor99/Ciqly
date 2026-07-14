@@ -63,6 +63,19 @@ document.addEventListener('alpine:init', () => {
                 .sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }));
 
             this.recalculerSousSousGroupes();
+
+            // Alpine insère le formulaire dans le DOM (x-if) puis vérifier la visibilité
+            this.$nextTick(() => {
+                const form = document.getElementById('selection_groupe');
+                if (!form) return;
+
+                const rect = form.getBoundingClientRect();
+                const estVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+
+                if (!estVisible) {
+                    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
         },
 
         loadSousSousGroupes() {
