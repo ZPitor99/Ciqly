@@ -2,9 +2,34 @@
    FORMULAIRE D'ASSEMBLAGE
    ================================================================ */
 
+/* Alpine.js : masque les éléments avant hydratation */
+[x-cloak] {
+    display: none !important;
+}
+
+/* ── Conteneur général ──────────────────────────────────────────── */
+.assemblage-form {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-card);
+}
+
 .assemblage-form form {
     display: flex;
     flex-direction: column;
+}
+
+/* ── Ligne d'un aliment ──────────────────────────────────────────── */
+.assemblage-div {
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--border);
+}
+
+.assemblage-div:last-of-type {
+    border-bottom: none;
 }
 
 .assemblage-ligne {
@@ -13,25 +38,26 @@
     justify-content: space-between;
     gap: 1.5rem;
     padding: 0.85rem 0;
-    border-bottom: 1px solid var(--border);
-}
-
-.assemblage-ligne:last-of-type {
-    border-bottom: none;
 }
 
 .assemblage-ligne label {
-    flex: 0 0 auto;
-    min-width: 160px;
+    flex: 1 1 auto;
+    min-width: 0;
     font-size: 0.9rem;
     color: var(--ink-mid);
     font-weight: 500;
+    /* Coupe proprement les noms d'aliments trop longs */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
+/* ── Champ quantité ──────────────────────────────────────────────── */
 .assemblage-champ {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex: 0 0 auto;
 }
 
 .assemblage-champ input[type="number"] {
@@ -56,12 +82,89 @@
     box-shadow: 0 0 0 3px rgba(64, 161, 228, 0.1);
 }
 
+/* Masque les flèches natives du input[number] pour un rendu homogène,
+   sans jamais retirer le focus visible (accessibilité clavier) */
+.assemblage-champ input[type="number"]::-webkit-outer-spin-button,
+.assemblage-champ input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.assemblage-champ input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 .assemblage-unite {
     font-size: 0.85rem;
     color: var(--ink-soft);
     width: 1rem;
 }
 
+/* ── Bouton "⋮" (ouvre le menu d'actions) ───────────────────────── */
+.arrow-btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    line-height: 1;
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.arrow-btn:hover {
+    background: var(--sand-soft);
+    color: var(--ink);
+}
+
+.arrow-btn[aria-expanded="true"] {
+    background: var(--sky-soft);
+    color: var(--sky-dark);
+}
+
+/* ── Menu d'actions (s'ouvre sous la ligne et pousse le contenu) ─── */
+.menu-dropdown {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0 0 0.85rem;
+}
+
+.menu-dropdown button {
+    background: var(--white);
+    color: var(--ink-mid);
+    border: 1px solid var(--sand-mid);
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.menu-dropdown button:hover {
+    background: var(--sand-soft);
+    border-color: var(--sky-mid);
+    color: var(--ink);
+}
+
+/* L'action "Supprimer" se distingue légèrement des autres */
+.menu-dropdown button[\@click*="supprimer"] {
+    color: #B3452F;
+    border-color: rgba(179, 69, 47, 0.35);
+}
+
+.menu-dropdown button[\@click*="supprimer"]:hover {
+    background: rgba(179, 69, 47, 0.08);
+    border-color: #B3452F;
+    color: #B3452F;
+}
+
+/* ── Bouton de validation ───────────────────────────────────────── */
 .assemblage-submit {
     align-self: flex-start;
     margin-top: 1.5rem;
@@ -86,15 +189,62 @@
     transform: translateY(0);
 }
 
+/* ── État vide (panier sans aliment) ────────────────────────────── */
+.assemblage-form > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 2.5rem 1.5rem;
+}
+
+.assemblage-form > div::before {
+    content: "";
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--sky-soft);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%2340a1e4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z'/%3E%3Cpath d='M3 6h18'/%3E%3Cpath d='M16 10a4 4 0 0 1-8 0'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.assemblage-form > div p {
+    max-width: 32ch;
+    color: var(--ink-mid);
+}
+
+.assemblage-form > div .section-link {
+    margin-top: 0.25rem;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 480px) {
+    .assemblage-form {
+        padding: 1.25rem;
+    }
+
     .assemblage-ligne {
         gap: 0.75rem;
     }
+
     .assemblage-ligne label {
-        min-width: 0;
-        flex: 1;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
     }
+
     .assemblage-submit {
+        width: 100%;
+        text-align: center;
+    }
+
+    .menu-dropdown {
+        flex-direction: column;
+    }
+
+    .menu-dropdown button {
         width: 100%;
         text-align: center;
     }

@@ -40,7 +40,6 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
         <div class="container">
             <div class="section-header">
                 <h1 class="section-title" id="cat-title">Les aliments</h1>
-                <p><?php var_dump($_POST) ?></p>
             </div>
             <div class="assemblage-form">
                 <?php
@@ -50,35 +49,46 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     echo '<form action="/assemblage" method="POST">';
 
                     for ($i = 0; $i < count($alim_codes); $i++) {
-                        $courant = $alim_codes[$i];
+                        $courant = htmlspecialchars($alim_codes[$i]);
+                        $data_courant = $_SESSION['panier'][$courant];
                         echo <<<HTML
-                        <div class="assemblage-ligne">
-                            <label for="$courant">{$_SESSION['panier'][$courant]["nom"]}</label>
-                            <div class="assemblage-champ">
-                              <input type="number"
-                        name="$courant"
-                        id="$courant"
-                        value="{$_SESSION['panier'][$courant]['quantite']}"
-                        min="0"
-                        step="10"
-                        required>
-                              <span class="assemblage-unite">g</span>
-                          </div>
+                        <div class="assemblage-div" id="ligne_{$i}" x-data="{ open: false, qty: {$data_courant['quantite']}  }">
+                            <div class="assemblage-ligne">
+                            
+                                <label for="$courant">{$data_courant["nom"]}</label>
+                                <div class="assemblage-champ">
+                                  <input type="number"
+                                    name="$courant"
+                                    id="$courant"
+                                    x-model="qty"
+                                    min="0"
+                                    step="10"
+                                    required>
+                                <span class="assemblage-unite">g</span>
+                                </div>
+                                <button type="button" class="arrow-btn" @click="open = ! open" @click.outside="open = false"><b>&vellip;</b></button>                                
+                            </div>
+                            <div class="menu-dropdown" x-show="open" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
+                                <button type="button" @click="panierAction('reset', 'ligne_{$i}', '$courant')">Mettre à Zéro</button>
+                                <button type="button" @click="panierAction('supprimer', 'ligne_{$i}', '$courant')">Supprimer</button>
+                                <button type="button" @click="panierAction('monter', 'ligne_{$i}', '$courant')">&uarr; Monter</button>
+                                <button type="button" @click="panierAction('descendre', 'ligne_{$i}', '$courant')">&darr; Descendre</button>
+                            </div>
                         </div>
                         HTML;
                     }
-
-                    echo '<button type="submit" class="assemblage-submit">Assembler</button>';
-                    echo '</form>';
+                    echo <<<'HTML'
+                    <button type="submit" class="assemblage-submit">Assembler</button>
+                    </form>
+                    HTML;
                 }
                 else{
                     $_SESSION['panier'] = [];
                     echo <<<'HTML'
                     <div>
-                        <p>Aucun aliment sélectionné.
-                        Rechercher un aliment dans la liste des aliments par groupe.</p>
-                        <a href="/categories" target="_self" hreflang="fr" class="section-link">Vers la sélection des aliments</a>
-                    </div>
+                        <p>Aucun aliment sélectionné.<br>
+                        Rechercher un aliment dans la liste des aliments par groupe. <a href="/categories" target="_self" hreflang="fr" class="section-link">Vers la sélection des aliments</a></p>
+                        </div>
                     HTML;
                 }
                 ?>
