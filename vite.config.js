@@ -16,6 +16,7 @@ export default defineConfig({
                 categories: resolve(__dirname, 'src/js/categories.js'),
                 footer: resolve(__dirname, 'src/js/footer.js'),
                 index: resolve(__dirname, 'src/js/index.js'),
+                methodologies: resolve(__dirname, 'src/js/methodologie.js'),
                 nutriments: resolve(__dirname, 'src/js/nutriments.js'),
                 partage: resolve(__dirname, 'src/js/partage.js'),
             }
