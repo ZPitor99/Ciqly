@@ -36,6 +36,32 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 <!-- ── MAIN ─────────────────────────────────────────────── -->
 <main id="main-content">
 
+    <section>
+        <div class="container">
+            <h2>Lettre ouverte aux utilisateurs</h2>
+            <p>
+
+            </p>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>Lettre ouverte à toutes les personnes qui ont participé au projet</h2>
+            <p>
+
+            </p>
+            <ul>
+                <li>M.Ikki_534</li>
+                <li>Bibiroyal</li>
+                <li>Fathi_f</li>
+                <li>Mathrm</li>
+                <li>ImRiverse</li>
+                <li>Les personnes qui m'ont conseillé techniquement</li>
+                <li>Les personnes qui m'ont supporté quotidiennement</li>
+            </ul>
+        </div>
+    </section>
 
 </main>
 
