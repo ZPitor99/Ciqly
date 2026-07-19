@@ -9,7 +9,7 @@ import '@fontsource/lora/400-italic.css';
 
 import '../css/style_commun.css'
 import '../css/style_aliments_liste.css'
-import { burger } from "./partage.js";
+import { burger, scrollTo } from "./partage.js";
 import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
@@ -102,15 +102,8 @@ document.addEventListener('alpine:init', () => {
 
 Alpine.start();
 
-Alpine.nextTick(() => {
-    const scrollTarget = document.body.dataset.scrollTo;
-
-    if (scrollTarget) {
-        document.getElementById(scrollTarget)?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    scrollTo();
 });
 
 window.onload = init;

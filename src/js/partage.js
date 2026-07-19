@@ -20,3 +20,14 @@ export function burger(){
 
     });
 }
+
+export function scrollTo(){
+    const scrollTarget = document.body.dataset.scrollTo;
+
+    if (scrollTarget) {
+        document.getElementById(scrollTarget)?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
