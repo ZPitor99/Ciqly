@@ -12,6 +12,17 @@ $vite = new Manifest(
 
 $tags = $vite->createTags("js/assemblage.js");
 
+if (!isset($_SESSION['graphique'])) {
+    $_SESSION['graphique'] = [
+            'calories'   => ['recommandee' => 2000, 'calculee' => 950],
+            'proteines' => ['recommandee' => 90,   'calculee' => 55],
+            'glucides'  => ['recommandee' => 250,  'calculee' => 30],
+            'lipides'   => ['recommandee' => 70,   'calculee' => 65],
+    ];
+}
+
+$donnees = $_SESSION['graphique'];
+$donnees_graphique = htmlspecialchars(json_encode($donnees), ENT_QUOTES, "UTF-8");
 ?>
 
 <!DOCTYPE html>
@@ -39,14 +50,14 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
     <section class="categories section bg-sand" id="categories" aria-labelledby="cat-title">
         <div class="container">
             <div class="section-header">
-                <h1 class="section-title" id="cat-title">Les aliments</h1>
+                <h1 class="section-title" id="cat-title">Mon panier d'aliments</h1>
             </div>
             <div class="assemblage-form">
                 <?php
                 if (isset($_SESSION['panier']) && $_SESSION['panier'] != []) {
                     $alim_codes = array_keys($_SESSION['panier']);
 
-                    echo '<form action="/assemblage" method="POST">';
+                    echo '<form action="../php/actions/action_calcul_assemblage.php" method="POST">';
 
                     for ($i = 0; $i < count($alim_codes); $i++) {
                         $courant = htmlspecialchars($alim_codes[$i]);
@@ -62,7 +73,6 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                                     id="$courant"
                                     x-model="qty"
                                     min="0"
-                                    step="10"
                                     required>
                                 <span class="assemblage-unite">g</span>
                                 </div>
@@ -88,7 +98,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     <div>
                         <p>Aucun aliment sélectionné.<br>
                         Rechercher un aliment dans la liste des aliments par groupe. <a href="/categories" target="_self" hreflang="fr" class="section-link">Vers la sélection des aliments</a></p>
-                        </div>
+                    </div>
                     HTML;
                 }
                 ?>
@@ -96,9 +106,51 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
         </div>
     </section>
 
-    <section>
-        <p>Totaux par nutriments</p>
-    </section>
+    <?php
+    if ($_SESSION['panier'] != []) {
+
+        echo <<<HTML
+        <section>
+            <h2>Résultat</h2>
+            <div class="data-table">
+                <table>
+                    <caption></caption>
+                    <thead>
+                        <tr>
+                            <th>Données</th>
+                            <th>Valeur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nombre d'aliments <span title="Définition : Nombre total d'aliments sélectionnés.">&#9432;</span></td>
+                            <td id="somme"></td>
+                        </tr>
+                        <tr>
+                            <td>Diversité en % <span title="Définition : proportion de catégories distinctes présentes dans le panier.">&#9432;</span></td>
+                            <td id="diversite"></td>
+                        </tr>
+                        <tr>
+                            <td>Score de Fiabilité <span title="Définition : moyenne des scores de confiance attribués à chaque source.">&#9432;</span></td>
+                            <td id="fiabilite"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="container container--narrow">
+                <div class="card">
+                    <div class="card__body">
+                        <span class="section-label">Suivi du jour</span>
+                        <h3>Répartition nutritionnelle</h3>
+                        <div id="chart" data-graphique='{$donnees_graphique}'></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        HTML;
+    }
+    ?>
+
 
 </main>
 

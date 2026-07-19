@@ -9,6 +9,7 @@ export default defineConfig({
         outDir: '../public/dist',
         emptyOutDir: true,
         manifest: true,
+        chunkSizeWarningLimit: 1000,
 
         rollupOptions: {
             input: {

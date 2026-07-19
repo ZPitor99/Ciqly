@@ -159,7 +159,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                         <br>
                         <ul>
                             <li>- pour les lipides : 37 kJ/g (9 kcal/g) ;</li>
-                            <li>- pour les protéines : 17 kJ/g (4 kcal/g) ;</li>
+                            <li>- pour les protéines (dites brutes) : 17 kJ/g (4 kcal/g) ;</li>
                             <li>- pour les glucides (à l'exception des polyols) : 17 kJ/g (4 kcal/g) ;</li>
                             <li>- pour l'alcool (éthanol) : 29 kJ/g (7 kcal/g) ;</li>
                             <li>- pour les acides organiques : 13 kJ/g (3 kcal/g) ;</li>
