@@ -48,7 +48,6 @@ function initGraphique() {
         pourcentages.push(Math.round(pourcentage * 10) / 10);
         actuels.push(calculee);
         recommandes.push(recommandee);
-        console.log(brut[nom]);
     });
 
     const options = {
@@ -128,8 +127,114 @@ function initGraphique() {
     const chart = new ApexCharts(emplacement, options);
     chart.render();
 }
-document.addEventListener('DOMContentLoaded', initGraphique);
 
+function initGraphiqueEau() {
+    const emplacement = document.getElementById('chart-eau');
+    if (!emplacement) return;
+
+    const brut = JSON.parse(emplacement.dataset.graphique);
+    // Format attendu : { "poids_total_g": 620, "eau_g": 450 }
+
+    const racine = getComputedStyle(document.documentElement);
+    const jeton = (nom, repli) => racine.getPropertyValue(nom).trim() || repli;
+    const ink       = jeton('--ink', '#1A2433');
+    const inkMid    = jeton('--ink-mid', '#3D4F66');
+    const inkSoft   = jeton('--ink-soft', '#7A8FA8');
+    const border    = jeton('--border', 'rgba(26,36,51,0.09)');
+    const bleuEau   = jeton('--eau', '#378ADD');
+    const fontBody  = jeton('--font-body', 'Sora').replace(/['"]/g, '');
+
+    const poidsTotal = Number(brut.poids_total_g);
+    const eau = Number(brut.eau_g);
+    const pourcentage = poidsTotal > 0
+        ? Math.round((eau / poidsTotal) * 1000) / 10
+        : 0;
+
+    const options = {
+        chart: {
+            type: 'radialBar',
+            height: 320,
+            fontFamily: `${fontBody}, sans-serif`,
+            background: 'transparent',
+            animations: { easing: 'easeinout', speed: 500 }
+        },
+        series: [pourcentage],
+        labels: ['Eau'],
+        colors: [bleuEau],
+        plotOptions: {
+            radialBar: {
+                startAngle: 0,
+                endAngle: 360,
+                hollow: { size: '65%' },
+                track: {
+                    background: border,
+                    strokeWidth: '100%'
+                },
+                dataLabels: {
+                    name: {
+                        show: true,
+                        fontSize: '13px',
+                        color: inkSoft,
+                        offsetY: -8
+                    },
+                    value: {
+                        fontSize: '28px',
+                        fontWeight: 600,
+                        color: ink,
+                        offsetY: 4,
+                        formatter: (v) => `${v}%`
+                    }
+                }
+            }
+        },
+        stroke: { lineCap: 'round' },
+
+        tooltip: {
+            custom: function () {
+                return `
+                    <div style="
+                        font-family:${fontBody},sans-serif;
+                        background:#fff;
+                        border:1px solid ${border};
+                        border-radius:12px;
+                        box-shadow:0 8px 32px rgba(26,36,51,0.12);
+                        padding:0.65rem 0.9rem;
+                        text-align:center;
+                    ">
+                        <div style="font-weight:600; color:${ink}; margin-bottom:4px;">
+                            Eau
+                        </div>
+                        <div style="font-size:0.85rem; color:${inkMid};">
+                            ${eau} g
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    };
+
+    const chart = new ApexCharts(emplacement, options);
+    chart.render();
+
+    // Ajout du texte "450 / 620 g" sous le pourcentage, en overlay HTML
+    const sousTexte = document.createElement('div');
+    sousTexte.textContent = `${eau} / ${poidsTotal} g`;
+    sousTexte.style.cssText = `
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%, 28px);
+        font-size:13px;
+        font-weight:400;
+        color:${inkMid};
+        font-family:${fontBody}, sans-serif;
+        pointer-events:none;
+    `;
+    emplacement.style.position = 'relative';
+    emplacement.appendChild(sousTexte);
+}
+document.addEventListener('DOMContentLoaded', initGraphiqueEau);
+document.addEventListener('DOMContentLoaded', initGraphique);
 
 window.onload = init
 function init() {

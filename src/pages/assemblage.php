@@ -23,6 +23,14 @@ if (!isset($_SESSION['graphique'])) {
 
 $donnees = $_SESSION['graphique'];
 $donnees_graphique = htmlspecialchars(json_encode($donnees), ENT_QUOTES, "UTF-8");
+
+
+$donnees_eau = [
+        'poids_total_g' => 750,
+        'eau_g' => 250,
+];
+$donnees_graphique_eau = htmlspecialchars(json_encode($donnees_eau), ENT_QUOTES, "UTF-8");
+
 ?>
 
 <!DOCTYPE html>
@@ -140,9 +148,18 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
             <div class="container container--narrow">
                 <div class="card">
                     <div class="card__body">
-                        <span class="section-label">Suivi du jour</span>
+                        <span class="section-label">Résultat du panier</span>
                         <h3>Répartition nutritionnelle</h3>
                         <div id="chart" data-graphique='{$donnees_graphique}'></div>
+                    </div>
+                </div>
+            </div>
+            <div class="container container--narrow">
+                <div class="card">
+                    <div class="card__body">
+                        <span class="section-label">Résultat du panier</span>
+                        <h3>Proportion aqueuse d'assemblage</h3>
+                        <div id="chart-eau" data-graphique='{$donnees_graphique_eau}'></div>
                     </div>
                 </div>
             </div>
