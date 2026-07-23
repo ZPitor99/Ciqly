@@ -13,7 +13,7 @@
             <div>
                 <div class="footer__col-title">Données</div>
                 <ul class="footer__links">
-                    <li><a href="#">Explorer les aliments</a></li>
+                    <li><a href="/categories">Explorer les aliments</a></li>
                     <li><a href="https://ciqual.anses.fr/#/cms/telechargement/node/20" target="_blank" hreflang="fr">Téléchargement</a></li>
                     <li><a href="#">Aliments moyens</a></li>
                     <li><a href="#">Documentation API</a></li>
@@ -34,15 +34,15 @@
                 <div class="footer__col-title">À propos</div>
                 <ul class="footer__links">
                     <li><a href="https://ciqual.anses.fr/" target="_blank" hreflang="fr">L'ANSES</a></li>
-                    <li><a href="#">Mentions légales</a></li>
+                    <li><a href="/mentions_legales">Mentions légales</a></li>
                     <li><a href="#">Accessibilité</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/contact">Contact</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="footer__bottom">
-            <span>© 2025 ZPitor99 - FRANCE</span>
+            <span>© <?php echo date('Y'); ?> Ciqly - FRANCE</span>
 
             <span class="footer__badge" aria-label="Logo cc-by-nc-nd">
           <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png" loading="lazy"

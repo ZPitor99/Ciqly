@@ -20,7 +20,7 @@ $tags = $vite->createTags("js/footer.js")
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <title>Ciqly - Remerciements</title>
+    <title>Remerciements | Ciqly</title>
     <link rel="icon" type="image/x-icon" href="/static/images/icone_ciqly.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/images/icone_ciqly-32.png">
     <link rel="icon" type="image/png" sizes="180x180" href="/static/images/icone_ciqly-180.png">
@@ -67,7 +67,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 
 <!-- ── FOOTER ─────────────────────────────────────────────── -->
 <?php
-include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','footer.html')));
+include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','footer.php')));
 ?>
 
 </body>

@@ -22,7 +22,7 @@ $tags = $vite->createTags("js/footer.js")
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="description" content="La page que vous recherchez est introuvable. Retournez à l'accueil ou utilisez la navigation pour poursuivre votre visite.">
     <meta name="robots" content="noindex, follow">
-    <title>Page introuvable - Ciqly</title>
+    <title>Page introuvable | Ciqly</title>
     <link rel="icon" type="image/x-icon" href="/static/images/icone_ciqly.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/images/icone_ciqly-32.png">
     <link rel="icon" type="image/png" sizes="180x180" href="/static/images/icone_ciqly-180.png">
