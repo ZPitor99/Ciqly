@@ -22,7 +22,7 @@ $tags = $vite->createTags("js/index.js")
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="description"
           content="CIQLY — Base de données de composition nutritionnelle des aliments. Explorez les valeurs nutritives de milliers d'aliments."/>
-    <title>Ciqly</title>
+    <title>Ciqly | Accueil</title>
     <link rel="icon" type="image/x-icon" href="/static/images/icone_ciqly.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/images/icone_ciqly-32.png">
     <link rel="icon" type="image/png" sizes="180x180" href="/static/images/icone_ciqly-180.png">
@@ -118,7 +118,6 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                                     </div>
                                     <span class="bar-val">0 g</span>
                                 </div>
-                                <br>
                                 <div class="bar-row">
                                     <span class="bar-name">Énergie</span>
                                     <div class="bar-track">
@@ -143,24 +142,26 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 </label>
                 <p>Entrez un nom d'aliment pour consulter sa fiche nutritionnelle complète</p>
 
-                <form action="#">
-                    <div class="search-box" role="search">
-                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                             aria-hidden="true">
-                            <circle cx="11" cy="11" r="8"/>
-                            <path d="m21 21-4.35-4.35"/>
-                        </svg>
-                        <input
-                                id="search-field"
-                                type="search"
-                                class="search-input"
-                                placeholder="Ex : pomme, lait entier, saumon…"
-                                aria-label="Rechercher un aliment"
-                                minlength = "3"
-                        />
-                        <button class="search-btn" type="submit">Rechercher</button>
-                    </div>
-                </form>
+                <div x-data="rechercheAliment()" class="search-wrapper">
+                    <input
+                            type="text"
+                            x-model="query"
+                            @input.debounce.300ms="search()"
+                            placeholder="Rechercher un aliment..."
+                            class="search-input"
+                    >
+
+                    <p x-show="loading">Recherche en cours...</p>
+                    <p x-show="!loading && query.length >= 2 && results.length === 0">
+                        Aucun résultat trouvé.
+                    </p>
+
+                    <ul x-show="results.length > 0" class="results-list">
+                        <template x-for="item in results" :key="item.id">
+                            <li x-text="item.nom"></li>
+                        </template>
+                    </ul>
+                </div>
 
                 <div class="search-tags" aria-label="Recherches suggérées">
                     <button class="tag">Poivron rouge, sauté/poêlé</button>
@@ -459,7 +460,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 
 <!-- ── FOOTER ─────────────────────────────────────────────── -->
 <?php
-include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','footer.html')));
+include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','footer.php')));
 ?>
 
 </body>

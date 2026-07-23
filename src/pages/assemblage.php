@@ -12,24 +12,41 @@ $vite = new Manifest(
 
 $tags = $vite->createTags("js/assemblage.js");
 
-if (!isset($_SESSION['graphique'])) {
-    $_SESSION['graphique'] = [
-            'calories'   => ['recommandee' => 2000, 'calculee' => 950],
-            'proteines' => ['recommandee' => 90,   'calculee' => 55],
-            'glucides'  => ['recommandee' => 250,  'calculee' => 30],
-            'lipides'   => ['recommandee' => 70,   'calculee' => 65],
-    ];
+$message = null;
+
+if (!isset($_SESSION['calcul_assemblage'])){
+    $_SESSION['calcul_assemblage'] = false;
 }
+else {
+    if (!isset($_SESSION['graphique1']) || !isset($_SESSION['graphique2']) || $_SESSION['graphique1'] == [] || $_SESSION['graphique2'] == []) {
+        $message = 'Certaines données n\'ont pas pu être chargées, certains affichages peuvent être affectés';
+    }
+    else {
+        $donnees = $_SESSION['graphique2'];
+        $donnees_graphique = htmlspecialchars(json_encode($donnees), ENT_QUOTES, "UTF-8");
+        $donnees_eau = $_SESSION['graphique1'];
+        $donnees_graphique_eau = htmlspecialchars(json_encode($donnees_eau), ENT_QUOTES, "UTF-8");
+    }
 
-$donnees = $_SESSION['graphique'];
-$donnees_graphique = htmlspecialchars(json_encode($donnees), ENT_QUOTES, "UTF-8");
-
-
-$donnees_eau = [
-        'poids_total_g' => 750,
-        'eau_g' => 250,
-];
-$donnees_graphique_eau = htmlspecialchars(json_encode($donnees_eau), ENT_QUOTES, "UTF-8");
+    if (!isset($_SESSION['tab_stat']['nb_aliment']) || empty($_SESSION['tab_stat'])) {
+        $nb_aliment = "&mdash;";
+    }
+    else {
+        $nb_aliment = $_SESSION['tab_stat']['nb_aliment'];
+    }
+    if (!isset($_SESSION['tab_stat']['distinct_grp']) || empty($_SESSION['tab_stat'])){
+        $distinct_grp = "&mdash;";
+    }
+    else{
+        $distinct_grp = $_SESSION['tab_stat']['distinct_grp'];
+    }
+    if (!isset($_SESSION['tab_stat']['concat_conf']) || empty($_SESSION['tab_stat'])){
+        $concat_conf = "&mdash;";
+    }
+    else{
+        $concat_conf = $_SESSION['tab_stat']['concat_conf'];
+    }
+}
 
 ?>
 
@@ -39,7 +56,7 @@ $donnees_graphique_eau = htmlspecialchars(json_encode($donnees_eau), ENT_QUOTES,
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <title>Ciqly - Assemblage</title>
+    <title>Assemblage | Ciqly</title>
     <link rel="icon" type="image/x-icon" href="/static/images/icone_ciqly.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/images/icone_ciqly-32.png">
     <link rel="icon" type="image/png" sizes="180x180" href="/static/images/icone_ciqly-180.png">
@@ -65,7 +82,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 if (isset($_SESSION['panier']) && $_SESSION['panier'] != []) {
                     $alim_codes = array_keys($_SESSION['panier']);
 
-                    echo '<form action="../php/actions/action_calcul_assemblage.php" method="POST">';
+                    echo '<form action="/action_calcul_assemblage" method="POST">';
 
                     for ($i = 0; $i < count($alim_codes); $i++) {
                         $courant = htmlspecialchars($alim_codes[$i]);
@@ -96,7 +113,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                         HTML;
                     }
                     echo <<<'HTML'
-                    <button type="submit" class="assemblage-submit">Assembler</button>
+                    <button type="submit" name="assemblage" class="assemblage-submit">Assembler</button>
                     </form>
                     HTML;
                 }
@@ -115,14 +132,18 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
     </section>
 
     <?php
-    if ($_SESSION['panier'] != []) {
-
+    if ($_SESSION['panier'] != [] && $_SESSION['calcul_assemblage'] === true) {
+        $_SESSION['calcul_assemblage'] = false;
         echo <<<HTML
-        <section>
-            <h2>Résultat</h2>
-            <div class="data-table">
+        <section class="categories">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Résultat</h2>
+                </div>   
+            </div>     
+            <div class="container data-table">
                 <table>
-                    <caption></caption>
+                    <caption>Statistiques général</caption>
                     <thead>
                         <tr>
                             <th>Données</th>
@@ -132,15 +153,15 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     <tbody>
                         <tr>
                             <td>Nombre d'aliments <span title="Définition : Nombre total d'aliments sélectionnés.">&#9432;</span></td>
-                            <td id="somme"></td>
+                            <td id="somme">$nb_aliment</td>
                         </tr>
                         <tr>
-                            <td>Diversité en % <span title="Définition : proportion de catégories distinctes présentes dans le panier.">&#9432;</span></td>
-                            <td id="diversite"></td>
+                            <td>Indice de diversité <span title="Définition : proportion de catégories d'aliments distinctes présentes dans le panier.">&#9432;</span></td>
+                            <td id="diversite">$distinct_grp</td>
                         </tr>
                         <tr>
-                            <td>Score de Fiabilité <span title="Définition : moyenne des scores de confiance attribués à chaque source.">&#9432;</span></td>
-                            <td id="fiabilite"></td>
+                            <td>Score de Fiabilité des graphiques <span title="Définition : moyenne des scores de confiance attribués à chaque source des données utilisées pour les graphiques. (A,B,C ou D)">&#9432;</span></td>
+                            <td id="fiabilite">$concat_conf</td>
                         </tr>
                     </tbody>
                 </table>
@@ -163,8 +184,31 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     </div>
                 </div>
             </div>
+            <div class="container" x-data="{ open_mineraux: true, open_vitamines: true}">
+                    <div>
+                        <button type="button" @click="open_mineraux = ! open_mineraux">Les minéreaux <b>&vellip;</b></button>                                
+                        <div class="menu-dropdown" x-show="open_mineraux" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
+                            
+                        </div>
+                    </div>  
+                    <div>
+                        <button type="button" @click="open_vitamines = ! open_vitamines">Les vitamines <b>&vellip;</b></button>                                
+                        <div class="menu-dropdown" x-show="open_vitamines" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
+                            
+                        </div>
+                    </div>        
+                
+            </div>
+            <div class="container mt-3">
+                <p class="text-muted">
+                Les valeurs présentées sont des repères génériques basés sur une alimentation de 2 000 kcal/jour.
+                Les besoins réels varient selon l'âge, le sexe, le poids, la taille, l'activité physique et les objectifs de chacun.
+                Pour en savoir plus et obtenir des explications détaillées, consultez notre page <a href="/nutriments" target="_self" hreflang="fr" class="section-link">Nutriments</a>.
+                </p>
+            </div>
         </section>
         HTML;
+        echo $message;
     }
     ?>
 
@@ -173,7 +217,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 
 <!-- ── FOOTER ─────────────────────────────────────────────── -->
 <?php
-include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','footer.html')));
+include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','footer.php')));
 ?>
 
 </body>
