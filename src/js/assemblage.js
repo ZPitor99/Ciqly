@@ -16,21 +16,73 @@ import Alpine from 'alpinejs'
 window.Alpine = Alpine
 Alpine.start()
 
-function initGraphique() {
-    const emplacement = document.getElementById('chart');
-    if (!emplacement) return;
-
-    const brut = JSON.parse(emplacement.dataset.graphique);
-
-    // On lit directement le CSS(style_commun.css) pour que le graphique reste cohérent si la charte évolue.
+/**
+ * Lit les jetons de couleurs/police directement dans le CSS (style_commun.css)
+ * pour que les graphiques restent cohérents si la charte évolue.
+ * @param extra permet de demander des jetons supplémentaires propres à un graphique donné :
+ * @returns {{[p: string]: *, ink: *, inkMid: *, inkSoft: *, border: *, fontBody: *}}
+ */
+function lireJetons(extra = {}) {
     const racine = getComputedStyle(document.documentElement);
     const jeton = (nom, repli) => racine.getPropertyValue(nom).trim() || repli;
-    const ink       = jeton('--ink', '#1A2433');
-    const inkMid    = jeton('--ink-mid', '#3D4F66');
-    const inkSoft   = jeton('--ink-soft', '#7A8FA8');
-    const border    = jeton('--border', 'rgba(26,36,51,0.09)');
-    const sandDark  = jeton('--sand-dark', '#C9A88A');
-    const fontBody  = jeton('--font-body', 'Sora').replace(/['"]/g, '');
+
+    return {
+        ink:      jeton('--ink', '#1A2433'),
+        inkMid:   jeton('--ink-mid', '#3D4F66'),
+        inkSoft:  jeton('--ink-soft', '#7A8FA8'),
+        border:   jeton('--border', 'rgba(26,36,51,0.09)'),
+        fontBody: jeton('--font-body', 'Sora').replace(/['"]/g, ''),
+        ...Object.fromEntries(
+            Object.entries(extra).map(([cle, [nomCss, repli]]) => [cle, jeton(nomCss, repli)])
+        )
+    };
+}
+
+
+/**
+ * Récupère et parse le JSON stocké dans data-graphique d'un élément.
+ * Retourne null si l'élément n'existe pas, pour permettre un `return` anticipé.
+ * @param idElement
+ * @returns {{emplacement: HTMLElement, brut: any}|null}
+ */
+function lireDonneesGraphique(idElement) {
+    const emplacement = document.getElementById(idElement);
+    if (!emplacement) return null;
+    return { emplacement, brut: JSON.parse(emplacement.dataset.graphique) };
+}
+
+/**
+ * Construit le HTML commun des bulles de tooltip ApexCharts.
+ * @param fontBody
+ * @param border
+ * @param contenu
+ * @param centre
+ * @returns {string}
+ */
+function boiteTooltip(fontBody, border, contenu, centre = false) {
+    return `
+        <div style="
+            font-family:${fontBody},sans-serif;
+            background:#fff;
+            border:1px solid ${border};
+            border-radius:12px;
+            box-shadow:0 8px 32px rgba(26,36,51,0.12);
+            padding:0.65rem 0.9rem;
+            ${centre ? 'text-align:center;' : ''}
+        ">
+            ${contenu}
+        </div>
+    `;
+}
+
+function initGraphique() {
+    const donnees = lireDonneesGraphique('chart');
+    if (!donnees) return;
+    const { emplacement, brut } = donnees;
+
+    const { ink, inkMid, inkSoft, border, fontBody, sandDark } = lireJetons({
+        sandDark: ['--sand-dark', '#C9A88A']
+    });
     const palette = [inkSoft, sandDark, sandDark, sandDark];
 
     const noms = Object.keys(brut);
@@ -103,23 +155,15 @@ function initGraphique() {
                 const recommande = recommandes[dataPointIndex];
                 const pct = pourcentages[dataPointIndex];
 
-                return `
-                    <div style="
-                        font-family:${fontBody},sans-serif;
-                        background:#fff;
-                        border:1px solid ${border};
-                        border-radius:12px;
-                        box-shadow:0 8px 32px rgba(26,36,51,0.12);
-                        padding:0.65rem 0.9rem;
-                    ">
-                        <div style="font-weight:600; color:${ink}; text-transform:capitalize; margin-bottom:2px;">
-                            ${nom}
-                        </div>
-                        <div style="font-size:0.8rem; color:${inkMid};">
-                            ${actuel} / ${recommande} &nbsp;·&nbsp; <strong>${pct}%</strong>
-                        </div>
+                const contenu = `
+                    <div style="font-weight:600; color:${ink}; text-transform:capitalize; margin-bottom:2px;">
+                        ${nom}
+                    </div>
+                    <div style="font-size:0.8rem; color:${inkMid};">
+                        ${actuel} / ${recommande} &nbsp;·&nbsp; <strong>${pct}%</strong>
                     </div>
                 `;
+                return boiteTooltip(fontBody, border, contenu);
             }
         }
     };
@@ -129,20 +173,14 @@ function initGraphique() {
 }
 
 function initGraphiqueEau() {
-    const emplacement = document.getElementById('chart-eau');
-    if (!emplacement) return;
-
-    const brut = JSON.parse(emplacement.dataset.graphique);
+    const donnees = lireDonneesGraphique('chart-eau');
+    if (!donnees) return;
+    const { emplacement, brut } = donnees;
     // Format attendu : { "poids_total_g": 620, "eau_g": 450 }
 
-    const racine = getComputedStyle(document.documentElement);
-    const jeton = (nom, repli) => racine.getPropertyValue(nom).trim() || repli;
-    const ink       = jeton('--ink', '#1A2433');
-    const inkMid    = jeton('--ink-mid', '#3D4F66');
-    const inkSoft   = jeton('--ink-soft', '#7A8FA8');
-    const border    = jeton('--border', 'rgba(26,36,51,0.09)');
-    const bleuEau   = jeton('--eau', '#378ADD');
-    const fontBody  = jeton('--font-body', 'Sora').replace(/['"]/g, '');
+    const { ink, inkMid, inkSoft, border, fontBody, bleuEau } = lireJetons({
+        bleuEau: ['--eau', '#378ADD']
+    });
 
     const poidsTotal = Number(brut.poids_total_g);
     const eau = Number(brut.eau_g);
@@ -191,24 +229,15 @@ function initGraphiqueEau() {
 
         tooltip: {
             custom: function () {
-                return `
-                    <div style="
-                        font-family:${fontBody},sans-serif;
-                        background:#fff;
-                        border:1px solid ${border};
-                        border-radius:12px;
-                        box-shadow:0 8px 32px rgba(26,36,51,0.12);
-                        padding:0.65rem 0.9rem;
-                        text-align:center;
-                    ">
-                        <div style="font-weight:600; color:${ink}; margin-bottom:4px;">
-                            Eau
-                        </div>
-                        <div style="font-size:0.85rem; color:${inkMid};">
-                            ${eau} g
-                        </div>
+                const contenu = `
+                    <div style="font-weight:600; color:${ink}; margin-bottom:4px;">
+                        Eau
+                    </div>
+                    <div style="font-size:0.85rem; color:${inkMid};">
+                        ${eau} g
                     </div>
                 `;
+                return boiteTooltip(fontBody, border, contenu, true);
             }
         }
     };
@@ -235,6 +264,7 @@ function initGraphiqueEau() {
 }
 document.addEventListener('DOMContentLoaded', initGraphiqueEau);
 document.addEventListener('DOMContentLoaded', initGraphique);
+
 
 window.onload = init
 function init() {

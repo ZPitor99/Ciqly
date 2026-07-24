@@ -10,6 +10,8 @@ else{
     $nom = $_POST['alim_nom'] ?? null;
     $retour = $_POST['retour'] ?? '/';
 
+    $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+
     if ($id !== null) {
         if (!in_array($id, array_keys($_SESSION['panier']))) {
             $_SESSION['panier'][htmlspecialchars($id)] = ["nom" => htmlspecialchars($nom), "quantite" => 100];

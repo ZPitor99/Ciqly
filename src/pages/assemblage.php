@@ -160,7 +160,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                             <td id="diversite">$distinct_grp</td>
                         </tr>
                         <tr>
-                            <td>Score de Fiabilité des graphiques <span title="Définition : moyenne des scores de confiance attribués à chaque source des données utilisées pour les graphiques. (A,B,C ou D)">&#9432;</span></td>
+                            <td>Score de Fiabilité des graphiques <span title="Définition : moyenne des scores de confiance attribués à chaque source des données utilisées pour les graphiques. (A, B, C ou D)">&#9432;</span></td>
                             <td id="fiabilite">$concat_conf</td>
                         </tr>
                     </tbody>
@@ -186,13 +186,21 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
             </div>
             <div class="container" x-data="{ open_mineraux: true, open_vitamines: true}">
                     <div>
-                        <button type="button" @click="open_mineraux = ! open_mineraux">Les minéreaux <b>&vellip;</b></button>                                
+                        <button type="button" @click="open_mineraux = ! open_mineraux">
+                            Les minéreaux
+                            <span x-show="open_mineraux">⌃</span>
+                            <span x-show="!open_mineraux">⌄</span>
+                        </button>                                
                         <div class="menu-dropdown" x-show="open_mineraux" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
                             
                         </div>
                     </div>  
                     <div>
-                        <button type="button" @click="open_vitamines = ! open_vitamines">Les vitamines <b>&vellip;</b></button>                                
+                        <button type="button" @click="open_vitamines = ! open_vitamines">
+                            Les vitamines
+                            <span x-show="open_vitamines">⌃</span>
+                            <span x-show="!open_vitamines">⌄</span>
+                        </button>                                
                         <div class="menu-dropdown" x-show="open_vitamines" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
                             
                         </div>

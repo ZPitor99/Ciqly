@@ -21,8 +21,9 @@ if (isset($_POST['assemblage'])) {
             continue;
         }
         $alim_codes[] = filter_var($key, FILTER_VALIDATE_INT);
-        $coef = filter_var($value, FILTER_VALIDATE_FLOAT);
+        $coef = filter_var(str_replace(',', '.', trim($value)), FILTER_VALIDATE_FLOAT);
         if ($coef !== false) {
+            $_SESSION['panier'][end($alim_codes)]['quantite'] = $coef;
             $alim_coef[] = $coef/100;
             $masse = $masse + $coef;
         }
@@ -30,8 +31,6 @@ if (isset($_POST['assemblage'])) {
             $alim_coef[] = $coef;
         }
     }
-
-    //TODO: AJOUTER LA SAUVEGARDE DE LA QUANTITE
 
     if (empty($alim_codes) || in_array(false, $alim_codes, true) || in_array(false, $alim_coef, true)) {
         header('Location: /assemblage');
