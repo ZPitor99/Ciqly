@@ -219,6 +219,19 @@
     margin-top: 0.25rem;
 }
 
+.assemblage-footer{
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.assemblage-footer > p{
+    margin-top: 2rem;
+    color: var(--ink-mid);
+}
+
+
 /* ── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 480px) {
     .assemblage-form {
@@ -239,6 +252,12 @@
         width: 100%;
         text-align: center;
     }
+
+    .assemblage-footer > p{
+        width: 100%;
+        text-align: center;
+    }
+
 
     .menu-dropdown {
         flex-direction: column;

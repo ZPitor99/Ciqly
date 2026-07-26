@@ -82,13 +82,13 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 if (isset($_SESSION['panier']) && $_SESSION['panier'] != []) {
                     $alim_codes = array_keys($_SESSION['panier']);
 
-                    echo '<form action="/action_calcul_assemblage" method="POST">';
+                    echo '<form action="/action_calcul_assemblage" method="POST" x-data="{ quantites: {} }">';
 
                     for ($i = 0; $i < count($alim_codes); $i++) {
                         $courant = htmlspecialchars($alim_codes[$i]);
                         $data_courant = $_SESSION['panier'][$courant];
                         echo <<<HTML
-                        <div class="assemblage-div" id="ligne_{$i}" x-data="{ open: false, qty: {$data_courant['quantite']}  }">
+                        <div class="assemblage-div" id="ligne_{$i}" x-data="{ open: false }">
                             <div class="assemblage-ligne">
                             
                                 <label for="$courant">{$data_courant["nom"]}</label>
@@ -96,12 +96,13 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                                   <input type="number"
                                     name="$courant"
                                     id="$courant"
-                                    x-model="qty"
+                                    x-model.number="quantites['$courant']"
+                                    x-init="quantites['$courant'] = {$data_courant['quantite']}"
                                     min="0"
                                     required>
                                 <span class="assemblage-unite">g</span>
                                 </div>
-                                <button type="button" class="arrow-btn" @click="open = ! open" @click.outside="open = false"><b>&vellip;</b></button>                                
+                                <button type="button" class="arrow-btn" @click="open = ! open" @click.outside="open = false"><b>&vellip;</b></button>
                             </div>
                             <div class="menu-dropdown" x-show="open" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
                                 <button type="button" @click="panierAction('reset', 'ligne_{$i}', '$courant')">Mettre à Zéro</button>
@@ -113,7 +114,10 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                         HTML;
                     }
                     echo <<<'HTML'
-                    <button type="submit" name="assemblage" class="assemblage-submit">Assembler</button>
+                    <div class="assemblage-footer">
+                        <button type="submit" name="assemblage" class="assemblage-submit">Assembler</button>
+                        <p>Somme des aliments : <span x-text="Object.values(quantites).reduce((total, v) => total + (Number(v) || 0), 0)"></span>g</p>
+                    </div>    
                     </form>
                     HTML;
                 }
