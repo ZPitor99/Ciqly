@@ -3,7 +3,6 @@
 }
 
 
-
 .tech-card {
     display: flex;
     align-items: center;
@@ -14,7 +13,6 @@
 
     background: var(--white);
 }
-
 
 .logo {
     flex-shrink: 0;
@@ -34,7 +32,6 @@
     max-height: 100%;
     object-fit: contain;
 }
-
 
 .tech-content {
     flex: 1;
@@ -60,7 +57,6 @@ p > a {
     color: var(--sky-dark);
     text-decoration: underline
 }
-
 
 @media (max-width: 768px) {
 

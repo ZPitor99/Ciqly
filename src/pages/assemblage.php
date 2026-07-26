@@ -139,7 +139,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
     if ($_SESSION['panier'] != [] && $_SESSION['calcul_assemblage'] === true) {
         $_SESSION['calcul_assemblage'] = false;
         echo <<<HTML
-        <section class="categories">
+        <section class="section">
             <div class="container">
                 <div class="section-header">
                     <h2>Résultat</h2>
@@ -189,31 +189,35 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 </div>
             </div>
             <div class="container" x-data="{ open_mineraux: true, open_vitamines: true}">
-                    <div>
-                        <button type="button" @click="open_mineraux = ! open_mineraux">
-                            Les minéreaux
-                            <span x-show="open_mineraux">⌃</span>
-                            <span x-show="!open_mineraux">⌄</span>
-                        </button>                                
-                        <div class="menu-dropdown" x-show="open_mineraux" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
+                <div>
+                    <button type="button" @click="open_mineraux = ! open_mineraux">
+                        Les minéreaux
+                        <span x-show="open_mineraux">⌃</span>
+                        <span x-show="!open_mineraux">⌄</span>
+                    </button>                                
+                    <div class="menu-dropdown" x-show="open_mineraux" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
                             
-                        </div>
-                    </div>  
-                    <div>
-                        <button type="button" @click="open_vitamines = ! open_vitamines">
-                            Les vitamines
-                            <span x-show="open_vitamines">⌃</span>
-                            <span x-show="!open_vitamines">⌄</span>
-                        </button>                                
-                        <div class="menu-dropdown" x-show="open_vitamines" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
+                    </div>
+                </div>  
+                <div>
+                    <button type="button" @click="open_vitamines = ! open_vitamines">
+                        Les vitamines
+                        <span x-show="open_vitamines">⌃</span>
+                        <span x-show="!open_vitamines">⌄</span>
+                    </button>                                
+                    <div class="menu-dropdown" x-show="open_vitamines" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
                             
-                        </div>
-                    </div>        
+                    </div>
+                </div>        
                 
             </div>
             <div class="container mt-3">
+                <p class="text-muted small">
+                Les valeurs nutritionnelles affichées sont des estimations calculées à partir de la table CIQUAL de l'ANSES et peuvent différer des valeurs réelles.
+                <a href="/mentions_legales#av-calcul-val-nutrition" target="_self" hreflang="fr" class="section-link">En savoir plus</a>.
+                </p>
                 <p class="text-muted">
-                Les valeurs présentées sont des repères génériques basés sur une alimentation de 2 000 kcal/jour.
+                Les quotas journaliers présentés sont des repères basés sur une alimentation de 2 000 kcal/jour.
                 Les besoins réels varient selon l'âge, le sexe, le poids, la taille, l'activité physique et les objectifs de chacun.
                 Pour en savoir plus et obtenir des explications détaillées, consultez notre page <a href="/nutriments" target="_self" hreflang="fr" class="section-link">Nutriments</a>.
                 </p>

@@ -8,6 +8,7 @@ $id     = $input['id'] ?? null;
 
 if (!$id || !isset($_SESSION['panier'][$id])) {
     echo json_encode(['success' => false, 'message' => 'Article introuvable']);
+    header('Location: /assemblage');
     exit;
 }
 
@@ -47,8 +48,10 @@ switch ($action) {
 
     default:
         echo json_encode(['success' => false, 'message' => 'Action inconnue']);
+        header('Location: /assemblage');
         exit;
 }
 
 echo json_encode(['success' => true]);
+header('Location: /assemblage');
 exit;
