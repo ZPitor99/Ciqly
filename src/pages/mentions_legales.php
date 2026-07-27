@@ -81,15 +81,39 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 L'utilisation des informations affichées se fait sous la seule responsabilité de l'utilisateur. L'éditeur du site ne pourra être tenu responsable des conséquences liées à leur interprétation ou à leur utilisation.
             </p>
             <br>
-            <p>
-                En utilisant ce site, vous reconnaissez avoir pris connaissance de cet avertissement et acceptez les limites inhérentes aux données et aux calculs proposés.
-            </p>
         </div>
     </section>
 
     <section>
         <div class="container">
+            <h2>À propos des quantités de référence recommandées</h2>
+            <p>
+                Les quantités de référence affichées sur ce site sont fournies à titre indicatif afin de permettre une mise en perspective des apports nutritionnels calculés.
+                Ces valeurs sont établies à partir des références nutritionnelles publiées par l'ANSES, notamment dans l'avis du 2 mars 2021 relatif à l'actualisation des références nutritionnelles françaises en vitamines et minéraux <a href="/references#recommandation" target="_self" hreflang="fr" class="section-link">Voir les références</a>. Selon les nutriments, les valeurs retenues correspondent aux références les plus pertinentes (par exemple : <abbr title="Besoin nutritionnel moyen">BNM</abbr> ou <abbr title="Apport satisfaisant">AS</abbr> ou autre valeur de référence définie par l'ANSES).
+            </p>
+            <hr>
+            <h3>Porté des valeurs de références</h3>
+            <p>
+                Lorsque les recommandations diffèrent selon le sexe, une valeur représentative de la population adulte a été retenue, calculée à partir des recommandations applicables aux femmes et aux hommes adultes. Cette valeur ne correspond donc pas à une recommandation officielle pour une catégorie particulière de population, mais à un indicateur destiné à faciliter la comparaison des apports.
+                <br>
+                Ces références concernent exclusivement les adultes en bonne santé. Elles ne sont pas adaptées aux besoins spécifiques de certaines populations, notamment les enfants, les adolescents, les femmes enceintes ou allaitantes, les personnes âgées, les sportifs ou les personnes présentant une pathologie ou une situation physiologique particulière.
+            </p>
+            <hr>
+            <h3>Objectif et appréciation</h3>
+            <p>
+                Les pourcentages affichés par rapport à ces valeurs ont uniquement une vocation informative. Ils permettent d'apprécier l'ordre de grandeur d'un apport nutritionnel au regard de références générales et ne constituent ni une évaluation personnalisée des besoins, ni un avis médical ou diététique.
+                Les références nutritionnelles utilisées peuvent être mises à jour en fonction de l'évolution des connaissances scientifiques ou de la publication de nouvelles recommandations officielles.
+            </p>
+        </div>
+    </section>
 
+    <section class="section">
+        <div class="container">
+            <div style="padding: 1em" class="card">
+                <p>
+                    <b>En utilisant ce site, vous reconnaissez avoir pris connaissance de cet avertissement et acceptez les limites inhérentes aux données, calculs et recommandations proposés.</b>
+                </p>
+            </div>
         </div>
     </section>
 
