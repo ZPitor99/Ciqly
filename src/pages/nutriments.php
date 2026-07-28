@@ -65,17 +65,17 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                                    target="_blank" hreflang="fr" class="section-link">Anses - Lipides</a>
                                 <p>
                                     Les lipides sont plus couramment appelé "graisses".
-                                    L'ANSES recommande que les lipides représentent 35 à 40 % de la part de l'apport énergétique.
-                                    Compte tenu des familles d'aliments et la nature des lipides contenus, les acides gras représentent 56% à 95% des lipides totaux.
+                                    L'ANSES recommande que les lipides représentent <b>35 à 40 %</b> de la part de l'apport énergétique.
+                                    Compte tenu des familles d'aliments et la nature des lipides, les acides gras représentent entre 56% à 95% des lipides totaux.
                                 </p>
                             <br>
                             <h5>Les glucides</h5>
                                 <a href="https://www.anses.fr/fr/content/sucres-dans-lalimentation"
                                    target="_blank" hreflang="fr" class="section-link">Anses - Glucides</a>
                                 <p>
-                                    Parmi les glucides, on distingue les glucides simples (sucres) et les glucides complexes (amidons).
-                                    La part énergétique quotidienne apportée par les glucides recommandée est de 50 à 55 %
-                                    D'autre part, il est recommandé de ne pas consommer plus de 100 g de sucres totaux par jour (hors lactose et galactose).
+                                    On distingue au sein des glucides, deux types : les glucides simples (sucres) et les glucides complexes (amidons).
+                                    La part énergétique quotidienne apportée par les glucides recommandée est de <b>50 à 55 %</b>
+                                    En outre, il est recommandé de ne pas consommer plus de 100 g de sucres totaux par jour (hors lactose et galactose).
                                 </p>
 
                             <br>
@@ -85,7 +85,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                                 <p>
                                     Les protéines sont constituées d’un enchaînement d’acides aminés. On distingue les acides aminés non-indispensables,
                                     car elles peuvent être produites de manière endogène ; Et les acides aminés essentiels que l’on doit se procurer obligatoirement par l’alimentation.
-                                    Il est recommandé que la ration des protéines dans l'apport énergétique soit compris entre 10 et 20%.
+                                    Il est recommandé que la part des protéines dans l'apport énergétique soit compris entre <b>10 et 20%</b>.
                                 </p>
                         </div>
                     <hr>
@@ -103,7 +103,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                                 L'<abbr title="Apport satisfaisant">AS</abbr> est utilisé quand le <abbr title="Besoin nutritionnel moyen">BNM</abbr> ne peut pas être estimé, faute de données suffisantes.<br>
                                 D'autre part, La <abbr title="Limite supérieure de sécurité">LSS</abbr> est définie comme l'apport journalier maximal considéré comme peu susceptible de présenter un risque d'effets indésirables sur la santé.<br>
                                 Ci-joint les recommandations d'apport mineral quotidien : <a href="/static/extrait_apport_mensuel_mineraux_anses.pdf" class="section-link" aria-label="Extrait du rapport pdf de l'ANSES" title="Extrait du rapport pdf de l'ANSES" download>Télécharger les tableaux pdf</a><br>
-                                C.f Ressources puis Références en <a href="#footer"><strong>bas de page</strong></a> pour accéder au document complet ou directement sur le site de l'ANSES.
+                                C.f Ressources puis Références en <a href="#footer"><strong>bas de page</strong></a> pour accéder au document complet ou directement sur le site de l'ANSES détaillant méthodes, approches et expérimentations.
                             </p>
                         </div>
 
@@ -124,7 +124,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                                 L'<abbr title="Apport satisfaisant">AS</abbr> est utilisé quand le <abbr title="Besoin nutritionnel moyen">BNM</abbr> ne peut pas être estimé, faute de données suffisantes.<br>
                                 D'autre part, La <abbr title="Limite supérieure de sécurité">LSS</abbr> est définie comme l'apport journalier maximal considéré comme peu susceptible de présenter un risque d'effets indésirables sur la santé.<br>
                                 Ci-joint les recommandations d'apport vitamin quotidien : <a href="/static/extrait_apport_mensuel_vitamines_anses.pdf" class="section-link" aria-label="Extrait du rapport pdf de l'ANSES" title="Extrait du rapport pdf de l'ANSES" download>Télécharger les tableaux pdf</a><br>
-                                C.f Ressources puis Références en <a href="#footer"><strong>bas de page</strong></a> pour accéder au document complet ou directement sur le site de l'ANSES.
+                                C.f Ressources puis Références en <a href="#footer"><strong>bas de page</strong></a> pour accéder au document complet ou directement sur le site de l'ANSES détaillant méthodes, approches et expérimentations.
                             </p>
                         </div>
 

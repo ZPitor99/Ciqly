@@ -89,13 +89,13 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
     </section>
     <section class="search-section bg-sand">
         <div class="container">
-            <h2>À propos des nutriments et informations associées</h2>
+            <h2 id="recommandation">À propos des nutriments et informations associées</h2>
 
             <div>
                 <h3>Informations et valeurs recommandées</h3>
                 <p>
                     Le rapport émis par l'ANSES sur les recommandations suites à étude menée à propos des vitamines et minéraux.
-                    Des extraits des tableaux résultant de ce rapport ont été repris dans la section Nutriment du site web.
+                    Des extraits des tableaux résultant de ce rapport ont été repris dans la section Nutriment du site web ou dans les valeurs de références dans l'Assemblage d'aliments.
                 </p>
                 <a href="/static/references_nutritionnelles_en_vitamines_mineraux.pdf" target="_blank" title="Rapport complet Vitamines et Minéraux - pdf" class="section-link" download>Actualisation des références nutritionnelles françaises en vitamines et minéraux - Mars 2021</a>
                 <p>

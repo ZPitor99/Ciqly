@@ -41,7 +41,7 @@ else {
         $distinct_grp = $_SESSION['tab_stat']['distinct_grp'];
     }
     if (!isset($_SESSION['tab_stat']['concat_conf']) || empty($_SESSION['tab_stat'])){
-        $concat_conf = "&mdash;";
+        $concat_conf = "Non définie";
     }
     else{
         $concat_conf = $_SESSION['tab_stat']['concat_conf'];

@@ -56,6 +56,15 @@ if (isset($_POST['assemblage'])) {
             'glucides' => ['recommandee' => 265, 'calculee' => $data2["31000"]],
             'lipides' => ['recommandee' => 85, 'calculee' => $data2["40000"]],
         ];
+        $_SESSION['list_min'] = [
+
+        ];
+        $_SESSION['list_vit'] = [
+
+        ];
+        $_SESSION['tab_nut'] = [
+
+        ];
     }
     $_SESSION['calcul_assemblage'] = true;
     header('Location: /assemblage');

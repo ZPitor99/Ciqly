@@ -83,15 +83,38 @@ function assemblage_graphique($alim_codes, $alim_coef): array
     if ($alim_codes !== null && $alim_coef !== null && $alim_codes != [] && $alim_coef != []) {
 
         $sql = 'SELECT
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 333))   AS "333",
+            -- eau
             round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 400))   AS "400",
+            -- graphique
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 333))   AS "333",
             round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 25000)) AS "25000",
             round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 31000)) AS "31000",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 40000)) AS "40000"
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 40000)) AS "40000",
+            -- minéraux
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10110)) AS "10110",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10120)) AS "10120",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10150)) AS "10150",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10190)) AS "10190",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10200)) AS "10200",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10260)) AS "10260",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10290)) AS "10290",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10300)) AS "10300",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10340)) AS "10340",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10530)) AS "10530",
+            -- vitamine
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 51104)) AS "51104",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 55100)) AS "55100",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 52100)) AS "52100",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 71010)) AS "71010",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 54101)) AS "54101",
+            -- nutriment compl
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 32410)) AS "32410",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 34100)) AS "34100",
+            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 75100)) AS "75100"
         FROM composition cp
-        INNER JOIN unnest(:codes::int[], :coefs::numeric[]) AS cf(alim_code, coef)
-            ON cp.alim_code = cf.alim_code
-        WHERE cp.const_code IN (31000, 40000, 25000, 333, 400)';
+                 INNER JOIN unnest(:codes::int[], :coefs::numeric[]) AS cf(alim_code, coef)
+                            ON cp.alim_code = cf.alim_code
+        WHERE cp.const_code = ANY(ciqly_const_codes())';
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
