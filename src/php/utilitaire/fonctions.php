@@ -56,8 +56,8 @@ function assemblage_tableau($alim_codes): array
             composition c
                 inner join aliments a on a.alim_code = c.alim_code
         WHERE
-            (const_code=31000 or const_code=40000 or const_code=25000 or const_code=333 or const_code=400)
-          AND c.alim_code = ANY(:codes::int[])";
+            c.const_code = ANY(ciqly_const_codes())
+            AND c.alim_code = ANY(:codes::int[])";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -82,46 +82,23 @@ function assemblage_graphique($alim_codes, $alim_coef): array
 
     if ($alim_codes !== null && $alim_coef !== null && $alim_codes != [] && $alim_coef != []) {
 
-        $sql = 'SELECT
-            -- eau
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 400))   AS "400",
-            -- graphique
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 333))   AS "333",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 25000)) AS "25000",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 31000)) AS "31000",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 40000)) AS "40000",
-            -- minéraux
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10110)) AS "10110",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10120)) AS "10120",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10150)) AS "10150",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10190)) AS "10190",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10200)) AS "10200",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10260)) AS "10260",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10290)) AS "10290",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10300)) AS "10300",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10340)) AS "10340",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 10530)) AS "10530",
-            -- vitamine
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 51104)) AS "51104",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 55100)) AS "55100",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 52100)) AS "52100",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 71010)) AS "71010",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 54101)) AS "54101",
-            -- nutriment compl
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 32410)) AS "32410",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 34100)) AS "34100",
-            round(sum(cp.teneur_valeur*cf.coef) FILTER (WHERE cp.const_code = 75100)) AS "75100"
+        $sql = "SELECT
+            cp.const_code AS t_cde,
+            round(sum(cp.teneur_valeur*cf.coef)) AS t_cf
         FROM composition cp
-                 INNER JOIN unnest(:codes::int[], :coefs::numeric[]) AS cf(alim_code, coef)
-                            ON cp.alim_code = cf.alim_code
-        WHERE cp.const_code = ANY(ciqly_const_codes())';
+                INNER JOIN
+            unnest(:codes::int[], :coefs::numeric[]) AS cf(alim_code, coef)
+                ON cp.alim_code = cf.alim_code
+        WHERE cp.const_code = ANY(ciqly_const_codes())
+        GROUP BY cp.const_code
+        ORDER BY cp.const_code";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             'codes' => prepare_pg_array($alim_codes),
             'coefs' => prepare_pg_array($alim_coef)
         ]);
-        $rows = $stmt->fetch();
+        $rows = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
         if (empty($rows)) {
             $result = [];
@@ -132,4 +109,48 @@ function assemblage_graphique($alim_codes, $alim_coef): array
         return $result;
     }
     return [];
+}
+
+function assemblage_null($alim_codes): string{
+    $pdo = Database::get();
+
+    if ($alim_codes !== null) {
+
+        $sql = "SELECT 
+            ciqly_const_assembl_null(:codes::int[]);";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            'codes' => prepare_pg_array($alim_codes)
+        ]);
+        $rows = $stmt->fetch();
+
+        if (empty($rows)) {
+            $result = "";
+        }
+        else{
+            $result = $rows['ciqly_const_assembl_null'];
+        }
+        return $result;
+    }
+    return "";
+}
+
+function assemblage_cache_nutriment_ref(): array
+{
+    $pdo = Database::get();
+
+    $sql = "SELECT 
+        nature,
+        const_code,
+        nom,
+        unite,
+        val_moy, 
+        comm 
+    FROM 
+        ciqly_cache_assemblage";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll();
+
 }
