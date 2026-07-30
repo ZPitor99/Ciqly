@@ -279,3 +279,261 @@ main {
         text-align: center;
     }
 }
+
+/* ================================================================
+   TABLEAU DE BORD — RÉSULTAT D'ASSEMBLAGE
+   ================================================================
+   Ciblage sans toucher au PHP : on s'appuie sur des points d'ancrage
+   déjà présents dans le markup (#chart, #chart-eau, #somme, [x-data])
+   via :has(), plutôt que sur des sélecteurs de position fragiles.
+   ================================================================ */
+
+/* ── Grille générale du dashboard ──────────────────────────────── */
+.section:has(#chart) {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    max-width: 1160px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+}
+
+/* Les .container internes n'ont plus à gérer leur propre largeur :
+   c'est la grille du dashboard qui centre et espace tout. */
+.section:has(#chart) .container {
+    max-width: none;
+    padding-inline: 0;
+    margin-inline: 0;
+    /* Empêche un contenu large (tableau, graphique) de forcer
+       toute la grille à déborder de l'écran sur mobile. */
+    min-width: 0;
+}
+
+/* Par défaut, chaque bloc occupe toute la largeur ;
+   seules les cartes graphiques sont repositionnées plus bas. */
+.section:has(#chart) > .container {
+    grid-column: 1 / -1;
+}
+
+/* ── Cartes statistiques (transforme le tableau en cartes) ───────── */
+.data-table:has(#somme) caption {
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin-bottom: 0.9rem;
+}
+
+.data-table:has(#somme) thead {
+    display: none;
+}
+
+.data-table:has(#somme) table {
+    display: block;
+    width: 100%;
+}
+
+.data-table:has(#somme) tbody {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.data-table:has(#somme) tr {
+    flex: 1 1 200px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.35rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    padding: 1.25rem 1.5rem;
+    transition: var(--transition);
+}
+
+.data-table:has(#somme) tr:hover {
+    border-color: var(--sky-mid);
+    box-shadow: var(--shadow-lift);
+}
+
+.data-table:has(#somme) td {
+    padding: 0;
+    border: none;
+}
+
+.data-table:has(#somme) td:first-child {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+}
+
+.data-table:has(#somme) td:last-child {
+    font-family: var(--font-display), serif;
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: left;
+}
+
+/* ── Graphiques : grand (barres) + petit (donut) côte à côte ─────── */
+.section:has(#chart) .container:has(#chart) {
+    grid-column: 1 / 9;
+}
+
+.section:has(#chart) .container:has(#chart-eau) {
+    grid-column: 9 / -1;
+}
+
+.section:has(#chart) .container:has(#chart) .card,
+.section:has(#chart) .container:has(#chart-eau) .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.section:has(#chart) .container:has(#chart) .card__body,
+.section:has(#chart) .container:has(#chart-eau) .card__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+#chart,
+#chart-eau {
+    width: 100%;
+    min-width: 0;
+}
+
+#chart canvas,
+#chart svg,
+#chart-eau canvas,
+#chart-eau svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ── Minéraux / vitamines : cartes pleine largeur empilées ───────── */
+.section:has(#chart) [x-data] {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.section:has(#chart) [x-data] > div {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    padding: 1.5rem 1.75rem;
+    min-width: 0;
+}
+
+.section:has(#chart) [x-data] > div > button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: transparent;
+    border: none;
+    font-family: var(--font-body), sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.section:has(#chart) [x-data] > div > button span {
+    color: var(--sky-dark);
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.section:has(#chart) [x-data] h3 {
+    margin-top: 1.25rem;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+}
+
+.section:has(#chart) .nutrient-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+/* Encart "Macro-nutriment non défini" : mis en avant en ton chaud,
+   repéré via l'absence de bouton (donc différent des accordéons). */
+.section:has(#chart) [x-data] > div:not(:has(button)) {
+    background: var(--sand-soft);
+    border-color: var(--sand-mid);
+}
+
+.section:has(#chart) [x-data] > div:not(:has(button)) h3 {
+    margin-top: 0;
+    font-size: 0.95rem;
+}
+
+.section:has(#chart) [x-data] > div:not(:has(button)) p {
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+}
+
+/* ── Autres nutriments + note légale : côte à côte ───────────────── */
+.section:has(#chart) .data-table:not(:has(#somme)) {
+    grid-column: 1 / 7;
+}
+
+.section:has(#chart) .data-table:not(:has(#somme)) caption {
+    text-align: left;
+    margin-bottom: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.section:has(#chart) .data-table:not(:has(#somme)) table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.section:has(#chart) .data-table:not(:has(#somme)) td,
+.section:has(#chart) .data-table:not(:has(#somme)) th {
+    word-break: break-word;
+}
+
+.section:has(#chart) .container.mt-3 {
+    grid-column: 7 / -1;
+    max-width: none;
+    align-self: start;
+}
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+    .section:has(#chart) {
+        grid-template-columns: 1fr;
+    }
+
+    .section:has(#chart) .container:has(#chart),
+    .section:has(#chart) .container:has(#chart-eau),
+    .section:has(#chart) .data-table:not(:has(#somme)),
+    .section:has(#chart) .container.mt-3 {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 560px) {
+    .data-table:has(#somme) tbody {
+        flex-direction: column;
+    }
+
+    .data-table:has(#somme) tr {
+        flex: 1 1 auto;
+    }
+
+    .section:has(#chart) [x-data] > div {
+        padding: 1.25rem;
+    }
+}

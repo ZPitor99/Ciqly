@@ -99,7 +99,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 </p>
                 <a href="/static/references_nutritionnelles_en_vitamines_mineraux.pdf" target="_blank" title="Rapport complet Vitamines et Minéraux - pdf" class="section-link" download>Actualisation des références nutritionnelles françaises en vitamines et minéraux - Mars 2021</a>
                 <p>
-                    Concernant les macros nutriments, les données à caractère informationnel sûr les nutriments sont tirées des deux sites ci-dessous.
+                    Concernant les macros nutriments, les données à caractère informationnel sur les nutriments sont tirés des sites ci-dessous.
                 </p>
                 <ul>
                     <li>
@@ -110,6 +110,12 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     </li>
                     <li>
                         <span> <a href="https://wikiland.org/fr/Metabolizable_energy" target="_blank" hreflang="fr" class="section-link">Site web - Le système d'Atwater</a> - Daté du 03/2026 </span>
+                    </li>
+                    <li>
+                        <span> <a href="https://www.larousse.fr/" target="_blank" hreflang="fr" class="section-link">Dictionnaire en ligne - Larousse</a> - Daté du 08/2026 </span>
+                    </li>
+                    <li>
+                        <span> <a href="https://dictionnaire.lerobert.com/" target="_blank" hreflang="fr" class="section-link">Dictionnaire en ligne - Le Robert</a> - Daté du 08/2026 </span>
                     </li>
                 </ul>
             </div>

@@ -637,46 +637,7 @@
 
 .nutrient-list { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
 
-.nutrient-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
 
-.nutrient-item__name {
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: var(--ink-mid);
-    width: 110px;
-    flex-shrink: 0;
-}
-
-.nutrient-item__bar {
-    flex: 1;
-    height: 7px;
-    background: var(--sand-soft);
-    border-radius: 999px;
-    overflow: hidden;
-}
-
-.nutrient-item__fill {
-    height: 100%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--sky-mid), var(--sky-dark));
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.nutrient-item__fill--warm {
-    background: linear-gradient(90deg, var(--sand-dark), #C9784A);
-}
-
-.nutrient-item__val {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--ink);
-    min-width: 52px;
-    text-align: right;
-}
 
 /* ═══════════════════════════════════════════════════════════
    FOOTER

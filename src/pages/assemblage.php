@@ -14,18 +14,30 @@ $tags = $vite->createTags("js/assemblage.js");
 
 $message = null;
 
+function toutesDefinies(array $cles): bool
+{
+    foreach ($cles as $cle) {
+        if (empty($_SESSION[$cle])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 if (!isset($_SESSION['calcul_assemblage'])){
     $_SESSION['calcul_assemblage'] = false;
 }
 else {
-    if (!isset($_SESSION['graphique1']) || !isset($_SESSION['graphique2']) || $_SESSION['graphique1'] == [] || $_SESSION['graphique2'] == []) {
+    if (!toutesDefinies(['graphique1', 'graphique2', 'list_min', 'list_vit', 'tab_nut', 'assemblage_null'])) {
         $message = 'Certaines données n\'ont pas pu être chargées, certains affichages peuvent être affectés';
     }
     else {
-        $donnees = $_SESSION['graphique2'];
-        $donnees_graphique = htmlspecialchars(json_encode($donnees), ENT_QUOTES, "UTF-8");
-        $donnees_eau = $_SESSION['graphique1'];
-        $donnees_graphique_eau = htmlspecialchars(json_encode($donnees_eau), ENT_QUOTES, "UTF-8");
+        $donnees_graphique = htmlspecialchars(json_encode($_SESSION['graphique2']), ENT_QUOTES, "UTF-8");
+        $donnees_graphique_eau = htmlspecialchars(json_encode($_SESSION['graphique1']), ENT_QUOTES, "UTF-8");
+        $donnees_list_min = $_SESSION['list_min'];
+        $donnees_list_vit = $_SESSION['list_vit'];
+        $donnees_tab_nut = $_SESSION['tab_nut'];
+        $champ_assemblage_null = nl2br(htmlspecialchars($_SESSION['assemblage_null']));
     }
 
     if (!isset($_SESSION['tab_stat']['nb_aliment']) || empty($_SESSION['tab_stat'])) {
@@ -81,6 +93,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 <?php
                 if (isset($_SESSION['panier']) && $_SESSION['panier'] != []) {
                     $alim_codes = array_keys($_SESSION['panier']);
+
 
                     echo '<form action="/action_calcul_assemblage" method="POST" x-data="{ quantites: {} }">';
 
@@ -139,78 +152,154 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
     if ($_SESSION['panier'] != [] && $_SESSION['calcul_assemblage'] === true) {
         $_SESSION['calcul_assemblage'] = false;
         echo <<<HTML
-        <section class="section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Résultat</h2>
+            <section class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Résultat</h2>
+                    </div>   
                 </div>   
-            </div>     
-            <div class="container data-table">
-                <table>
-                    <caption>Statistiques général</caption>
-                    <thead>
-                        <tr>
-                            <th>Données</th>
-                            <th>Valeur</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Nombre d'aliments <span title="Définition : Nombre total d'aliments sélectionnés.">&#9432;</span></td>
-                            <td id="somme">$nb_aliment</td>
-                        </tr>
-                        <tr>
-                            <td>Indice de diversité <span title="Définition : proportion de catégories d'aliments distinctes présentes dans le panier.">&#9432;</span></td>
-                            <td id="diversite">$distinct_grp</td>
-                        </tr>
-                        <tr>
-                            <td>Score de Fiabilité des graphiques <span title="Définition : moyenne des scores de confiance attribués à chaque source des données utilisées pour les graphiques. (A, B, C ou D)">&#9432;</span></td>
-                            <td id="fiabilite">$concat_conf</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="container container--narrow">
-                <div class="card">
-                    <div class="card__body">
-                        <span class="section-label">Résultat du panier</span>
-                        <h3>Répartition nutritionnelle</h3>
-                        <div id="chart" data-graphique='{$donnees_graphique}'></div>
+                  
+                <div class="container data-table">
+                    <table>
+                        <caption>Statistiques général</caption>
+                        <thead>
+                            <tr>
+                                <th>Données</th>
+                                <th>Valeur</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Nombre d'aliments <span title="Définition : Nombre total d'aliments sélectionnés.">&#9432;</span></td>
+                                <td id="somme">$nb_aliment</td>
+                            </tr>
+                            <tr>
+                                <td>Indice de diversité <span title="Définition : proportion de catégories d'aliments distinctes présentes dans le panier.">&#9432;</span></td>
+                                <td id="diversite">$distinct_grp</td>
+                            </tr>
+                            <tr>
+                                <td>Score de Fiabilité <span title="Définition : moyenne des scores de confiance attribués à chaque source des données utilisées pour l'assemblage. (A, B, C ou D)">&#9432;</span></td>
+                                <td id="fiabilite">$concat_conf</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="container container--narrow">
+                    <div class="card">
+                        <div class="card__body">
+                            <span class="section-label">Résultat du panier</span>
+                            <h3>Répartition nutritionnelle</h3>
+                            <div id="chart" data-graphique='{$donnees_graphique}'></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="container container--narrow">
-                <div class="card">
-                    <div class="card__body">
-                        <span class="section-label">Résultat du panier</span>
-                        <h3>Proportion aqueuse d'assemblage</h3>
-                        <div id="chart-eau" data-graphique='{$donnees_graphique_eau}'></div>
+                
+                <div class="container container--narrow">
+                    <div class="card">
+                        <div class="card__body">
+                            <span class="section-label">Résultat du panier</span>
+                            <h3>Proportion aqueuse d'assemblage</h3>
+                            <div id="chart-eau" data-graphique='{$donnees_graphique_eau}'></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="container" x-data="{ open_mineraux: true, open_vitamines: true}">
-                <div>
-                    <button type="button" @click="open_mineraux = ! open_mineraux">
-                        Les minéreaux
-                        <span x-show="open_mineraux">⌃</span>
-                        <span x-show="!open_mineraux">⌄</span>
-                    </button>                                
-                    <div class="menu-dropdown" x-show="open_mineraux" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
-                            
+                
+                <div class="container" x-data="{ open_mineraux: true, open_vitamines: true}">
+                    <div>
+                        <button type="button" @click="open_mineraux = ! open_mineraux">
+                            Les minéreaux
+                            <span x-show="open_mineraux">⌃</span>
+                            <span x-show="!open_mineraux">⌄</span>
+                        </button>                                
+                        <div x-show="open_mineraux" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
+                            <h3>Minéraux sur apport quotient</h3>
+                            <ul class="nutrient-list" aria-label="Liste des minéraux">
+            HTML;
+                            foreach ($donnees_list_min as $code => $datas){
+                                echo <<<HTML
+                                    <li class="nutrient-item">
+                                        <span class="nutrient-item__name">{$datas["nom"]}</span>
+                                        <div class="nutrient-item__bar" role="progressbar" aria-valuenow="{$datas["pourcentage"]}" aria-valuemin="0"
+                                             aria-valuemax="100">
+                                            <div class="nutrient-item__fill " style="width:{$datas["pourcentage"]}%"></div>
+                                        </div>
+                                        <span class="nutrient-item__val">{$datas["valeur"]} {$datas["unite"]}</span>
+                                    </li>
+                                HTML;
+                            }
+                            echo <<<HTML
+                        </ul>
                     </div>
-                </div>  
+                </div>
+
                 <div>
                     <button type="button" @click="open_vitamines = ! open_vitamines">
                         Les vitamines
                         <span x-show="open_vitamines">⌃</span>
                         <span x-show="!open_vitamines">⌄</span>
                     </button>                                
-                    <div class="menu-dropdown" x-show="open_vitamines" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
-                            
+                    <div x-show="open_vitamines" x-cloak x-transition:enter.duration.400ms x-transition:leave.duration.300ms>
+                    <h3>Vitamines sur apport quotient</h3>
+                    <ul class="nutrient-list" aria-label="Liste des vitamines">
+            HTML;
+                                foreach ($donnees_list_vit as $code => $datas){
+                                    echo <<<HTML
+                                    <li class="nutrient-item">
+                                        <span class="nutrient-item__name">{$datas["nom"]}</span>
+                                        <div class="nutrient-item__bar" role="progressbar" aria-valuenow="{$datas["pourcentage"]}" aria-valuemin="0"
+                                             aria-valuemax="100">
+                                            <div class="nutrient-item__fill nutrient-item__fill--warm" style="width:{$datas["pourcentage"]}%"></div>
+                                        </div>
+                                        <span class="nutrient-item__val">{$datas["valeur"]} {$datas["unite"]}</span>
+                                    </li>
+                                    HTML;
+                                }
+                                echo <<<HTML
+                        </ul>
                     </div>
-                </div>        
-                
-            </div>
+                </div>
+                HTML;
+                if ($champ_assemblage_null != ''){
+                    echo <<<HTML
+                    <div>
+                        <h3>Macro-nutriment non défini dans la table Ciqual</h3>
+                        <p><b>Attention certains visuels peuvent être faussés ou nulls</b></p>
+                        <p>{$champ_assemblage_null}</p>
+                    </div>
+                    HTML;
+
+                }
+                echo <<<HTML
+                    </div>
+                <div class="container data-table">
+                    <table>
+                        <caption>Autres nutriments</caption>
+                        <thead>
+                            <tr>
+                                <th>Nutriment</th>
+                                <th>Quantité</th>
+                            </tr>
+                        </thead>
+                        <tbody>       
+                HTML;
+
+                        foreach ($donnees_tab_nut as $code => $datas){
+                            $titre = nl2br(htmlspecialchars($datas["info"]));
+                            $nom = htmlspecialchars($datas["nom"]);
+                            $valeur = htmlspecialchars($datas["valeur"]);
+                            echo <<<HTML
+                                <tr>
+                                    <td>$nom <span title="$titre">&#9432;</span></td>
+                                    <td>$valeur</td>
+                                </tr>
+                            HTML;
+                        }
+                        echo <<<HTML
+                        </tbody>
+                    </table>
+                </div>
+            
             <div class="container mt-3">
                 <p class="text-muted small">
                 Les valeurs nutritionnelles affichées sont des estimations calculées à partir de la table CIQUAL de l'ANSES et peuvent différer des valeurs réelles.
