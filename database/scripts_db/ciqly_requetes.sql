@@ -1,4 +1,4 @@
--- Selection des groupes avec sous-groupes associés
+-- Selection des groupes avec sous-groupes associés (View)
 SELECT DISTINCT
             DENSE_RANK() OVER (
         ORDER BY
@@ -16,7 +16,7 @@ ORDER BY
     id,
     HC.ALIM_SSGROUPE_CODE;
 
--- Selection des sous-groupes avec sous-sous-groupes associés
+-- Selection des sous-groupes avec sous-sous-groupes associés (View)
 SELECT
     HC.ALIM_SSGROUPE_CODE,
     SSG.ALIM_SSSSGROUPE_CODE,
@@ -28,7 +28,7 @@ FROM
         INNER JOIN SSSSGROUPE SSG ON HC.ALIM_SSSSGROUPE_CODE = SSG.ALIM_SSSSGROUPE_CODE;
 
 
--- Selection infos pour un ensemble d'aliments
+-- Selection infos pour un ensemble d'aliments (tab)
 SELECT
     count(DISTINCT a.alim_code) AS nb_aliment,
     count(DISTINCT a.alim_grp_code) AS distinct_grp,
@@ -39,6 +39,17 @@ FROM
 WHERE
     (const_code=31000 or const_code=40000 or const_code=25000 or const_code=333)
   AND c.alim_code in (8552, 25510, 20306, 13411);
+
+SELECT
+    count(DISTINCT a.alim_code) AS nb_aliment,
+    count(DISTINCT a.alim_grp_code) AS distinct_grp,
+    eval_confiance(string_agg(c.code_confiance, '')) AS concat_conf
+FROM
+    composition c
+        inner join aliments a on a.alim_code = c.alim_code
+WHERE
+    c.const_code = ANY(ciqly_const_codes())
+  AND c.alim_code = ANY(8552, 25510, 20306, 13411);
 
 
 
@@ -70,3 +81,28 @@ FROM composition cp
              ARRAY[0.8, 2.2, 1, 1.25]
      ) AS cf(alim_code, coef) ON cp.alim_code = cf.alim_code
 WHERE cp.const_code IN (31000, 40000, 25000, 333, 400);
+
+-- Choix final pas de pivot pour récuperer les 24 alim_codes
+SELECT
+    cp.const_code AS t_cde,
+    round(sum(cp.teneur_valeur*cf.coef)) AS t_cf
+FROM composition cp
+         INNER JOIN
+     unnest(
+             ARRAY[25081, 19628, 13026, 25644],
+             ARRAY[2.5, 1.25, 2.25, 0.25]
+     ) AS cf(alim_code, coef) ON cp.alim_code = cf.alim_code
+WHERE cp.const_code = ANY(ciqly_const_codes())
+GROUP BY cp.const_code
+ORDER BY cp.const_code;
+
+-- Cache infos affichage TDB
+SELECT
+    nature,
+    const_code,
+    nom,
+    unite,
+    val_moy,
+    comm
+FROM
+    ciqly_cache_assemblage
