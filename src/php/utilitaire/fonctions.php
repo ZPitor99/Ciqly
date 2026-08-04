@@ -8,16 +8,18 @@ function peupler_aliment($groupe, $sousGroupe, $sousSousGroupe): ?array
 
     if ($groupe !== null) {
         $groupe = sprintf('%02d', $groupe);
-        $sql = 'SELECT alim_code, alim_nom_fr, alim_nom_eng FROM aliments WHERE alim_grp_code = :groupe';
+        $sql = 'SELECT alim_code, alim_nom_fr, alim_nom_eng FROM ciqly_data.aliments WHERE alim_grp_code = :groupe';
         $bindings = ['groupe' => $groupe];
 
-        if ($sousSousGroupe !== 'all') {
-            $sql .= ' AND alim_ssssgrp_code = :ssssgroupe';
-            $bindings['ssssgroupe'] = $sousSousGroupe;
-        } elseif ($sousGroupe !== 'all') {
+        if ($sousGroupe !== 'all') {
             $sql .= ' AND alim_ssgrp_code = :ssgroupe';
             $bindings['ssgroupe'] = $sousGroupe;
         }
+        elseif ($sousSousGroupe !== 'all') {
+            $sql .= ' AND alim_ssssgrp_code = :ssssgroupe';
+            $bindings['ssssgroupe'] = $sousSousGroupe;
+        }
+
 
         $sql .= ' ORDER BY alim_nom_fr';
 
@@ -51,12 +53,12 @@ function assemblage_tableau($alim_codes): array
         $sql = "SELECT
             count(DISTINCT a.alim_code) AS nb_aliment,
             count(DISTINCT a.alim_grp_code) AS distinct_grp,
-            eval_confiance(string_agg(c.code_confiance, '')) AS concat_conf
+            ciqly_data.eval_confiance(string_agg(c.code_confiance, '')) AS concat_conf
         FROM
-            composition c
-                inner join aliments a on a.alim_code = c.alim_code
+            ciqly_data.composition c
+                inner join ciqly_data.aliments a on a.alim_code = c.alim_code
         WHERE
-            c.const_code = ANY(ciqly_const_codes())
+            c.const_code = ANY(ciqly_data.ciqly_const_codes())
             AND c.alim_code = ANY(:codes::int[])";
 
         $stmt = $pdo->prepare($sql);
@@ -85,11 +87,11 @@ function assemblage_graphique($alim_codes, $alim_coef): array
         $sql = "SELECT
             cp.const_code AS t_cde,
             round(sum(cp.teneur_valeur*cf.coef)) AS t_cf
-        FROM composition cp
+        FROM ciqly_data.composition cp
                 INNER JOIN
             unnest(:codes::int[], :coefs::numeric[]) AS cf(alim_code, coef)
                 ON cp.alim_code = cf.alim_code
-        WHERE cp.const_code = ANY(ciqly_const_codes())
+        WHERE cp.const_code = ANY(ciqly_data.ciqly_const_codes())
         GROUP BY cp.const_code
         ORDER BY cp.const_code";
 
@@ -117,7 +119,7 @@ function assemblage_null($alim_codes): string{
     if ($alim_codes !== null) {
 
         $sql = "SELECT 
-            ciqly_const_assembl_null(:codes::int[]);";
+            ciqly_data.ciqly_const_assembl_null(:codes::int[]);";
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
@@ -148,7 +150,7 @@ function assemblage_cache_nutriment_ref(): array
         val_moy, 
         comm 
     FROM 
-        ciqly_cache_assemblage";
+        ciqly_data.ciqly_cache_assemblage";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();

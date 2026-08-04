@@ -7,6 +7,8 @@ COMMENT ON DATABASE ciqual IS 'Base de données du Site Web Ciqly - https://gith
 
 CREATE SCHEMA ciqly_data;
 
+set search_path = ciqly_data, "$user", public;
+
 CREATE TABLE ciqly_data.groupe (
     alim_groupe_code CHAR(2),
     alim_groupe_fr   VARCHAR(75),

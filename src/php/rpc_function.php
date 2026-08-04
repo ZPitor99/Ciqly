@@ -25,7 +25,7 @@ function rpc_aliment(PDO $pdo, array $params): array
 {
     requireParams($params, ['id']);
 
-    $stmt = $pdo->prepare('SELECT * FROM aliments WHERE alim_code = :id');
+    $stmt = $pdo->prepare('SELECT * FROM ciqly_data.aliments WHERE alim_code = :id');
     $stmt->execute(['id' => $params['id']]);
 
     $row = $stmt->fetch();
@@ -38,7 +38,7 @@ function rpc_aliment(PDO $pdo, array $params): array
 
 function rpc_groupeToSousGroupe(PDO $pdo): object
 {
-    $stmt = $pdo->prepare('SELECT id AS num, alim_ssgroupe_code AS id, alim_ssgroupe_fr AS nom, alim_ssgroupe_eng AS nom_en FROM VW_GROUPE_SSGROUPE_ID ORDER BY alim_ssgroupe_fr');
+    $stmt = $pdo->prepare('SELECT id AS num, alim_ssgroupe_code AS id, alim_ssgroupe_fr AS nom, alim_ssgroupe_eng AS nom_en FROM ciqly_data.VW_GROUPE_SSGROUPE_ID ORDER BY alim_ssgroupe_fr');
     $stmt->execute();
 
     $rows = $stmt->fetchAll();
@@ -63,7 +63,7 @@ function rpc_groupeToSousGroupe(PDO $pdo): object
 
 function rpc_sousGroupeToSousSousGroupe(PDO $pdo): object
 {
-    $stmt = $pdo->prepare('SELECT alim_ssgroupe_code AS num , alim_ssssgroupe_code AS id, alim_ssssgroupe_fr AS nom, alim_ssssgroupe_eng AS nom_en FROM VW_SSGROUPE_SSSSGROUPE_NUM ORDER BY alim_ssssgroupe_fr');
+    $stmt = $pdo->prepare('SELECT alim_ssgroupe_code AS num , alim_ssssgroupe_code AS id, alim_ssssgroupe_fr AS nom, alim_ssssgroupe_eng AS nom_en FROM ciqly_data.VW_SSGROUPE_SSSSGROUPE_NUM ORDER BY alim_ssssgroupe_fr');
     $stmt->execute();
 
     $result = [];
