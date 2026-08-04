@@ -44,19 +44,19 @@ else {
         $nb_aliment = "&mdash;";
     }
     else {
-        $nb_aliment = $_SESSION['tab_stat']['nb_aliment'];
+        $nb_aliment = htmlspecialchars($_SESSION['tab_stat']['nb_aliment']);
     }
     if (!isset($_SESSION['tab_stat']['distinct_grp']) || empty($_SESSION['tab_stat'])){
         $distinct_grp = "&mdash;";
     }
     else{
-        $distinct_grp = $_SESSION['tab_stat']['distinct_grp'];
+        $distinct_grp = htmlspecialchars($_SESSION['tab_stat']['distinct_grp']);
     }
     if (!isset($_SESSION['tab_stat']['concat_conf']) || empty($_SESSION['tab_stat'])){
         $concat_conf = "Non définie";
     }
     else{
-        $concat_conf = $_SESSION['tab_stat']['concat_conf'];
+        $concat_conf = htmlspecialchars($_SESSION['tab_stat']['concat_conf']);
     }
 }
 
@@ -185,23 +185,21 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     </table>
                 </div>
                 
+                <br>
+                
                 <div class="container container--narrow">
-                    <div class="card">
-                        <div class="card__body">
-                            <span class="section-label">Résultat du panier</span>
-                            <h3>Répartition nutritionnelle</h3>
-                            <div id="chart" data-graphique='{$donnees_graphique}'></div>
-                        </div>
+                    <div class="card__body">
+                        <span class="section-label">Résultat du panier</span>
+                        <h3>Répartition nutritionnelle</h3>
+                        <div id="chart" data-graphique='{$donnees_graphique}'></div>
                     </div>
                 </div>
                 
                 <div class="container container--narrow">
-                    <div class="card">
-                        <div class="card__body">
-                            <span class="section-label">Résultat du panier</span>
-                            <h3>Proportion aqueuse d'assemblage</h3>
-                            <div id="chart-eau" data-graphique='{$donnees_graphique_eau}'></div>
-                        </div>
+                    <div class="card__body">
+                        <span class="section-label">Résultat du panier</span>
+                        <h3>Proportion aqueuse d'assemblage</h3>
+                        <div id="chart-eau" data-graphique='{$donnees_graphique_eau}'></div>
                     </div>
                 </div>
                 
@@ -264,7 +262,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     echo <<<HTML
                     <div>
                         <h3>Macro-nutriment non défini dans la table Ciqual</h3>
-                        <p><b>Attention certains visuels peuvent être faussés ou nulls</b></p>
+                        <p><b>Attention certains visuels peuvent être faussés ou nuls</b></p>
                         <p>{$champ_assemblage_null}</p>
                     </div>
                     HTML;

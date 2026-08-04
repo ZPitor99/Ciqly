@@ -347,17 +347,9 @@ main {
     display: flex;
     flex-direction: column-reverse;
     gap: 0.35rem;
+    border: none;
     background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
     padding: 1.25rem 1.5rem;
-    transition: var(--transition);
-}
-
-.data-table:has(#somme) tr:hover {
-    border-color: var(--sky-mid);
-    box-shadow: var(--shadow-lift);
 }
 
 .data-table:has(#somme) td {
@@ -428,7 +420,6 @@ main {
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
     padding: 1.5rem 1.75rem;
     min-width: 0;
 }
@@ -508,6 +499,10 @@ main {
     grid-column: 7 / -1;
     max-width: none;
     align-self: start;
+}
+
+hr {
+    display: block;
 }
 
 /* ── Responsive ────────────────────────────────────────────────── */
