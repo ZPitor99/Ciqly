@@ -52,6 +52,15 @@ document.addEventListener('alpine:init', () => {
             } catch (err) {
                 console.error('Erreur de chargement du JSON via API', err);
             }
+
+            const params = new URLSearchParams(window.location.search);
+            const groupe = params.get('preview');
+
+            if (groupe !== null) {
+                this.selectGroupe(parseInt(groupe, 10));
+                // Nettoie l'URL pour refresh
+                window.history.replaceState({}, '', '/categories');
+            }
         },
 
         selectGroupe(index) {

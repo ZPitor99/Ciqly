@@ -142,27 +142,6 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 </label>
                 <p>Entrez un nom d'aliment pour consulter sa fiche nutritionnelle complète</p>
 
-                <div x-data="rechercheAliment()" class="search-wrapper">
-                    <input
-                            type="text"
-                            x-model="query"
-                            @input.debounce.300ms="search()"
-                            placeholder="Rechercher un aliment..."
-                            class="search-input"
-                    >
-
-                    <p x-show="loading">Recherche en cours...</p>
-                    <p x-show="!loading && query.length >= 2 && results.length === 0">
-                        Aucun résultat trouvé.
-                    </p>
-
-                    <ul x-show="results.length > 0" class="results-list">
-                        <template x-for="item in results" :key="item.id">
-                            <li x-text="item.nom"></li>
-                        </template>
-                    </ul>
-                </div>
-
                 <div class="search-tags" aria-label="Recherches suggérées">
                     <button class="tag">Poivron rouge, sauté/poêlé</button>
                     <button class="tag">Jambon de Bayonne</button>
@@ -186,43 +165,59 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 <a href="/categories" class="section-link">Voir toutes les catégories →</a>
             </div>
 
-            <div class="cat-grid" role="list">
-                <article class="cat-card" role="article" tabindex="0">
+            <div class="cat-grid" role="list" x-data="previsu">
+                <article class="cat-card" role="article" tabindex="0"
+                         style="cursor:pointer"
+                         @click="goToCategorie(5)">
                     <div class="cat-icon" style="background:#E4F4FF">🥩</div>
                     <div class="cat-name">Viandes, Œufs et Poissons</div>
                     <div class="cat-count">791 aliments</div>
                 </article>
-                <article class="cat-card" role="article" tabindex="0">
+                <article class="cat-card" role="article" tabindex="0"
+                         style="cursor:pointer"
+                         @click="goToCategorie(3)">
                     <div class="cat-icon" style="background:#F0FBF0">🍐</div>
                     <div class="cat-name">Fruits, Légumes, Légumineuses et Oléagineux</div>
                     <div class="cat-count">653 aliments</div>
                 </article>
-                <article class="cat-card" role="article" tabindex="0">
+                <article class="cat-card" role="article" tabindex="0"
+                         style="cursor:pointer"
+                         @click="goToCategorie(2)">
                     <div class="cat-icon" style="background:#FAF3EE">🥘</div>
                     <div class="cat-name">Entrées & plats composés</div>
                     <div class="cat-count">407 aliments</div>
                 </article>
-                <article class="cat-card" role="article" tabindex="0">
+                <article class="cat-card" role="article" tabindex="0"
+                         style="cursor:pointer"
+                         @click="goToCategorie(8)">
                     <div class="cat-icon" style="background:#FFF8E4">🍰</div>
                     <div class="cat-name">Produits sucrés</div>
                     <div class="cat-count">361 aliments</div>
                 </article>
-                <article class="cat-card" role="article" tabindex="0">
+                <article class="cat-card" role="article" tabindex="0"
+                         style="cursor:pointer"
+                         @click="goToCategorie(6)">
                     <div class="cat-icon" style="background:#E4F4FF">🥛</div>
                     <div class="cat-name">Produits laitiers</div>
                     <div class="cat-count">356 aliments</div>
                 </article>
-                <article class="cat-card" role="article" tabindex="0">
+                <article class="cat-card" role="article" tabindex="0"
+                         style="cursor:pointer"
+                         @click="goToCategorie(7)">
                     <div class="cat-icon" style="background:#FFF4E6">🍹</div>
                     <div class="cat-name">Eaux et autres boissons</div>
                     <div class="cat-count">325 aliments</div>
                 </article>
-                <article class="cat-card" role="article" tabindex="0">
+                <article class="cat-card" role="article" tabindex="0"
+                         style="cursor:pointer"
+                         @click="goToCategorie(4)">
                     <div class="cat-icon" style="background:#F0FBF0">🌾</div>
                     <div class="cat-name">Produits céréaliers</div>
                     <div class="cat-count">214 aliments</div>
                 </article>
-                <article class="cat-card" role="article" tabindex="0">
+                <article class="cat-card" role="article" tabindex="0"
+                         style="cursor:pointer"
+                         @click="goToCategorie(9)">
                     <div class="cat-icon" style="background:#F5F0FF">🍧</div>
                     <div class="cat-name">Glaces & Sorbets</div>
                     <div class="cat-count">30 aliments</div>

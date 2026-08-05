@@ -13,6 +13,15 @@ import Alpine from 'alpinejs'
 import {burger} from "./partage.js";
 
 window.Alpine = Alpine
+
+document.addEventListener('alpine:init', () => {
+    Alpine.data('previsu', () => ({
+        goToCategorie(id) {
+            window.location.href = `/categories?preview=${id}`;
+        }
+    }))
+})
+
 Alpine.start()
 
 let langue = "fr"
@@ -41,33 +50,3 @@ function initSearchTag(){
     })
 
 }
-
-function rechercheAliment(){
-    return {
-        query: '',
-            results: [],
-            loading: false,
-
-            async search() {
-            if (this.query.trim().length <= 2) {
-                this.results = [];
-                return;
-            }
-
-            this.loading = true;
-
-            try {
-                const response = await fetch(
-                    'search.php?q=' + encodeURIComponent(this.query)
-                );
-                this.results = await response.json();
-            } catch (e) {
-                console.error('Erreur recherche:', e);
-                this.results = [];
-            } finally {
-                this.loading = false;
-            }
-        }
-    };
-}
-window.rechercheAliment = rechercheAliment;
