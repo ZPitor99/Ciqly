@@ -10,7 +10,7 @@ $vite = new Manifest(
     base_path: '/dist/'
 );
 
-$tags = $vite->createTags("js/")
+$tags = $vite->createTags("js/analyse.js")
 
 ?>
 
@@ -35,18 +35,53 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 
 <!-- ── MAIN ─────────────────────────────────────────────── -->
 <main id="main-content">
-    <h1>Analyse complexe</h1>
 
     <section>
-        <p>Les plus populaires</p>
+        <div>
+            <h1 class="section-header-center">Analyse complexe</h1>
+        </div>
     </section>
 
-    <section>
-        <p>Skyline</p>
+
+    <section class="bg-sand">
+        <div class="container">
+            <div class="section-header">
+                <h2>Les plus populaires</h2>
+            </div>
+
+            <div>
+
+            </div>
+
+        </div>
     </section>
 
-    <section>
-        <p>Analytique</p>
+    <section class="bg-white">
+        <div class="container">
+            <div class="section-header">
+                <h2><span lang="en">Skyline</span></h2>
+            </div>
+
+            <div>
+
+                <div id="req1"></div>
+
+            </div>
+
+        <div>
+    </section>
+
+    <section class="bg-gradient">
+        <div class="container">
+            <div class="section-header">
+                <h2>Analytique</h2>
+            </div>
+
+            <div>
+
+            </div>
+
+        <div>
     </section>
 
 </main>

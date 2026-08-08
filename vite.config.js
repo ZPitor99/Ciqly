@@ -13,6 +13,7 @@ export default defineConfig({
 
         rollupOptions: {
             input: {
+                analyse : resolve('src/js/analyse.js'),
                 assemblage: resolve(__dirname, 'src/js/assemblage.js'),
                 categories: resolve(__dirname, 'src/js/categories.js'),
                 footer: resolve(__dirname, 'src/js/footer.js'),

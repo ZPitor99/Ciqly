@@ -1,37 +1,75 @@
--- Skyline : maximiser teneur_valeur ET maximiser code_confiance
--- Principe utilisé sans l'opérateur Skyline: retourné les tuples non dominés
+-- Skyline : maximiser teneur_valeur et maximiser code_confiance
+-- Principe utilisé sans l'opérateur Skyline : retourné les tuples non dominés
 SELECT
-    REFF.CONST_NOM_FR,
-    TRV.ALIM_CODE,
-    ALM.ALIM_NOM_FR,
-    TRV.TENEUR_VALEUR,
-    TRV.CODE_CONFIANCE
+    reff.const_nom_fr,
+    trv.alim_code,
+    alm.alim_nom_fr,
+    trv.teneur_valeur,
+    trv.code_confiance
 FROM
     (
         SELECT
-            C1.*
+            C1.alim_code,
+            C1.const_code,
+            C1.teneur_valeur,
+            C1.code_confiance
         FROM
-            COMPOSITION C1
+            ciqly_data.composition C1
         WHERE
-            C1.CODE_CONFIANCE IS NOT NULL
+            C1.code_confiance IS NOT NULL -- constituant définie
           AND NOT EXISTS (
             SELECT
                 1
             FROM
-                COMPOSITION C2
+                ciqly_data.composition C2
             WHERE
-                C2.CONST_CODE = C1.CONST_CODE -- même constituant
-              AND C2.TENEUR_VALEUR >= C1.TENEUR_VALEUR -- teneur meilleur ou égal
-              AND C2.CODE_CONFIANCE <= C1.CODE_CONFIANCE -- indice_confiance meilleur ou égal
+                C2.const_code = C1.const_code -- même constituant
+              AND C2.teneur_valeur >= C1.teneur_valeur -- teneur meilleur ou égal
+              AND C2.code_confiance <= C1.code_confiance -- indice_confiance meilleur ou égal
               AND (
-                C2.TENEUR_VALEUR > C1.TENEUR_VALEUR
-                    OR C2.CODE_CONFIANCE < C1.CODE_CONFIANCE
+                C2.teneur_valeur > C1.teneur_valeur
+                    OR C2.code_confiance < C1.code_confiance
                 ) -- et un des deux surpasse
         )
-    ) TRV
-        INNER JOIN CONSTITUANTS REFF ON REFF.CONST_CODE = TRV.CONST_CODE
-        INNER JOIN ALIMENTS ALM ON ALM.ALIM_CODE = TRV.ALIM_CODE
+    ) trv
+        INNER JOIN ciqly_data.constituants reff ON reff.const_code = trv.const_code
+        INNER JOIN ciqly_data.aliments alm ON alm.alim_code = trv.alim_code
 ORDER BY
-    REFF.CONST_NOM_FR,
-    TRV.ALIM_CODE,
-    TRV.CODE_CONFIANCE DESC;
+    reff.const_nom_fr,
+    trv.alim_code,
+    trv.code_confiance DESC;
+
+
+
+-- Skyline : maximiser teneur_valeur, minimiser (teneur_max - teneur_min)
+SELECT
+    reff.const_nom_fr,
+    trv.alim_code,
+    alm.alim_nom_fr,
+    trv.teneur_valeur,
+    trv.code_confiance
+FROM
+    (
+        SELECT DISTINCT c1.*
+        FROM ciqly_data.composition c1
+        WHERE teneur_min IS NOT NULL
+          AND teneur_max IS NOT NULL
+          AND NOT EXISTS (
+            SELECT 1
+            FROM ciqly_data.composition c2
+            WHERE c2.teneur_min IS NOT NULL
+              AND c2.teneur_max IS NOT NULL
+              AND c2.teneur_valeur        >= c1.teneur_valeur
+              AND (c2.teneur_max - c2.teneur_min) <= (c1.teneur_max - c1.teneur_min)
+              AND (
+                c2.teneur_valeur > c1.teneur_valeur
+                    OR (c2.teneur_max - c2.teneur_min) < (c1.teneur_max - c1.teneur_min)
+                )
+        )
+    ) trv
+        INNER JOIN ciqly_data.constituants reff ON reff.const_code = trv.const_code
+        INNER JOIN ciqly_data.aliments alm ON alm.alim_code = trv.alim_code
+ORDER BY
+    reff.const_nom_fr,
+    trv.alim_code,
+    trv.code_confiance DESC;

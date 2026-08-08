@@ -35,7 +35,7 @@
                 <ul class="footer__links">
                     <li><a href="https://ciqual.anses.fr/" target="_blank" hreflang="fr">L'ANSES</a></li>
                     <li><a href="/mentions_legales">Mentions légales</a></li>
-                    <li><a href="#">Accessibilité</a></li>
+                    <li><a href="/accessibilite">Accessibilité</a></li>
                     <li><a href="/contact">Contact</a></li>
                 </ul>
             </div>

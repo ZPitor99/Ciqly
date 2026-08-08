@@ -232,9 +232,9 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
             <div class="section-header">
                 <div>
                     <div class="section-label">Données</div>
-                    <h2 class="section-title" id="table-section-title">Aliments fréquemment consultés</h2>
+                    <h2 class="section-title" id="table-section-title">Aliments les plus consultés</h2>
                 </div>
-                <a href="/exploitation" class="section-link">Voir tout →</a>
+                <a href="/analyse" class="section-link">Voir tout →</a>
             </div>
 
             <div class="data-table-wrap">
@@ -242,10 +242,6 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     <span class="data-table-title">Résultats — Pour 100 g d'aliment</span>
                     <div class="data-table-filters" role="group">
                         <button class="filter-chip active">Tous</button>
-                        <button class="filter-chip">Viandes</button>
-                        <button class="filter-chip">Légumes</button>
-                        <button class="filter-chip">Fruits</button>
-                        <button class="filter-chip">Laitiers</button>
                     </div>
                 </div>
 
