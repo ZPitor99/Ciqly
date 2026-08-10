@@ -2,89 +2,117 @@
 
 require_once join(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'prive', 'connection.php'));
 
-function peupler_aliment($groupe, $sousGroupe, $sousSousGroupe): ?array
+
+/**
+ * @param $groupe ?string identifiant du groupe
+ * @param $sousGroupe ?string identifiant du sous-groupe
+ * @param $sousSousGroupe ?string identifiant du sous-sous-groupe
+ * @return array|null Tableau associatif des aliments présent dans les types de groupes définis
+ */
+function peupler_aliment(?string $groupe, ?string $sousGroupe, ?string $sousSousGroupe): ?array
 {
-    $pdo = Database::get();
-
     if ($groupe !== null) {
-        $groupe = sprintf('%02d', $groupe);
-        $sql = 'SELECT alim_code, alim_nom_fr, alim_nom_eng FROM ciqly_data.aliments WHERE alim_grp_code = :groupe';
-        $bindings = ['groupe' => $groupe];
+        try {
+            $groupe = sprintf('%02d', $groupe);
 
-        if ($sousGroupe !== 'all') {
-            $sql .= ' AND alim_ssgrp_code = :ssgroupe';
-            $bindings['ssgroupe'] = $sousGroupe;
+            $pdo = Database::get();
+
+            $sql = 'SELECT alim_code, alim_nom_fr, alim_nom_eng FROM ciqly_data.aliments WHERE alim_grp_code = :groupe';
+            $bindings = ['groupe' => $groupe];
+
+            if ($sousGroupe !== 'all') {
+                $sql .= ' AND alim_ssgrp_code = :ssgroupe';
+                $bindings['ssgroupe'] = $sousGroupe;
+            }
+            elseif ($sousSousGroupe !== 'all') {
+                $sql .= ' AND alim_ssssgrp_code = :ssssgroupe';
+                $bindings['ssssgroupe'] = $sousSousGroupe;
+            }
+            $sql .= ' ORDER BY alim_nom_fr';
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($bindings);
+            $rows = $stmt->fetchAll();
+
+            if (empty($rows)) {
+                $result = [];
+            }
+            else {
+                $result = $rows;
+            }
+            return $result;
+
+        }catch (Exception){
+            return null;
         }
-        elseif ($sousSousGroupe !== 'all') {
-            $sql .= ' AND alim_ssssgrp_code = :ssssgroupe';
-            $bindings['ssssgroupe'] = $sousSousGroupe;
-        }
-
-
-        $sql .= ' ORDER BY alim_nom_fr';
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($bindings);
-        $rows = $stmt->fetchAll();
-
-        if (empty($rows)) {
-            $result = [];
-        }
-        else {
-            $result = $rows;
-        }
-        return $result;
     }
     return null;
 }
 
-
+/**
+ * Formatage de l'array php pour requête PostgreSQL.
+ * @param array $list La liste des éléments à transformer
+ * @return string La liste formatée pour PostgreSQL
+ */
 function prepare_pg_array(array $list): string{
     return '{'. implode(',', $list) .'}';
 }
 
-
-function assemblage_tableau($alim_codes): array
+/**
+ * @param $alim_codes ?array Liste des aliments codes
+ * @return array Informations générales sur les aliments choisis dans $alim_codes
+ */
+function assemblage_tableau(?array $alim_codes): array
 {
-    $pdo = Database::get();
-
     if ($alim_codes !== null) {
+        try {
+            $pdo = Database::get();
 
-        $sql = "SELECT
-            count(DISTINCT a.alim_code) AS nb_aliment,
-            count(DISTINCT a.alim_grp_code) AS distinct_grp,
-            ciqly_data.eval_confiance(string_agg(c.code_confiance, '')) AS concat_conf
-        FROM
-            ciqly_data.composition c
-                inner join ciqly_data.aliments a on a.alim_code = c.alim_code
-        WHERE
-            c.const_code = ANY(ciqly_data.ciqly_const_codes())
-            AND c.alim_code = ANY(:codes::int[])";
+            $sql = "SELECT
+                count(DISTINCT a.alim_code) AS nb_aliment,
+                count(DISTINCT a.alim_grp_code) AS distinct_grp,
+                ciqly_data.eval_confiance(string_agg(c.code_confiance, '')) AS concat_conf
+            FROM
+                ciqly_data.composition c
+                    inner join ciqly_data.aliments a on a.alim_code = c.alim_code
+            WHERE
+                c.const_code = ANY(ciqly_data.ciqly_const_codes())
+                AND c.alim_code = ANY(:codes::int[])";
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            'codes' => prepare_pg_array($alim_codes)
-        ]);
-        $rows = $stmt->fetch();
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                'codes' => prepare_pg_array($alim_codes)
+            ]);
+            $rows = $stmt->fetch();
 
-        if (empty($rows)) {
-            $result = [];
+            if (empty($rows)) {
+                $result = [];
+            }
+            else{
+                $result = $rows;
+            }
+            return $result;
+        }catch (Exception){
+            return [];
         }
-        else{
-            $result = $rows;
-        }
-        return $result;
     }
     return [];
 }
 
-function assemblage_graphique($alim_codes, $alim_coef): array
-{
-    $pdo = Database::get();
 
+/**
+ * @param $alim_codes ?array Liste des codes aliments
+ * @param $alim_coef ?array Liste des quantités associées aux aliments codes
+ * @return array Tableau associatif des constituants avec leurs valeurs calculées
+ */
+function assemblage_graphique(?array $alim_codes, ?array $alim_coef): array
+{
     if ($alim_codes !== null && $alim_coef !== null && $alim_codes != [] && $alim_coef != []) {
 
-        $sql = "SELECT
+        try {
+            $pdo = Database::get();
+
+            $sql = "SELECT
             cp.const_code AS t_cde,
             round(sum(cp.teneur_valeur*cf.coef)) AS t_cf
         FROM ciqly_data.composition cp
@@ -95,49 +123,63 @@ function assemblage_graphique($alim_codes, $alim_coef): array
         GROUP BY cp.const_code
         ORDER BY cp.const_code";
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            'codes' => prepare_pg_array($alim_codes),
-            'coefs' => prepare_pg_array($alim_coef)
-        ]);
-        $rows = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                'codes' => prepare_pg_array($alim_codes),
+                'coefs' => prepare_pg_array($alim_coef)
+            ]);
+            $rows = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-        if (empty($rows)) {
-            $result = [];
+            if (empty($rows)) {
+                $result = [];
+            }
+            else{
+                $result = $rows;
+            }
+            return $result;
+        }catch (Exception){
+            return [];
         }
-        else{
-            $result = $rows;
-        }
-        return $result;
     }
     return [];
 }
 
-function assemblage_null($alim_codes): string{
-    $pdo = Database::get();
 
+/**
+ * @param $alim_codes ?array La liste des codes aliment.
+ * @return string La concaténation des aliments et de leurs constituants avec une valeur non définie
+ */
+function assemblage_null(?array $alim_codes): string{
     if ($alim_codes !== null) {
+        try{
+            $pdo = Database::get();
 
-        $sql = "SELECT 
+            $sql = "SELECT 
             ciqly_data.ciqly_const_assembl_null(:codes::int[]);";
 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            'codes' => prepare_pg_array($alim_codes)
-        ]);
-        $rows = $stmt->fetch();
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                'codes' => prepare_pg_array($alim_codes)
+            ]);
+            $rows = $stmt->fetch();
 
-        if (empty($rows)) {
-            $result = "";
+            if (empty($rows)) {
+                $result = "";
+            }
+            else{
+                $result = $rows['ciqly_const_assembl_null'];
+            }
+            return $result;
+        }catch (Exception){
+            return "";
         }
-        else{
-            $result = $rows['ciqly_const_assembl_null'];
-        }
-        return $result;
     }
     return "";
 }
 
+/**
+ * @return array Tableau associatif pour le cache nutriment_ref.php
+ */
 function assemblage_cache_nutriment_ref(): array
 {
     $pdo = Database::get();

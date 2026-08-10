@@ -149,7 +149,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
     </section>
 
     <?php
-    if ($_SESSION['panier'] != [] && $_SESSION['calcul_assemblage'] === true) {
+    if ($_SESSION['panier'] != [] && $_SESSION['calcul_assemblage'] === true && $message == null) {
         $_SESSION['calcul_assemblage'] = false;
         echo <<<HTML
             <section class="section">
