@@ -132,6 +132,18 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     </li>
                 </ul>
             </div>
+            <hr>
+            <h2>A propos des documents utilisés</h2>
+            <div>
+                <ul>
+                    <li>
+                        <p>Georges Gardarin &mdash; Bases de données - Eyrolles (2003)</p>
+                    </li>
+                    <li>
+                        <p>Djamal Belkasmi, Allel Hadjali, Hamid Azzoune &mdash; Relaxation des Requêtes Skyline : Une Approche Centrée Utilisateur - Communication dans un congrès (EGC 2016)</p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </section>
     <section class="search-section bg-white">

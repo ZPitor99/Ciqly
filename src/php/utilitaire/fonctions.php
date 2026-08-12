@@ -196,5 +196,26 @@ function assemblage_cache_nutriment_ref(): array
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll();
+}
 
+
+/**
+ * @return array Résultat de la requête skyline stocké dans la vue matérialisé - Skyline : maximiser teneur_valeur et maximiser code_confiance
+ */
+function skyline_req(): array
+{
+    try {
+        $pdo = Database::get();
+
+        $sql = "SELECT 
+            * 
+        FROM 
+            ciqly_data.MVW_skyline_m_tval_m_cdeconf";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    catch (Exception){
+        return [];
+    }
 }
