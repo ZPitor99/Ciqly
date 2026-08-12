@@ -15,6 +15,10 @@ hljs.registerLanguage('pgsql', pgsql);
 import 'highlight.js/styles/atom-one-dark.min.css';
 //import 'highlight.js/styles/vs2015.css';
 //import 'highlight.js/styles/base16/danqing.min.css';
+import Alpine from 'alpinejs'
+
+window.Alpine = Alpine
+Alpine.start()
 
 window.onload = init
 function init() {
@@ -75,3 +79,28 @@ function sql_bloc_code(identifiant, req_sql){
     pre.appendChild(cde);
     req.appendChild(pre);
 }
+
+const thumbs = document.querySelectorAll('.thumb');
+const overlay = document.getElementById('overlay');
+const modalImg = document.getElementById('modalImg');
+const closeBtn = document.getElementById('closeBtn');
+
+thumbs.forEach(thumb => {
+    thumb.addEventListener('click', () => {
+        modalImg.src = thumb.src;
+        overlay.classList.add('active');
+    });
+});
+
+overlay.addEventListener('click', () => {
+    overlay.classList.remove('active');
+});
+closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    overlay.classList.remove('active');
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        overlay.classList.remove('active');
+    }
+});
