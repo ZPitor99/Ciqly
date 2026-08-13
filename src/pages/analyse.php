@@ -48,7 +48,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
             <p>
                 Ce site s'appuie sur une base de données nutritionnelles construite à partir de CIQUAL, normalisée et nettoyée afin d'en permettre une exploitation approfondie. Au-delà de la simple consultation des valeurs nutritionnelles, cette page est consacrée à une analyse plus poussée de ces données, mobilisant différentes techniques.
                 <br>
-                Trois approches y sont présentées : <b>des requêtes Skyline</b>, basées sur le principe de Pareto, permettant d'identifier les aliments les plus pertinents selon plusieurs critères simultanés ; <b>des requêtes analytiques</b>, mobilisant des outils statistiques pour dégager des tendances au sein des données ; et enfin <b>une extraction des préférences utilisateurs</b>, fondée sur les aliments les plus consultés sur le site.
+                Trois approches y sont présentées : <b>les requêtes Skyline</b>, basées sur le principe de Pareto, permettant d'identifier les aliments les plus pertinents selon plusieurs critères simultanés ; <b>les requêtes analytiques</b>, mobilisant des outils statistiques pour dégager des tendances au sein des données ; et enfin <b>une extraction des préférences utilisateurs</b>, fondée sur les aliments les plus consultés sur le site.
             </p>
             <br>
             <p>
@@ -80,7 +80,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     <br>Ainsi :
                 </p>
                 <div> <span>u<sub>i</sub> ≻ u<sub>j</sub></span> <span>&hArr;</span> <span> ( &forall; k &isin; {1, ..., d}, u<sub>i</sub>[k] &ge; u<sub>j</sub>[k] ) </span> <span>&and;</span> <span> ( &exist; q &isin; {1, ..., d}, u<sub>i</sub>[q] &gt; u<sub>j</sub>[q] ) </span> </div>
-                <p>Un tuple domine un autre s'il est aussi bon sur tous les critères, et strictement meilleur sur au moins un critère. Une requête skyline retourne alors uniquement les tuples qui ne sont dominés par aucun autre, c'est-à-dire les meilleurs compromis possibles entre les différents critères.</p>
+                <p>Un tuple domine un autre s'il est aussi bon sur tous les critères, et strictement meilleur sur au moins un critère. Une requête skyline retourne alors uniquement les tuples qui ne sont dominés par aucun autre, c'est-à-dire les meilleurs compromis possibles entre les différents critères. En effet, l'opération de skyline répond à une optimisation multi-critères</p>
             </div>
 
 
@@ -98,9 +98,9 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 </div>
                 <div class="mt-4">
                     <p>
-                        Le tableau suivant présente le résultat de la requête Skyline à propos des nutriments les plus pertinents pour le grand public. Les nutriments <em>Eau</em> et <em>Énergie</em> ont été écarté, car il retourne un trop grand nombre de tuples (± 25). En effet, pour l'eau tous les types d'eau minérale sont retournées. Concernant l'énergie, il s'agit du même phénomène avec les types d'huile (colza, tournesol, colza, etc).
+                        Le tableau suivant présente le résultat de la requête Skyline à propos des nutriments les plus pertinents pour le grand public. Les nutriments <em>Eau</em> et <em>Énergie</em> ont été écarté, car il retourne un trop grand nombre de tuples (± 25). En effet, pour l'Eau, tous les types d'eau minérale sont retournées. Concernant l'énergie, il s'agit du même phénomène avec les types d'huile (colza, tournesol, colza, etc).
                         <br>
-                        Cette situation se produit quand les tuples sont identiques, par exemple pour l'eau, toutes les eaux minérales (quelle que soit la source) ont une Teneur en eau de 100 et un Code de Confiance A.
+                        Cette situation se produit quand les tuples sont identiques, par exemple pour l'eau, toutes les eaux minérales (quelle que soit la source) ont une Teneur en Eau de 100 et un Code de Confiance A.
                         <br>
                         Si un seul tuple est retourné pour un nutriment, cela indique que l'aliment possédant la plus haute teneur à aussi le code de confiance maximal (A).
                     </p>
@@ -110,6 +110,9 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                         ?>
                     </div>
                 </div>
+                <p class="mt-4">
+                    <b>Exemple :</b> Prenons le Zinc ci-dessus, la requête a retenu deux aliments : l'huître plate et les graines de tournesol grillées salées. L'huître plate crue domine concernant la teneur, 45 mg de zinc pour 100 g, mais la fiabilité de cette donnée est faible (confiance D). La graine de tournesol contient un peu moins de zinc (36 mg/100 g), en revanche cette valeur est très fiable (confiance A). Ce sont les meilleurs compromis entre les dimensions.
+                </p>
             </div>
 
         <div>
