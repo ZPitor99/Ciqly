@@ -99,7 +99,7 @@ include(join(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'fragments', 'header.php'
 
                 <div class="tech-card">
                     <div class="logo">
-                        <img src="/static/images/techno_nodejsDark.png" alt="logo de nodejs" loading="lazy">
+                        <img src="/static/images/techno_nodejsdark.png" alt="logo de nodejs" loading="lazy">
                     </div>
                     <div class="tech-content">
                         <h4>Node.js®</h4>
@@ -193,13 +193,25 @@ include(join(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'fragments', 'header.php'
                 </div>
                 <div class="tech-card">
                     <div class="logo">
-                        <img src="/static/images/techno_CloudflareBadge_web.png" alt="logo de cloudflare"
+                        <img src="/static/images/techno_cloudflarebadge_web.png" alt="logo de cloudflare"
                              loading="lazy">
                     </div>
                     <div class="tech-content">
                         <h4>Cloudflare®</h4>
                         <p>Nom de domaine et technologies réseaux.</p>
                         <p><a class="tech-link" href="https://www.cloudflare.com/">Cloudflare</a> - <span lang="en">Cloudflare, the Cloudflare logo, and Cloudflare Workers are trademarks and/or registered trademarks of Cloudflare, Inc. in the United States and other jurisdictions.</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="tech-card">
+                    <div class="logo">
+                        <img src="/static/images/techno_ovhcloud.png" alt="logo de OVHcloud"
+                             loading="lazy">
+                    </div>
+                    <div class="tech-content">
+                        <h4>OVHcloud</h4>
+                        <p>Nom de domaine et technologies réseaux.</p>
+                        <p><a class="tech-link" href="https://www.ovhcloud.com/fr/">OVHcloud</a> - OVHcloud et le logo OVHcloud sont des marques de appartenant à OVH SAS.
                         </p>
                     </div>
                 </div>
