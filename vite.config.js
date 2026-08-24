@@ -16,6 +16,7 @@ export default defineConfig({
                 analyse : resolve('src/js/analyse.js'),
                 assemblage: resolve(__dirname, 'src/js/assemblage.js'),
                 categories: resolve(__dirname, 'src/js/categories.js'),
+                contact: resolve(__dirname, 'src/js/contact.js'),
                 footer: resolve(__dirname, 'src/js/footer.js'),
                 index: resolve(__dirname, 'src/js/index.js'),
                 methodologies: resolve(__dirname, 'src/js/methodologie.js'),
