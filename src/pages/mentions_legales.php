@@ -109,13 +109,58 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 
     <section class="section">
         <div class="container">
-            <div style="padding: 1em" class="card">
+            <div>
                 <p>
                     <b>En utilisant ce site, vous reconnaissez avoir pris connaissance de cet avertissement et acceptez les limites inhérentes aux données, calculs et recommandations proposés.</b>
                 </p>
             </div>
         </div>
     </section>
+
+    <section class="section">
+        <div class="container">
+            <h2>À propos des Cookies et données de navigation</h2>
+
+            <h3>Cookies utilisés</h3>
+            <p>Le site utilise uniquement des cookies techniques (sessions). Ces cookies sont strictement nécessaires au fonctionnement du site et sont automatiquement supprimés à la fermeture du navigateur. Aucun cookie de suivi publicitaire ou de traçage à long terme n'est déposé.</p>
+            <hr>
+
+            <h3>Journaux de connexion</h3>
+            <p>À des fins statistiques, permettant d'analyser la fréquentation du site et de l'améliorer (évolution des fonctionnalités, mise en avant des contenus populaires, amélioration de l'ergonomie), les informations suivantes sont enregistrées dans nos journaux techniques :</p>
+            <ul>
+                <li>- Les pages consultées, horodatées ;</li>
+                <li>- Les aliments consultés, horodatés, ainsi que l'ensemble des interactions effectuées avec ces aliments</li>
+            </ul>
+            <br>
+            <p>Ces informations sont corrélées à l'identifiant de session (session ID) généré par le cookie de session. Cet identifiant étant réinitialisé à chaque fermeture du navigateur, deux visites distinctes d'une même personne sont traitées comme provenant de deux utilisateurs différents. Ces données de navigation sont donc totalement anonymes : elles ne permettent à aucun moment d'identifier ou de suivre une personne physique dans la durée. D'autre part, le cookie est régénéré au bout de 24h d'existence, ce qui empêche identification de manière prolongée.</p>
+            <hr>
+
+            <h3>Durée de conservation</h3>
+            <p>Les données détaillées par session sont conservées pendant une durée maximale de 1 mois. Passé ce délai, elles ne sont conservées que sous forme agrégée (statistiques globales de fréquentation), ne comportant plus aucune donnée individuelle liée à une session ou à un identifiant particulier.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2>À propos de l'hébergement et contact</h2>
+            <address>
+                Redirection (via tunnel/proxy) :<br>
+                Cloudflare, Inc.<br>
+                101 Townsend Street, San Francisco, CA 94107, États-Unis.<br>
+                <br>
+                Nom de domaine enregistré auprès de :<br>
+                OVH SAS<br>
+                2 rue Kellermann, 59100 Roubaix, France.<br>
+                (OVH n'héberge aucun contenu du site)<br>
+                <br>
+                Éditeur :<br>
+                ZPitor99 - Contact direct : <a href="mailto:contact@ciqly.fr">contact@ciqly.fr</a><br>
+                Réquisition auprès d'OVH SAS.<br>
+            </address>
+        </div>
+    </section>
+
+
 
 </main>
 
