@@ -326,20 +326,17 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                 <div class="info-block">
                     <h3 class="info-block__title">Analyses validées</h3>
                     <br>
-                    <p class="info-block__text">Chaque valeur nutritionnelle est issue d'analyses en laboratoire ou de
-                        données bibliographiques validées par l'ANSES.</p>
+                    <p class="info-block__text">Chaque valeur nutritionnelle est issue d'analyses en laboratoire ou de données bibliographiques validées par l'ANSES.</p>
                 </div>
                 <div class="info-block">
                     <h3 class="info-block__title">Données actualisées</h3>
                     <br>
-                    <p class="info-block__text">La table CIQUAL est régulièrement mise à jour pour refléter les
-                        évolutions des formulations et pratiques alimentaires.</p>
+                    <p class="info-block__text">La table CIQUAL est régulièrement mise à jour pour refléter les évolutions des formulations et pratiques alimentaires.</p>
                 </div>
                 <div class="info-block">
-                    <h3 class="info-block__title">API ouverte</h3>
+                    <h3 class="info-block__title">Analyse de données</h3>
                     <br>
-                    <p class="info-block__text">Accédez librement aux données via l'API du site pour intégrer les
-                        informations nutritionnelles dans vos applications.</p>
+                    <p class="info-block__text">Profiter des fonctionnalités d'agrégation de donnée et d'analyse pour mieux les appréhender.</p>
                 </div>
             </div>
         </div>

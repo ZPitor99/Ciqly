@@ -42,30 +42,6 @@ include(join(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'fragments', 'header.php'
         </div>
     </section>
 
-    <section class="search-section bg-sand">
-        <div class="container">
-            <div>
-                <h2>Traitement de données</h2>
-            </div>
-
-            <article>
-                <h3>Données d'origine</h3>
-            </article>
-
-            <article>
-                <h3>Normalisation</h3>
-            </article>
-
-            <article>
-                <h3>Exploitation</h3>
-            </article>
-
-            <article>
-                <h3>Collecte</h3>
-            </article>
-        </div>
-    </section>
-
     <section class="bg-white">
         <div class="container">
             <h2>Objectifs</h2>

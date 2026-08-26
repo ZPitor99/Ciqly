@@ -16,7 +16,7 @@
                     <li><a href="/categories">Explorer les aliments</a></li>
                     <li><a href="https://ciqual.anses.fr/#/cms/telechargement/node/20" target="_blank" hreflang="fr">Téléchargement</a></li>
                     <li><a href="#">Aliments moyens</a></li>
-                    <li><a href="#">Documentation API</a></li>
+                    <li><a href="#">Base de données</a></li>
                 </ul>
             </div>
 
