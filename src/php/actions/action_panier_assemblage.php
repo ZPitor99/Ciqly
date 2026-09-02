@@ -1,5 +1,7 @@
 <?php
-session_start();
+require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','utilitaire','reportage.php'));
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
 header('Content-Type: application/json');
 
 $input  = json_decode(file_get_contents('php://input'), true);
@@ -10,6 +12,20 @@ if (!$id || !isset($_SESSION['panier'][$id])) {
     echo json_encode(['success' => false, 'message' => 'Article introuvable']);
     header('Location: /assemblage');
     exit;
+}
+
+try {
+    $mapping = [
+        'reset' => 'tare',
+        'supprimer' => 'suppr',
+        'monter' => 'haut',
+        'descendre' => 'bas',
+        null => null
+    ];
+
+    $journaliste->logJournalRessource(92, $mapping[$action], $id, null, null, null);
+}catch (Exception $e){
+    error_log($e->getMessage());
 }
 
 switch ($action) {

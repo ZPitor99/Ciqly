@@ -1,8 +1,7 @@
 <?php
 
 require_once join(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'utilitaire', 'fonctions.php'));
-
-session_start();
+require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','utilitaire','reportage.php'));
 
 if (isset($_POST['assemblage'])) {
 
@@ -15,26 +14,32 @@ if (isset($_POST['assemblage'])) {
     $masse = 0;
 
     foreach ($_POST as $key => $value) {
-        if (!ctype_digit((string)$key)) {
-            continue;
-        } elseif ($value === '' || !is_numeric($value) || (float)$value <= 0) {
+
+        if (!ctype_digit((string)$key) || $value === '' || !is_numeric($value) || (float)$value <= 0) {
             continue;
         }
+
         $alim_codes[] = filter_var($key, FILTER_VALIDATE_INT);
         $coef = filter_var(str_replace(',', '.', trim($value)), FILTER_VALIDATE_FLOAT);
-        if ($coef !== false) {
+        if ($coef !== false and $coef < 100000 and $coef >= 0) {
             $_SESSION['panier'][end($alim_codes)]['quantite'] = $coef;
             $alim_coef[] = $coef / 100;
             $masse = $masse + $coef;
         } else {
-            $alim_coef[] = $coef;
+            $alim_coef[] = false;
+        }
+
+        if (count($alim_codes) > 25) {
+            break;
         }
     }
 
-    if (empty($alim_codes) || in_array(false, $alim_codes, true) || in_array(false, $alim_coef, true)) {
+    if (empty($alim_codes) || in_array(false, $alim_codes, true) || in_array(false, $alim_coef, true) || count($alim_codes) > 25) {
         header('Location: /assemblage');
         exit;
     }
+
+    $journaliste->logJournalRessource(93, "asbl", null, null, $alim_codes, $alim_coef);
 
     $cache_nutriment_ref = require join(DIRECTORY_SEPARATOR, array(__DIR__, '..', 'utilitaire', 'cache', 'nutriment_ref.php'));
 
@@ -103,7 +108,6 @@ if (isset($_POST['assemblage'])) {
                     ];
                 }
             }
-            echo '<br><br>';
         }
     }
     $_SESSION['assemblage_null'] = $data3;
@@ -111,5 +115,5 @@ if (isset($_POST['assemblage'])) {
     header('Location: /assemblage');
     exit;
 }
-header('Location: /');
+header('Location: /404');
 exit;

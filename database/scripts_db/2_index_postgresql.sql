@@ -5,6 +5,7 @@ CREATE INDEX idx_hierarchie_alim_ssgroupe_code ON ciqly_data.hierarchie(alim_ssg
 CREATE INDEX idx_hierarchie_alim_ssssgroupe_code ON ciqly_data.hierarchie(alim_ssssgroupe_code);
 
 CREATE INDEX idx_aliments_alim_nom_fr ON ciqly_data.aliments(alim_nom_fr);
+CREATE INDEX idx_aliments_alim_code_nom_fr ON ciqly_data.aliments(alim_code, alim_nom_fr);
 CREATE INDEX idx_aliments_hierarchie ON ciqly_data.aliments(alim_grp_code, alim_ssgrp_code, alim_ssssgrp_code);
 
 CREATE INDEX idx_composition_alim_code ON ciqly_data.composition(alim_code);

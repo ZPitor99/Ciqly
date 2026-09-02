@@ -182,9 +182,10 @@ function assemblage_null(?array $alim_codes): string{
  */
 function assemblage_cache_nutriment_ref(): array
 {
-    $pdo = Database::get();
+    try {
+        $pdo = Database::get();
 
-    $sql = "SELECT 
+        $sql = "SELECT 
         nature,
         const_code,
         nom,
@@ -193,9 +194,14 @@ function assemblage_cache_nutriment_ref(): array
         comm 
     FROM 
         ciqly_data.ciqly_cache_assemblage";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetchAll();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+
+    }catch (Exception){
+        return [];
+    }
+
 }
 
 
@@ -214,6 +220,37 @@ function skyline_req(): array
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+    catch (Exception){
+        return [];
+    }
+}
+
+/**
+ * Renvoie les données propres (issue de la bd) de l'id et du nom de l'aliment référencé par le code.
+ *
+ * @param int $alim_code Code aliment fournit par l'utilisateur
+ * @return array Tableau associatif
+ */
+function retrouver_aliment(int $alim_code): array
+{
+    if ($alim_code <= 0) {
+        return [];
+    }
+
+    try {
+        $pdo = Database::get();
+
+        $sql = "SELECT 
+            alim_code,
+            alim_nom_fr
+        FROM 
+            ciqly_data.aliments
+        WHERE alim_code = :alim_code";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':alim_code', $alim_code);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     catch (Exception){
         return [];
