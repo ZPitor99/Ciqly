@@ -2,7 +2,8 @@
 
 require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','class','php_vite','Manifest.php'));
 
-session_start();
+require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','utilitaire','reportage.php'));
+$journaliste->logJournalRessource(33, null, null, null, null, null);
 
 $vite = new Manifest(
     dev: false,
@@ -27,14 +28,14 @@ $tags = $vite->createTags("js/contact.js")
     <link rel="icon" type="image/svg+xml" href="/static/images/icone_ciqly.svg">
     <?= $tags->css ?>
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
 
 <?php
 include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 ?>
 
 <!-- ── MAIN ─────────────────────────────────────────────── -->
-<main id="main-content">
+<main id="main-content" style="flex: 1;">
 
     <section class="section section--tight bg-sand">
         <div class="container container--narrow contact">
@@ -71,7 +72,7 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
                     <li class="contact-example">
                         <div class="contact-example__content">
                             <h3>Autres demandes</h3>
-                            <p>Partenariat, des précisions ou toutes autres demandes.</p>
+                            <p>Vous souhaitez avoir des précisions ou pour toutes autres demandes.</p>
                         </div>
                     </li>
 

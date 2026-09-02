@@ -2,7 +2,8 @@
 
 require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','class','php_vite','Manifest.php'));
 
-session_start();
+require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','utilitaire','reportage.php'));
+$journaliste->logJournalRessource(4, null, null, null, null, null);
 
 $vite = new Manifest(
         dev: false,

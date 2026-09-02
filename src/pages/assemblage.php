@@ -2,7 +2,8 @@
 
 require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','class','php_vite','Manifest.php'));
 
-session_start();
+require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','utilitaire','reportage.php'));
+$journaliste->logJournalRessource(3, null, null, null, null, null);
 
 $vite = new Manifest(
     dev: false,
@@ -13,16 +14,6 @@ $vite = new Manifest(
 $tags = $vite->createTags("js/assemblage.js");
 
 $message = null;
-
-function toutesDefinies(array $cles): bool
-{
-    foreach ($cles as $cle) {
-        if (empty($_SESSION[$cle])) {
-            return false;
-        }
-    }
-    return true;
-}
 
 if (!isset($_SESSION['calcul_assemblage'])){
     $_SESSION['calcul_assemblage'] = false;

@@ -1,6 +1,8 @@
 <?php
 
 require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','class','php_vite','Manifest.php'));
+require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','utilitaire','reportage.php'));
+$journaliste->logJournalRessource(22, null, null, null, null, null);
 
 session_start();
 

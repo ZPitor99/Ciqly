@@ -2,7 +2,9 @@
 
 require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','class','php_vite','Manifest.php'));
 require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','utilitaire', 'fonctions.php'));
-session_start();
+
+require_once join(DIRECTORY_SEPARATOR,array(__DIR__,'..','php','utilitaire','reportage.php'));
+$journaliste->logJournalRessource(2, null, null, null, null, null);
 
 $vite = new Manifest(
     dev: false,
@@ -212,7 +214,6 @@ include(join(DIRECTORY_SEPARATOR,array(__DIR__,'..','fragments','header.php')));
 
                                 <form method="POST" action="/action_panier_aliment" class="aliment-form">
                                     <input type="hidden" name="alim_code" value="<?= $aliment['alim_code'] ?>">
-                                    <input type="hidden" name="alim_nom" value="<?= $aliment['alim_nom_fr'] ?>">
                                     <input type="hidden" name="retour" value="<?= htmlspecialchars($urlRetour) ?>">
                                     <button type="submit" class="btn-icone" aria-label="<?= $dejaDansPanier ? 'Retirer du panier' : 'Ajouter au panier' ?>">
                                         <?php if ($dejaDansPanier): ?>
